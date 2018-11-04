@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Python&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/python/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/python/" title="Posts tagged 'Python'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/python/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Fri Jan 12</div>
+			<article class="post-content h-entry">
+  
+    <span class="p-summary repost-marker">🔖 Bookmarked <a class="u-bookmark-of" href="https://eev.ee/blog/2017/11/28/object-models/">Object models / fuzzy notepad</a></span>
+
+  <blockquote class="p-summary"><p>&ldquo;We could do with more experimentation around how objects work, but that’s impossible in the languages most commonly thought of as object-oriented.</p>
+
+<p>Here, then, is a (very) brief run through the inner workings of objects in four very dynamic languages. I don’t think I really appreciated objects until I’d spent some time with Python, and I hope this can help someone else whet their own appetite.&rdquo;</p>
+</blockquote>
+
+
+      
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+  
+  
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/programming/" class="label label-default">#<span class="p-category">programming</span></a>
+
+      
+        <a href="/tag/reading/" class="label label-default">#<span class="p-category">reading</span></a>
+
+      
+        <a href="/tag/python/" class="label label-default">#<span class="p-category">python</span></a>
+
+      
+        <a href="/tag/lua/" class="label label-default">#<span class="p-category">lua</span></a>
+
+      
+        <a href="/tag/javascript/" class="label label-default">#<span class="p-category">javascript</span></a>
+
+      
+        <a href="/tag/perl/" class="label label-default">#<span class="p-category">perl</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4sPN9p"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2018/01/12/objectmodels-/-fuzzy-notepad/"><time class="dt-published" datetime="2018-01-12T17:09:49-0500">January 12, 2018 at 5:09PM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Thu Jan 26</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/01/26/spano---a-minimum-viable-micropub-media-endpoint/">Spano - a minimum-viable Micropub Media Endpoint</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="https://www.w3.org/TR/micropub/">Micropub</a>&nbsp;is&nbsp;an open API standard to create posts on one's own domain using third-party clients &nbsp;and currently a W3C Candidate Recommendation. One of the (semi-) recent additions is the idea of a <a href="https://www.w3.org/TR/micropub/#media-endpoint">Micropub Media Endpoint</a>. The Media Endpoint provides&nbsp;a way for Micropub clients to upload media files to a Micropub service, receiving a URL that is sent along in place of the file contents when the post is published.</p><p class="">Some of the things I like about Micropub media endpoints include:</p><ul><li>The spec allows the media endpoint to be on a completely separate domain from the "full" micropub endpoint.</li><li>The spec doesn't specify anything about how the files are stored or their final URLs or filenames.<br></li><li>They make it easy to separate the handling of (large) media files from the (presumably much smaller) content and metadata of a post.</li><li>They enable Micropub clients to upload multiple files without creating multiple posts. This makes it simpler to create posts that contain multiple images, like a gallery.</li></ul><p class="">Personally, I wanted a Micropub media endpoint server with a few extra properties:</p><ul><li>It should be able to run completely separately from, and therefore work in conjunction with, any other micropub server implementation.<br></li><li>It should not store duplicate files. If the same file is uploaded twice, the same URL should be returned both times.</li><li>It should not allow overwriting files. If two images of the same name are uploaded, both are kept and receive different URLs.</li></ul><h2>Enter HashFS</h2><p class="">My extra features above essentially describe a&nbsp;<a href="https://en.wikipedia.org/wiki/Content-addressable_storage">content-addressable storage</a>&nbsp;storage system. CAS is a way of storing and accessing data based on some property of the actual content, rather than (potentially arbitrary) files and folders.</p><p class=""><a href="https://hashfs.readthedocs.io/en/latest/">HashFS</a>&nbsp;is a Python implementation of a content-addressable file management system. You give it files, it will put them in a directory structure based on a <a href="https://simple.wikipedia.org/wiki/Cryptographic_hash_function">cryptographic hash function</a>&nbsp;of the contents of that file. In other words - HashFS can take any file and give back a unique path to that file which will never change (if you later upload a new version of the file, it gets a different path).<br></p><p class="">To add the the fun of HashFS, there is a Flask extension called <a href="https://flask-hashfs.readthedocs.io/en/latest/">Flask-HashFS</a>&nbsp;which makes it easy to expose a HashFS file store on the web via the Python&nbsp;<a href="http://flask.pocoo.org/">Flask</a>&nbsp;framework.</p><h2>Introducing Spano</h2><p class=""><a href="https://github.com/martymcguire/spano">Spano</a> is a Micropub Media Endpoint server written in Python via the Flask framework which combines Flask-HashFS for file storage with&nbsp;<a href="https://github.com/martymcguire/Flask-IndieAuth">Flask-IndieAuth</a>&nbsp;(<a href="https://martymcgui.re/2017/01/26/104730/">introduced earlier</a>) to handle authentication and authorization.</p><p class="">Spano is a server-side web app that basically does one thing: it accepts HTTP POST requests with a valid <a href="http://indieweb.org/IndieAuth">IndieAuth</a>&nbsp;token and a file named "file", stores that file, and returns a URL to that file. The task of serving uploaded files is left to a dedicated web server like nginx or Apache.</p><h3>Using Spano</h3><p class="">Once Spano has been <a href="https://github.com/martymcguire/spano#spano">set up and configured</a>&nbsp;for your domain, uploading is a matter of getting a valid IndieAuth token. IndieAuth-enabled Micropub clients will do this automatically. For testing by hand I like to log in to Quill and copy the access token from the <a href="https://quill.p3k.io/settings">Quill settings page</a>. With token in hand, uploads are as easy as:</p><pre><code>curl -D - -F "file=@myfile.jpg" \
+  -H"Authorization: Bearer xxxx..." \
+  https://media.example.com/micropub/</code></pre><p class="">Which should output a response like:</p><pre><code>HTTP/1.1 100 Continue
+
+HTTP/1.0 201 CREATED
+Content-Type: text/html; charset=utf-8
+Content-Length: 108
+Location: https://media.example.com/cc/a5/97/7c/2004..2cb.jpg
+Server: Werkzeug/0.11.4 Python/2.7.11
+Date: Thu, 26 Jan 2017 02:40:05 GMT
+
+File created: https://media.example.com/cc/a5/97/7c/2004..2cb.jpg</code></pre><h3>Integrating Spano with your Micropub Endpoint</h3><p class="">If you want Micropub clients to use Spano as your Media Endpoint, you need to advertise it. This is handled by your "main" Micropub server using <a href="https://www.w3.org/TR/micropub/#discovery">discovery</a>. Essentially, a client will make a configuration request to your server like so:</p><pre>https://example.com/micropub?q=config</pre><p class="">And your server's response should be a JSON-formatted object specifying the "media-endpoint". A bare minimum example:</p><pre>{<br>&nbsp; "media-endpoint": "https://media.example.com/micropub/"<br>}</pre><p class="">In addition to advertising the media-endpoint, your Micropub server must be able to handle lists of URLs in places where it would normally expect a file.</p><p class="">For example, when posting a photo from Quill without a media endpoint, your Micropub server will receive a multipart/form-data encoded file named "photo". When posting from Quill with a media endpoint, your Micropub server will instead receive a list of URLs represented as "photo[]=https://media.example.com/cc/...2cb.jpg". Presumably this pattern would hold for other media types such as video and audio, if you are using Micropub clients that support them.</p><p class="">This particular step has been an interesting challenge for my site, which is a static site generated by Jekyll. My previous Micropub file-handling implementation expected all uploaded assets to live on disk next to the post files, and updating my Jekyll theme and plugins to handle the change is a work in progress. I eventually plan to move all my uploads out of the source for my project in favor of storing them with Spano.</p><h2>Feedback Welcome!</h2><p class="">Spano is probably my second public Python project, so I'd love feedback! If you try it out and run into issues, please drop me a line <a href="https://github.com/martymcguire/spano/issues">on GitHub</a>. Or you can find me in the <a href="https://chat.indieweb.org/">#indieweb chat</a> on freenode IRC.</p><p class="">I'd also like to thank Kyle Mahan for his <a href="https://github.com/kylewm/woodwind">Woodwind</a>&nbsp;Flask server application, which inspired the structure of Spano.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/flask/" class="label label-default">#<span class="p-category">flask</span></a>
+
+      
+        <a href="/tag/python/" class="label label-default">#<span class="p-category">python</span></a>
+
+      
+        <a href="/tag/micropub/" class="label label-default">#<span class="p-category">micropub</span></a>
+
+      
+        <a href="/tag/media-endpoint/" class="label label-default">#<span class="p-category">media-endpoint</span></a>
+
+      
+        <a href="/tag/spano/" class="label label-default">#<span class="p-category">spano</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4mYHT0"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/01/26/spano---a-minimum-viable-micropub-media-endpoint/"><time class="dt-published" datetime="2017-01-26T12:27:00-0500">January 26, 2017 at 12:27PM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/01/26/122700/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/824671060129959937" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Fri Feb 20</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2009/02/20/face-detection-in-static-images-with-python/">Face Detection in Static Images with Python</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>One of the things I&rsquo;ve been longing to do with my mobile photo-sharing site <a href="http://camura.com/">Camura</a> is to offer image annotations, like objects and faces.  Over the last couple of years I have been increasingly frustrated by the appearance of face tagging on services like Facebook, and the recent <a href="http://www.apple.com/ilife/iphoto/#faces">addition of face recognition to iPhoto</a> has brought this frustration to the surface once again.  I don&rsquo;t even want to do something as complex as face recognition - I just want to find faces in an image.</p>
+
+<p>Googling for things like &ldquo;open source face detector&rdquo; doesn&rsquo;t come up with much.  The landscape seems to be comprised of mostly expensive for-pay libraries written for Windows, abandoned research projects, and lots of research papers full of equations &ndash; but no code that I could get to run.</p>
+
+<p>To make a long post short, it turns out that Intel&rsquo;s <a href="http://sourceforge.net/projects/opencvlibrary/">OpenCV</a> computer vision library comes with a <a href="http://opencv.willowgarage.com/wiki/FaceDetection">face detector</a> example that should work out of the box.  Better yet, there are now some decent <a href="http://wwwx.cs.unc.edu/~gb/wp/blog/2007/02/04/python-opencv-wrapper-using-ctypes/">Python bindings</a> for OpenCV that come pre-packaged with OpenCV for Ubuntu and Debian.  You can install them with:
+<code>
+$ sudo apt-get install python-opencv
+</code></p>
+
+<p>Now, it seems that most OpenCV <a href="http://blog.jozilla.net/2008/06/27/fun-with-python-opencv-and-face-detection/">face detector examples</a> are meant to be run &ldquo;live&rdquo;, usually taking the image from a webcam and highlighting faces with a red box in real-time.  However, I have a large database of static images that I want to consider individually, and I simply want to save the face coordinates for later use, rather than altering the picture.</p>
+
+<p>So, with a bit more Googling, I found a Python script that I could chop up and use for this purpose, and here is what I came up with:</p>
+
+<script src="//gist.github.com/67044.js"></script>
+
+<p>An example run of the script looks something like this:</p>
+
+<pre><code>$ python face_detect.py marty_mcguire.jpg
+[(50,36) -&gt; (115,101)]
+</code></pre>
+
+<p>You can overlay that rectangle on an output image with ImageMagick&rsquo;s &ldquo;convert&rdquo;:</p>
+
+<pre><code>$ convert marty_mcguire.jpg -stroke red -fill none -draw &quot;rectangle 50,36 115,101&quot; output.jpg
+</code></pre>
+
+<p>And the output might look something like this:</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2009/02/output.jpg"><img class="size-medium wp-image-18" title="My face: detected!" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2009/02/output.jpg" alt="My face, it has been detected." width="180" height="240" /></a></p>
+
+<p>Pretty fun stuff!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/debian/" class="label label-default">#<span class="p-category">debian</span></a>
+
+      
+        <a href="/tag/face-detection/" class="label label-default">#<span class="p-category">face detection</span></a>
+
+      
+        <a href="/tag/open-source/" class="label label-default">#<span class="p-category">open source</span></a>
+
+      
+        <a href="/tag/opencv/" class="label label-default">#<span class="p-category">opencv</span></a>
+
+      
+        <a href="/tag/python/" class="label label-default">#<span class="p-category">python</span></a>
+
+      
+        <a href="/tag/static-image/" class="label label-default">#<span class="p-category">static image</span></a>
+
+      
+        <a href="/tag/ubuntu/" class="label label-default">#<span class="p-category">ubuntu</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/3yF500"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2009/02/20/face-detection-in-static-images-with-python/"><time class="dt-published" datetime="2009-02-20T00:00:00-0500">February 20, 2009 at 12:00AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

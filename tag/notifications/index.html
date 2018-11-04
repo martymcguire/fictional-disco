@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Notifications&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/notifications/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/notifications/" title="Posts tagged 'Notifications'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/notifications/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Sat Feb 24</div>
+			<article class="post-content h-entry">
+  
+    
+    
+    
+    
+    
+    <span class="p-summary">
+  
+  <data class="p-read-status" value="finished">
+      📕 Finished reading
+    </data>
+  
+  <span class="p-read-of h-cite">
+    
+      
+        <a class="u-url p-name" href="https://calmtech.com/book.html">Calm Technology</a>
+      
+    
+  </span>
+  
+    by
+      
+        <a class="u-author h-card" href="http://caseorganic.com/">Amber Case</a>
+      
+    
+  
+  
+</span>
+
+      
+    
+    
+  
+  
+  
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/books/" class="label label-default">#<span class="p-category">books</span></a>
+
+      
+        <a href="/tag/calm/" class="label label-default">#<span class="p-category">calm</span></a>
+
+      
+        <a href="/tag/technology/" class="label label-default">#<span class="p-category">technology</span></a>
+
+      
+        <a href="/tag/notifications/" class="label label-default">#<span class="p-category">notifications</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4t6PEz"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2018/02/24/181459/"><time class="dt-published" datetime="2018-02-24T18:14:59-0500">February 24, 2018 at 6:14PM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Fri May 26</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/05/26/site-updates-webmention-notifications-in-matrix-with-hubot/">Site Updates: Webmention Notifications in Matrix with Hubot</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>
+  <i><a href="https://jonathanprozzi.net/">Jonathan Prozzi</a> and I have challenged one another to make a post about improving our websites once a week. This is me getting back on the train!</i>
+  <br />
+</p>
+<p>In a previous site update I wrote about setting up a <a href="https://martymcgui.re/2017/03/29/161441/">system to notify me</a> whenever my site received <a href="https://www.w3.org/TR/webmention/">webmentions</a>. Essentially, this meant that I could now get notifications on my phone and desktop whenever somebody interacted with my site, such as: replying to one of my posts on their own site, retweeting or favoriting one of my posts, or even RSVPs to my Facebook events.</p>
+<p>One thing I didn't super like about this system is that it used the Pushbullet service which, while great, is not under my control.</p>
+<p>I've been running a <a href="http://matrix.org/">Matrix</a> chat server at home for a while now. I primarily use it to chat with people in my household in IRC channels. I use a really nice client for Matrix called <a href="https://about.riot.im/">Riot</a>, which runs in the browser, but is also available on Android and iOS, and is capable of sending notifications about chat events, which I have found really handy.</p>
+<p>Recently, I've added a chatbot to my Matrix server named <a href="https://hubot.github.com/">Hubot</a>, thanks to the <a href="https://github.com/davidar/hubot-matrix/">Hubot-Matrix adapter</a>. Hubot is super neat because it is fairly <a href="https://hubot.github.com/docs/scripting/">easy to script up new behaviors</a>, and it has nice built-in support for the web - both for making web requests, but Hubot also runs a server for <i>accepting web requests</i>. Once I realized this, it occurred to me that I could replace my previous notification system that uses Pushbullet with one that goes through Hubot.</p>
+<p>First, a note on security. Exposing a chatbot's HTTP listener interface to the great wide internet comes at some risk! I made sure to the following:</p>
+<ul>
+  <li>
+    I run Hubot behind a firewall, so no plain HTTP traffic can come directly across the internet.
+    <br />
+  </li>
+  <li>Using another home server, I set up nginx to act as a secure HTTPS proxy, using a certificate from <a href="https://letsencrypt.org/">Let's Encrypt</a> to encrypt all traffic that goes over the internet.</li>
+  <li>I decided that any behaviors I write for Hubot that use the HTTP listener will use some kind of secret token to ensure that the request is valid. I don't want spammers blowing up my chatrooms!</li>
+</ul>
+<p>I decided that the bot should:</p>
+<ul>
+  <li>
+    Allow a user to request webmention.io notifications for a given site into any room.
+    <br />
+  </li>
+  <li>Generate and store a "callback secret" to work with webmention.io's Web Hook system and tell the user the URL and callback secret to configure over on the <a href="https://webmention.io/dashboard">Webmention.io Dashboard</a>.</li>
+  <li>Accept HTTP requests from webmention.io at something like &lt;HUBOT_HOST&gt;/hubot/wmio/notify</li>
+  <li>Verify that the request contains the callback secret</li>
+  <li>Generate a nice text summary of the notification based on its contents</li>
+  <li>Send the notification to the room that the user was in when they made the follow request.</li>
+</ul>
+<p>
+  With that in mind, I began learning lots about <a href="https://hubot.github.com/docs/scripting/#testing-hubot-scripts">testing</a> <a href="https://amussey.github.io/2015/08/11/testing-hubot-scripts.html">Hubot scripts</a>, refreshing myself on <a href="http://coffeescript.org/">Coffeescript</a>, and so on.
+  <br />
+</p>
+<p>I am now happy to introduce this first (janky) release of my Hubot Script, <a href="https://github.com/martymcguire/hubot-webmentionio-notify">hubot-webmentionio-notify</a>!</p>
+<p>Once installed, you can start a conversation with your hubot and ask it to follow a site:</p>
+<pre>
+  you&gt; hubot wmio follow mycoolsite.biz
+  <br />
+  hubot&gt; @you OK! Use this as your Web Hook: &lt;HUBOT_URL&gt;/hubot/wmio/notify
+And use this as your callback secret: 1a2b3c4d5e6f7890000
+</pre>
+<p>The string "mycoolsite.biz" can actually be anything and should be something easy to remember in case you want to unfollow notifications later. Hubot doesn't check incoming mentions against it at the moment.</p>
+<p>You can enter the URL and callback secret in the Webmention.io dashboard, and future webmentions will be sent to your Hubot and output into the room of your choice.</p>
+<figure>
+  <img src="https://media.martymcgui.re/0e/15/de/84/053e0c0b6c7e84ab2adb21ffcf6123f10cd8257b81fe33d85c6f2569.png" alt="" />
+  <figcaption>Notification example - a user on Twitter mentioned my Twitter handle in a post there.</figcaption>
+</figure>
+<p>I don't know how useful <a href="https://github.com/martymcguire/hubot-webmentionio-notify">hubot-webmentionio-notify</a> will be for other folks at the moment, but I am excited be getting these notifications via services that I control. I look forward to building more fun things with Hubot!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/webmention.io/" class="label label-default">#<span class="p-category">Webmention.io</span></a>
+
+      
+        <a href="/tag/webmention/" class="label label-default">#<span class="p-category">webmention</span></a>
+
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/matrix.org/" class="label label-default">#<span class="p-category">matrix.org</span></a>
+
+      
+        <a href="/tag/hubot/" class="label label-default">#<span class="p-category">hubot</span></a>
+
+      
+        <a href="/tag/notifications/" class="label label-default">#<span class="p-category">notifications</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4oYL7y"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/05/26/site-updates-webmention-notifications-in-matrix-with-hubot/"><time class="dt-published" datetime="2017-05-26T16:07:58-0400">May 26, 2017 at 4:07PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/05/26/160758/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/868199036351852544" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

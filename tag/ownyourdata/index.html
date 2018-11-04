@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Ownyourdata&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/ownyourdata/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/ownyourdata/" title="Posts tagged 'Ownyourdata'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/ownyourdata/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Sat May 12</div>
+			<article class="post-content h-entry">
+  
+    <span class="p-summary repost-marker">🔖 Bookmarked <a class="u-bookmark-of" href="https://jacky.wtf/weblog/pulling-thangs-in-haus/">Pulling My Thangs In Haus — jackyalciné</a></span>
+
+  <blockquote class="p-summary"><p>&ldquo;Dokku is really nifty in its singular goal - a plugin based platform as a service thingy&rdquo;</p>
+</blockquote>
+
+
+      
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+  
+  
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/self-hosting/" class="label label-default">#<span class="p-category">self-hosting</span></a>
+
+      
+        <a href="/tag/dokku/" class="label label-default">#<span class="p-category">dokku</span></a>
+
+      
+        <a href="/tag/ownyourdata/" class="label label-default">#<span class="p-category">ownyourdata</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4uPFW5"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2018/05/12/pulling-my-thangs-in-haus--jackyalcin%C3%A9/"><time class="dt-published" datetime="2018-05-12T11:30:05-0400">May 12, 2018 at 11:30AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Fri May 4</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2018/05/04/leaving-netflix-and-taking-my-data-with-me/">Leaving Netflix (and taking my data with me)</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="https://www.netflix.com/">Netflix</a> has been a staple in my life for years, from the early days of mailing (and neglecting) mostly-unscratched DVDs through the first Netflix original series and films. With Netflix as my catalog, I felt free to rid myself of countless DVDs and series box sets. Through Netflix I caught up on "must-see" films and shows that I missed the first time around, discovered unexpected (and wonderfully strange) things I would never have seen otherwise. Countless conversations have hinged around something that I've seen / am binging / must add to my list.</p>
+<p>At times, this has been a problem. It's so easy to start a show on Netflix and simply let it run. At home we frequently spend a whole evening grinding through the show du jour. Sometimes whole days and weekends disappear. This be can true for more and more streaming services but, in my house, it is most true for Netflix. We want to better use our time, and avoid the temptation to put up our <a href="http://makeit.netflix.com/projects/socks">stocking'd feet</a>, settle in, and drop out.</p>
+<p>It's easy enough to cancel a subscription, and even easier to start up again later if we change our minds. However, Netflix has one, even bigger, hook into my life: my data. Literal years of viewing history, ratings, and the list of films and shows that I (probably) want to watch some day. I wanted to take that data with me, in case we <b>don't</b> come back and they delete it.</p>
+<p>Netflix had an API, but after they shut it down in 2014, it's so far dead that even the <a href="http://developer.netflix.com/blog/read/Retiring_the_Netflix_Public_API">blog post announcing the API shutdown</a> is now gone from the internet.</p>
+<p>Despite no longer having a formal API, <a href="https://medium.com/netflix-techblog/netflix-likes-react-509675426db">Netflix is really into the single-page application</a> style of development for their website. Typically this is a batch of HTML, CSS, and JavaScript that runs in your browser and uses internal APIs to fetch data from their service. Even better, they are fans of infinite scrolling, so you can open up a page like your "My List", and it loads more data as you scroll, until you've got it all loaded in your browser.</p>
+<p>Once you've got all that information in your browser, you can script it right out of there!</p>
+<p>After some brief Googling, I found a promising result about <a href="https://gist.github.com/jordan314/6bdc9af962fd8620a4fb">using the Developer Console in your browser to grab your My List data</a>. That gave me the inspiration I needed to write some JavaScript snippets to grab the three main lists of data that I care about:</p>
+<ul>
+  <li>
+    My List of films and shows to watch (<a href="https://www.netflix.com/browse/my-list">https://www.netflix.com/browse/my-list</a>)
+    <br />
+  </li>
+  <li>All of my Ratings for various films and shows (<a href="https://www.netflix.com/MoviesYouveSeen">https://www.netflix.com/MoviesYouveSeen</a>)</li>
+  <li>
+    My watch history (<a href="https://www.netflix.com/viewingactivity">https://www.netflix.com/viewingactivity</a>)
+    <br />
+  </li>
+</ul>
+<p>Each of these pages displays slightly different data, in HTML that can be extracted with very little javascript, and each loads more data as you scroll the page until it's all loaded. To extract it, I needed some code to walk the entries on the page, extract the info I want, store it in a list, turn the list into a JSON string, and the copy that JSON data to the clipboard. From there I can paste that JSON data into a data file to mess with later, if I want.</p>
+<h2>Extracting my Netflix Watch List</h2>
+<figure><img src="https://media.martymcgui.re/ea/73/e9/b7/0c1a1e80ebfc18a3e756f3182768d8e01e038c3442b1b70679a9ed0e.png" /><figcaption>A screenshot of my watch list</figcaption></figure>
+<p>The My List page has a handful of useful pieces of data that we can extract:</p>
+<ul>
+  <li>
+    Name of the show / film
+    <br />
+  </li>
+  <li>URL to that show on Netflix</li>
+  <li>A thumbnail of art for the show!</li>
+</ul>
+<p>After eyeballing the HTML, I came up with this snippet of code to pull out the data and copy it to the clipboard:</p>
+<pre>(function(list){
+  document.querySelectorAll('a.slider-refocus')
+    .forEach(item =&gt; {
+      list.push({
+        title: item.getAttribute('aria-label'),
+        url: item.getAttribute('href'),
+        art: item.querySelector('.video-artwork').style.backgroundImage.slice(5,-2)
+      })
+    });
+  copy(JSON.stringify(list, null, 2));
+}([]));</pre>
+<p>The resulting data in the clipboard is an array of JSON objects like:</p>
+<pre>[
+  {
+    "title": "The Magicians",
+    "url": "/watch/80092801?tctx=1%2C1%2C%2C%2C",
+    "art": "https://occ-0-2433-2430.1.nflxso.net/art/b1eff/9548aa8d5237b3977aba4bddba257e94ee7b1eff.webp"
+  },
+  ...
+]</pre>
+<p>I like this very much! I probably won't end up using the Netflix URLs or the art, since it belongs to Netflix and not me, but a list of show titles will make a nice TODO list, at least for the shows I want to watch that are <b>not</b> on Netflix.</p>
+<h2>Extracting my Netflix Ratings</h2>
+<figure><img src="https://media.martymcgui.re/12/7a/d0/30/985f2ee105ee7ae803b56ae75cbb9ffe2f46035cb0e9b61c6a104ae0.png" /><figcaption>A screenshot of my ratings list</figcaption></figure>
+<p></p>
+<p>More important to me than my to-watch list was my literal years of rating data. This page is very different from the image-heavy watch list page, and is a little harder to find. It's under the account settings section on the website, and is a largely text-based page consisting of:</p>
+<ul>
+  <li>date of rating (as "day/month/year")</li>
+  <li>title</li>
+  <li>URL (on Netflix)</li>
+  <li>rating (as a number of star elements. Lit up stars indicate the rating that I gave, and these can be counted to get a numerical value of the number of stars.)</li>
+</ul>
+<p>The code I used to extract this info looks like this:</p>
+<pre>(function(list){
+  document.querySelectorAll('li.retableRow')
+    .forEach(function(item){
+      list.push({
+        date: item.querySelector('.date').innerText,
+        title: item.querySelector('.title a').innerText,
+        url: item.querySelector('.title a').getAttribute('href'),
+        rating: item.querySelectorAll('.rating .star.personal').length
+      });
+    });
+  copy(JSON.stringify(list, null, 2));
+}([]));</pre>
+<p>The resulting data looks like:</p>
+<pre>[
+  {
+    "date": "9/27/14",
+    "title": "Print the Legend",
+    "url": "/title/80005444",
+    "rating": 5
+  },
+  ...
+]</pre>
+<p>
+  While the URL probably isn't that useful, I find it super interesting to have the date that I actually rated each show!</p>
+<p>One thing to note, although I wasn't affect by it, Netflix has replaced their 0-to-5 star rating system with a thumbs up / down system. You'd have to tweak the script a bit to extract those values.</p>
+<h2>Extracting my Netflix Watch History</h2>
+<figure><img src="https://media.martymcgui.re/1d/c3/ce/fa/19ae11bb9eacfebecfb352df485329fbd06c6eb361a8fa1cb6947c29.png"><figcaption>A screenshot of my watch history page</figcaption></figure>
+<p></p>
+<p>One type of data I was surprised and delighted to find available was my watch history. This was another text-heavy page, with:</p>
+<ul>
+  <li>date watched</li>
+  <li>name of show (including episode for many series)</li>
+  <li>URL (on Netflix)</li>
+</ul>
+<p>The code I used to extract it looked like this:</p>
+<pre>(function(list){
+  document.querySelectorAll('li.retableRow')
+    .forEach(function(item){
+      list.push({
+        date: item.querySelector('.date').innerText,
+        title: item.querySelector('.title a').innerText,
+        url: item.querySelector('.title a').getAttribute('href')
+      });
+    });
+  copy(JSON.stringify(list, null, 2));
+}([]));</pre>
+<p>The resulting data looks like:</p>
+<pre>[
+  {
+    "date": "3/20/18",
+    "title": "Marvel's Jessica Jones: Season 2: \"AKA The Octopus\"",
+    "url": "/title/80130318"
+  },
+  ...
+]</pre>
+<h2>Moving forward</h2>
+<p>One thing I didn't grab was my Netflix Reviews, which are visible to other Netflix users. I never used this feature, so I didn't have anything to extract. If you are leaving and want that data, I hope that it's similarly easy to extract.</p>
+<p>With all this data in hand, I felt much safer going through the steps to deactivate my account. Netflix makes this easy enough, though they also make it extremely tempting to reactivate. Not only do they let you keep watching until the end of the current paid period – they tell you clearly that if you reactivate in 10 months, your data <b>won't</b> be deleted.</p>
+<p>That particular temptation won't be a problem for me.</p>
+<p></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/silos/" class="label label-default">#<span class="p-category">silos</span></a>
+
+      
+        <a href="/tag/ownyourdata/" class="label label-default">#<span class="p-category">ownyourdata</span></a>
+
+      
+        <a href="/tag/netflix/" class="label label-default">#<span class="p-category">Netflix</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4uFKDc"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2018/05/04/leaving-netflix-and-taking-my-data-with-me/"><time class="dt-published" datetime="2018-05-04T15:13:37-0400">May 4, 2018 at 3:13PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/992486736994471936" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://www.facebook.com/marty.mcguire.54/posts/10211973638798283" title="Facebook
+"><i class="fa fa-facebook"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Sun Jul 9</div>
+			<article class="post-content h-entry">
+  
+    <span class="p-summary repost-marker">🔖 Bookmarked <a class="u-bookmark-of" href="https://petermolnar.net/personal-website-as-archiving-vault/">Bookmarks, favs, likes - backfilling years of gaps</a></span>
+
+  <blockquote class="p-summary"><p>&ldquo;Fast forward a few years: the canonical source is gone. Images, videos, texts, thoughts, life fragments deleted. Domains vanished, re-purposed, sold. There are no redirects, just a lot of 404 Not Found.&rdquo;</p>
+</blockquote>
+
+
+      
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+  
+  
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/ownyourdata/" class="label label-default">#<span class="p-category">ownyourdata</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4pGD65"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/07/09/bookmarks-favs-likes---backfilling-years-of-gaps/"><time class="dt-published" datetime="2017-07-09T09:06:05-0400">July 9, 2017 at 9:06AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Tue Apr 25</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/04/25/site-updates-importing-old-posts-disqus-comments/">Site Updates: Importing Old Posts, Disqus Comments</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><em>
+  <a href="https://jonathanprozzi.net/">Jonathan Prozzi</a> and I have challenged one another to make a post about improving our websites once a week. Here&rsquo;s mine!
+  <br />
+</em>
+<p>Back in 2008 I started a new blog on Wordpress. It seemed like a good idea! Maybe I would post some useful things and someone would offer me a job! I wanted to allow discussion without the dangers of letting strangers submit data directly to my server, so I set up the JavaScript-based <a href="https://disqus.com/">Disqus</a> comments service. I made a few posts per year and it eventually tapered off and I largely forgot about it.</p>
+<p>In February 2011 I participated in the Thing-a-Day project on <a href="https://indieweb.org/Posterous">Posterous</a>. It was the first time in a long time that I had published consistently, so when it was announced that Posterous was going away, I worked hard to grab my content and stored it <i>somewhere</i>.</p>
+<p>Eventually it was November 2013, Wordpress was &ldquo;out&rdquo;, static site generators were &ldquo;in&rdquo;, and I wanted to give <a href="https://octopress.org/">Octopress</a> a try. I used Octopress&rsquo; tools to import all my Wordpress content into Octopress, forgot about adding back the Disqus comments, and posted it all back online. In February 2014, I decided to resurrect my Posterous content, so I created posts for it and got everything looking nice enough.</p>
+<p>
+  In 2015 I learned about the <a href="https://indieweb.org/">IndieWeb</a>, and decided it was time for a new approach to my identity and content online. I set up a new site at <a href="https://martymcgui.re/">https://martymcgui.re/</a> based on <a href="https://jekyllrb.com/">Jekyll</a> (hey! static sites are still &ldquo;in&rdquo;!) and got to work adding IndieWeb features.
+  <br />
+</p>
+<p>Well, today I decided to get some of that old content off my other domain and into my official one. Thankfully, with Octopress being based on Jekyll, it was mostly just a matter of copying over the files in the _posts/ folder. A few tweaks to a few posts to make up for newer parsing in Jekyll, my somewhat odd URL structure, etc., and I was good to go!</p>
+<h2>&ldquo;Owning&rdquo; My Disqus Comments</h2>
+<p>Though I had long ago considered them lost, I noticed that some of my old posts had a section that the Octopress importer had added to the metadata of my posts from Wordpress:</p>
+<pre>
+meta:
+  _edit_last: &lsquo;1&rsquo;
+  _wp_old_slug: makerbot-cam-1-wiring
+  dsq_thread_id: &lsquo;604226727&rsquo;
+</pre>
+<p>All of my Wordpress posts had this dsq_thread_id value, and that got me thinking. Could I export the old Disqus comment data and find a way to display it on my site? (Spoiler alert: yes I could).</p>
+<p>Disqus actually has a export feature: <a href="https://disqus.com/admin/discussions/export/">https://disqus.com/admin/discussions/export/</a></p>
+<p>You can request a compressed XML file containing all of your comment data, organized hierarchically into &ldquo;category&rdquo; (which I think can be configured per-site), &ldquo;thread&rdquo; (individual pages), and &ldquo;post&rdquo; (the actual comments), and includes info such as author name and email, the date it was created, the comment message with some whitelisted HTML for formatting and links, whether the comment was identified as spam or has been deleted, etc.</p>
+<p>The XML format was making me queasy, and <a href="https://jekyllrb.com/docs/datafiles/">Jekyll data files</a> often come in YAML format for editability, so I did the laziest XML to YAML transform possible, thanks to some Ruby and <a href="https://stackoverflow.com/questions/11995299/how-to-convert-xml-file-to-yaml">this StackOverflow post</a>.</p>
+<pre>
+require &lsquo;active_support/core_ext/hash/conversions&rsquo;
+require &lsquo;yaml&rsquo;
+file = File.open(&ldquo;disqus_export.xml&rdquo;, &ldquo;r&rdquo;)
+hash = Hash.from_xml(file.read)
+yaml = hash.to_yaml
+File.open(&ldquo;disqus.yml&rdquo;, &ldquo;w&rdquo;) { |file| file.write(yaml) }
+</pre>
+<p>This resulted in a YAML formatted file that looked like:</p></p>
+
+<pre><code>---
+disqus:
+  xmlns: http://disqus.com
+  xmlns:dsq: http://disqus.com/disqus-internals
+  xmlns:xsi: http://www.w3.org/2001/XMLSchema-instance
+  xsi:schemaLocation: http://disqus.com/api/schemas/1.0/disqus.xsd http://disqus.com/api/schemas/1.0/disqus-internals.xsd
+  category:
+    dsq:id: ...
+    forum: ...
+    ...
+  ...
+</code></pre>
+
+<p><p>I dropped this into my Jekyll site as _data/disqus.yml, and &hellip; that&rsquo;s it! I could now access the content from my templates in site.data.disqus.</p>
+<p>I wrote a short template snippet that, if the post has a &ldquo;meta&rdquo; property with a &ldquo;dsq_thread_id&rdquo;, to look in site.data.disqus.disqus.post and collect all Disqus comments where &ldquo;thread.dsq:id&rdquo; was the same as the &ldquo;dsq_thread_id&rdquo; for the post. If there are comments there, they&rsquo;re displayed in a &ldquo;Comments&rdquo; section on the page.</p>
+<p>So now some of my oldest posts have some of their discussion back after more than 7 years!</p>
+<p>Here&rsquo;s an example post: <a href="https://martymcgui.re/2010/02/16/000000/">https://martymcgui.re/2010/02/16/000000/</a></p>
+<figure>
+  <img src="https://media.martymcgui.re/a0/45/d7/3f/bfa2eb9293c98eeef6cb23d3d4669214724d101e66f7f69290559fab.png" alt="" />
+  <figcaption>Example of old Disqus comments on display.</figcaption>
+</figure>
+<p>I was (pleasantly) surprised to be able to recover and consolidate this older content. Thanks to past me for keeping good backups, and to Disqus for still being around and offering a comprehensive export.</p>
+<p>As a bonus, since all of the comments include the commenter&rsquo;s email address, I could give them avatars with <a href="https://gravatar.com/">Gravatar</a>, and (though they have no URL to link to) they would almost look right at home alongside the more modern <a href="https://martymcgui.re/2017/03/22/003710/">mentions I display on my site</a>.</p>
+<p><b>Update: Yep, added Gravatars.</b></p>
+<figure>
+  <img src="https://media.martymcgui.re/a8/a2/03/59/1e98187383bcb8e0581fa8f668a601ff082301da2cd4ea4169ce21c9.png" alt="" />
+  <figcaption>Old Disqus comments now with avatars by Gravatar</figcaption>
+</figure></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/posterous/" class="label label-default">#<span class="p-category">Posterous</span></a>
+
+      
+        <a href="/tag/disqus/" class="label label-default">#<span class="p-category">Disqus</span></a>
+
+      
+        <a href="/tag/silos/" class="label label-default">#<span class="p-category">silos</span></a>
+
+      
+        <a href="/tag/ownyourdata/" class="label label-default">#<span class="p-category">OwnYourData</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4o21kk"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/04/25/site-updates-importing-old-posts-disqus-comments/"><time class="dt-published" datetime="2017-04-25T21:45:45-0400">April 25, 2017 at 9:45PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/857050670955765760" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/04/25/214545/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Mon Nov 21</div>
+			<article class="post-content h-entry">
+  
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>Really excited about end-to-end encryption being available for Matrix! Now you can host your own encrypted communications network!</p>
+
+<p><a href="https://matrix.org/blog/2016/11/21/matrixs-olm-end-to-end-encryption-security-assessment-released-and-implemented-cross-platform-on-riot-at-last/">https://matrix.org/blog/2016/11/21/matrixs-olm-end-to-end-encryption-security-assessment-released-and-implemented-cross-platform-on-riot-at-last/</a></p>
+</div>
+    
+  
+  
+
+
+  
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/matrix/" class="label label-default">#<span class="p-category">matrix</span></a>
+
+      
+        <a href="/tag/ownyourdata/" class="label label-default">#<span class="p-category">ownyourdata</span></a>
+
+      
+        <a href="/tag/encryption/" class="label label-default">#<span class="p-category">encryption</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4kSFfi"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2016/11/21/104043/"><time class="dt-published" datetime="2016-11-21T10:40:43-0500">November 21, 2016 at 10:40AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Emoji&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/emoji/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/emoji/" title="Posts tagged 'Emoji'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/emoji/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Wed Apr 5</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/04/05/site-updates-showing-emoji-reactions/">Site updates: showing emoji reactions</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>Inspired by <a href="http://eddiehinkle.com/article/2017/03/viewing-webmentions.html">Eddie Hinkle's recent post about viewing webmentions</a>, I decided to improve the way I display webmentions on my site.</p>
+<p>TL;DR, my site now pulls attempts to recognize single-emoji comments and display them as a "Reaction".</p>
+<p>Slightly longer version - my site uses <a href="https://webmention.io/">webmention.io</a> for handling webmentions, and I use <a>brid.gy</a> to backfeed interactions from Facebook to my own site. The way brid.gy handles Facebook reactions other than the standard "like" is a little quirky - they show up in <a href="https://webmention.io/">webmention.io</a> as a "reply" with a single emoji as the "content".</p>
+<p>Using the Ruby <a href="https://github.com/jollygoodcode/twemoji">twemoji</a> library, my site checks the "content" of a reply against the emoji index and, if the content is a single emoji, pulls it out of the usual "reply" display and puts it in a facepile. The emoji itself is shown as an icon in the corner of the little face image.</p>
+<figure>
+  <img src="https://media.martymcgui.re/37/55/33/c1/8a35ade379e9a26f1c59b0ae6407d023a9666dd09d5466c845b8dc69.png" alt="" />
+  <figcaption>Example of some ❤️ reactions from Facebook</figcaption>
+</figure>
+<p>While I was at it, I cleaned up a lot of my webmention-handling template to make things much clearer. This will make things easier for folks that want to re-use this code when I (eventually) release this as a Jekyll plugin.</p>
+<p>Tonight is a <a href="https://indieweb.org/events/2017-04-05-homebrew-website-club">Homebrew Website Club night</a>, but Baltimore is not having another official meetup until <a href="https://indieweb.org/events/2017-04-19-homebrew-website-club#US_East">April 19th</a>. Still, I wanted to get something done to continue my deal with <a href="https://jonathanprozzi.net/">Jonathan</a> to post something <a href="https://indieweb.org/">IndieWeb</a> related at least once per week.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/webmention/" class="label label-default">#<span class="p-category">Webmention</span></a>
+
+      
+        <a href="/tag/emoji/" class="label label-default">#<span class="p-category">emoji</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4ngLR9"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/04/05/site-updates-showing-emoji-reactions/"><time class="dt-published" datetime="2017-04-05T16:25:09-0400">April 5, 2017 at 4:25PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:https://heady-land.glitch.me/2018/09/18/homebrew-website-club-baltimore/
+DTSTART:20180918T183000-0400
+DTEND:20180918T193000-0400
+SUMMARY:Homebrew Website Club Baltimore
+DESCRIPTION:Please note: We are meeting on Tuesday this week at 6:30pm. Be sure to double-check your calendars!\nJoin us for an evening of quiet writing, IndieWeb demos, and discussions!\n Create or update your personal web site! Finish that blog post you’ve been writing, edit the wiki! Demos of recent IndieWeb breakthroughs, share what you’ve gotten working! Join a community with like-minded interests. Bring friends that want a personal site!  Any questions? Join the #indieweb chat!\nOptional quiet writing hour starts at 5:30pm. Meetup begins at 6:30pm.\nMore information: https://indieweb.org/events/2018-09-18-homebrew-website-club\n
+LOCATION:https://martymcgui.re/venues/digital-harbor-foundation-tech-center/
+END:VEVENT
+END:VCALENDAR

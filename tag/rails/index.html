@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Rails&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/rails/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/rails/" title="Posts tagged 'Rails'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/rails/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Thu Jun 12</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2008/06/12/setting-up-rails-and-mysql-on-os-x-leopard/">Setting up Rails and MySQL on OS X Leopard</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>I recently purchased a MacBook to use as my primary development system.  One of my first plans was to get up and running with Rails on this new machine.  Given that Leopard (OS X 10.5) comes with Ruby version 1.8.6 and RubyGems 1.0.1, I thought I would be in good shape, but there were a couple of snags.  Thanks to the power of Google and other people with similar problems, I was able to get it sorted out.  Here&rsquo;s what I did:
+<ol>
+    <li>Updated rubygems to 1.1.1 with <code>sudo gem update &ndash;system</code></li>
+    <li>Installed the 32-bit (x86, NOT x86_64) version of MySQL (community edition, of course) via the installer on the <a href="http://dev.mysql.com/downloads/mysql/5.0.html#downloads">MySQL download page</a>.</li>
+    <li>Installed the native MySQL driver for Ruby (this was tricky, see below)</li>
+    <li>Finished by installing Rails and its friends via <code>gem install rails</code></li>
+</ol>
+Getting the speedier native MySQL driver for Ruby installed was tricky for two reasons.  It seems that by default the installer attempts to compile for 4 architectures, so you have to set an environment variable and pass along a parameter to point to the installed copy of MySQL when calling <code>gem</code>:
+<pre lang="bash">sudo env ARCHFLAGS=”-arch i386” <br />
+   gem install mysql &ndash; <br />
+   &ndash;with-mysql-config=/usr/local/mysql/bin/mysql_config</pre>
+If you&rsquo;ve never seen it before, the &lsquo;&ndash;&rsquo; after &lsquo;gem install mysql&rsquo; means that gem should pass along the next arguments to the programs it uses to build the driver.</p>
+
+<p>The reason for installing the 32-bit version of MySQL (on your fancy 64-bit OS and machine!) is that the version of Ruby that ships with Leopard is apparently 32-bit only.  Yikes.</p>
+
+<p>I&rsquo;ve noticed several little annoying details like this in getting other things to work &ldquo;like I like&rdquo; on OS X.  I&rsquo;ll probably end up posting more about them in the next couple of posts.</p>
+
+<p>I know that &ldquo;how to&rdquo; posts of the form &ldquo;I wanted to do X, but Y happened.  Finally I fixed it by Z,&rdquo; are pretty boring.  Still, I hope they are useful for preserving the knowledge of how to work around these problems, both for myself and for others.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/driver/" class="label label-default">#<span class="p-category">driver</span></a>
+
+      
+        <a href="/tag/leopard/" class="label label-default">#<span class="p-category">leopard</span></a>
+
+      
+        <a href="/tag/mysql/" class="label label-default">#<span class="p-category">mysql</span></a>
+
+      
+        <a href="/tag/os-x/" class="label label-default">#<span class="p-category">os x</span></a>
+
+      
+        <a href="/tag/rails/" class="label label-default">#<span class="p-category">rails</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/3u2402"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2008/06/12/setting-up-rails-and-mysql-on-os-x-leopard/"><time class="dt-published" datetime="2008-06-12T00:00:02-0400">June 12, 2008 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

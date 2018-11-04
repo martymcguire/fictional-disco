@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:https://heady-land.glitch.me/2017/03/22/homebrew-website-club-baltimore-meetup-march-22nd-2017/
+DTSTART:20170322T193000-0400
+DTEND:20170322T213000-0400
+SUMMARY:Homebrew Website Club Baltimore Meetup March 22nd, 2017
+DESCRIPTION: Create or update your personal web site!  Finish that blog post you’ve been working on Demos of recent IndieWeb breakthroughs Share what you’ve gotten working Ask the experts questions  Join a community with like-minded interests. Bring friends that want a personal site!\nAny questions? Ask in chat: http://chat.indieweb.org/today#bottom\nOptional quiet writing hour starts at 6:30pm. Meetup begins at 7:30pm.\nMore information: http://indieweb.org/events/2017-03-22-homebrew-website-club\nFacebook event: https://www.facebook.com/events/1450557171642865/\n
+LOCATION:https://martymcgui.re/venues/digital-harbor-foundation-tech-center/
+END:VEVENT
+END:VCALENDAR

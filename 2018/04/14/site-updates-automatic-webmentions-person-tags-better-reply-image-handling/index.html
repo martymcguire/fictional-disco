@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="I had a bit of time this weekend to tinker with my site.
+The biggest change is one that happens totally behind the scenes - I&#39;ve added a step to the service that compiles and deploys my site to automatically send Webmentions from my posts to posts that I am responding to or mentioning. There are many folks with projects around this, but they tend to be a little more aggressive than I like in finding URLs to send mentions to.">
+  
+  <title>Site Updates: automatic webmentions, person tags, better reply image handling</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2018/04/14/site-updates-automatic-webmentions-person-tags-better-reply-image-handling/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2018/04/14/site-updates-automatic-webmentions-person-tags-better-reply-image-handling/">Site Updates: automatic webmentions, person tags, better reply image handling</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>I had a bit of time this weekend to tinker with my site.</p>
+<p>The biggest change is one that happens totally behind the scenes - I've added a step to the service that compiles and deploys my site to automatically send <a href="https://indieweb.org/Webmention">Webmentions</a> from my posts to posts that I am responding to or mentioning. There are many folks with projects around this, but they tend to be a little more aggressive than I like in finding URLs to send mentions to. For example, they often want to send mentions to my homepage and avatar image for my own posts!</p>
+<p>So, I have added a Webmention sender to my site that is triggered by new and updated pages and sends mentions to any URLs that I am specifically <a href="https://indieweb.org/response">responding to</a> or <a href="https://indieweb.org/person-tag">person tagging</a>, along with any URLs mentioned in the actual content of the post.</p>
+<p>Along with this, I now support person tags on regular entries <a href="https://martymcgui.re/2018/04/13/080659/">like this one</a>. I can add a tag like http://tantek.com to a post and it will tag them with proper markup and, if possible, show the name and photo from their homepage h-card.</p>
+<p>Finally, I did a little cleanup in how I display reply contexts for other people's posts that have multiple images in them, like <a href="https://martymcgui.re/2018/04/08/082932/">this one from Aaron Parecki</a>.</p>
+<p>It's nice to be able to sit down and knock off the little nagging TODOs here on the site. That said, I'm hoping to be able to make some big changes, soon! We'll see what my schedule allows.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/webmention/" class="label label-default">#<span class="p-category">webmention</span></a>
+
+      
+        <a href="/tag/person-tag/" class="label label-default">#<span class="p-category">person-tag</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4tvPj_"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2018/04/14/site-updates-automatic-webmentions-person-tags-better-reply-image-handling/"><time class="dt-published" datetime="2018-04-14T19:44:34-0400">April 14, 2018 at 7:44PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2018/04/14/site-updates-automatic-webmentions-person-tags-better-reply-image-handling/" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    <h4>Likes</h4>
+  <div class="row" style="margin-bottom: 1em"><div class="col-xs-12">
+  <div class="facepile">
+    <div class="face p-like h-cite">
+          <a class="u-url" href="https://aaronparecki.com/2018/04/14/18/"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/aaronparecki.com/2b8e1668dcd9cfa6a170b3724df740695f73a15c2a825962fd0a0967ec11ecdc.jpg" alt="Aaron Parecki" title="Aaron Parecki"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://grant.codes/2018/04/15/5ad2d144f969d56334d6bf95"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/grant.codes/ca9d913e6e49b5ef5a5492313c9a7908cee0a33d0e188ea842a59c1968da2dd1.jpg" alt="Grant Richmond" title="Grant Richmond"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://fed.brid.gy/"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/peterstuifzand.nl/7221b29ef6b6dbe06f8f965a2b50a4761e47f4e1ef0c8b020b850e185ca26568.jpg" alt="Peter Stuifzand" title="Peter Stuifzand"/></span></a></div>
+      </div>
+</div></div>
+
+
+  
+    <h4>Mentions</h4> 
+  <div class="mentions">
+    <div class="u-comment h-cite" id="comment-ea0cf589007d9682413f2796d180cc4d9d89564c">
+  <a class="u-author h-card" href="https://eddiehinkle.com/"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/eddiehinkle.com/cf9f85e26d4be531bc908d37f69bff1c50b50b87fd066b254f1332c3553df1a8.jpg" alt="Eddie Hinkle"/>
+  <span class="p-name">Eddie Hinkle</span></a>
+  at
+  <a class="u-url" href="https://eddiehinkle.com/2018/04/15/2/reply/">https://eddiehinkle.com/2018/04/15/2/reply/
+    </a>
+  said:
+  <p class="p-content p-name">Awesome! Those are some great updates! Especially the automatic webmentions (something I want to do soon) and the h-card embedded of person tags.</p>
+    </div>
+
+    </div>
+
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

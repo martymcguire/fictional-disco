@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:https://heady-land.glitch.me/2017/02/15/bigs-free-open-mic-featuring-hostel/
+DTSTART:20170215T193000-0500
+DTEND:20170215T210000-0500
+SUMMARY:BIG’s Free Open Mic featuring Hostel!
+DESCRIPTION:Come out this Wednesday for the return of the Baltimore Improv Group’s Open Mic!\nThe open mic is free to attend and free to perform at and is open to improv, standup, and sketch performances.\nJust want to get some reps in? Put your name in for a chance to play in with BIG mainstage troupe Hostel!\n
+LOCATION:https://martymcgui.re/venues/single-carrot-theatre/
+END:VEVENT
+END:VCALENDAR

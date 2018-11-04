@@ -1,0 +1,10 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:https://heady-land.glitch.me/2016/10/19/homebrew-website-club-baltimore-meetup-10/19/2016/
+DTSTART:20161019T183000-0400
+SUMMARY:Homebrew Website Club Baltimore Meetup 10/19/2016
+DESCRIPTION: Create or update your personal web site!  Finish that blog post you’ve been working on Demos of recent IndieWeb breakthroughs Share what you’ve gotten working Ask the experts questions  Join a community with like-minded interests. Bring friends that want a personal site!\nAny questions? Ask in chat: http://chat.indieweb.org/today#bottom\nOptional quiet writing hour starts at 6:30pm. Meetup begins at 7:30pm.\nMore information: https://indieweb.org/events/2016-10-19-homebrew-website-club\nFacebook event: https://www.facebook.com/events/369206486803073/\n
+LOCATION:https://martymcgui.re/venues/digital-harbor-foundation-tech-center/
+END:VEVENT
+END:VCALENDAR

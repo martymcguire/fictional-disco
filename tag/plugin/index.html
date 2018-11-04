@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Plugin&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/plugin/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/plugin/" title="Posts tagged 'Plugin'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/plugin/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Thu Aug 5</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/08/05/thingiverse-embed-plugin-for-wordpress/">Thingiverse Embed Plugin for Wordpress</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>For a while now, I&rsquo;ve wanted to embed an RSS feed of the latest stuff I&rsquo;ve printed from <a href="http://www.thingiverse.com/">Thingiverse</a> on <a href="/makerbot_131/">MakerBot 131&rsquo;s page</a>. To kick things off, I <a href="http://groups.google.com/group/thingiverse/browse_thread/thread/c4336a60935b31e0/9018cd40545d0645?lnk=gst">asked Zach to implement an RSS feed</a> of the <a href="http://www.thingiverse.com/Schmarty/made">Thing&rsquo;s I&rsquo;ve Made page</a> on Thingiverse.</p>
+
+<p>It&rsquo;s been awhile, but I&rsquo;ve finally gotten around to creating a Wordpress plugin that I&rsquo;m calling <a href="http://wordpress.org/extend/plugins/thingiverse-embed/">Thingiverse Embed</a>.</p>
+
+<h3>Usage</h3>
+The plugin has two features.  First, you can embed a little "wallet-sized" view of a Thing into an individual blog post or page, with the Thing's title, creator, image, description, and links back to Thingiverse with a simple shortcode:
+
+<code>[[thingiverse thing_id="1046"]]</code>
+
+Becomes:
+
+[thingiverse thing_id="1046"]
+
+The plugin also includes a Thingiverse Stream widget, for embedding streams like "Things I've Made" as a simple sidebar widget.  It just needs to be configured with the title, the type of stream you want to use, the Thingiverse username (for certain streams), and the maximum number of Things to display.
+
+<a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/08/thingiverse_sidebar_config.png"><img class="alignnone size-full wp-image-285" style="border: 1px solid black;" title="Thingiverse Stream config and example" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/08/thingiverse_sidebar_config.png" alt="" width="520" height="498" /></a>
+
+You can see this example on the page for <a href="/makerbot_131/">MakerBot 131</a>.
+
+<h3>Installation</h3>
+
+<p>You can download the latest version of the <a href="http://wordpress.org/extend/plugins/thingiverse-embed/">Thingiverse Embed plugin from the Wordpress Plugins directory</a>:</p>
+
+<p>Or you can <a href="http://github.com/downloads/martymcguire/wp-thingiverse-embed/thingiverse-embed-0.1.zip">download thingiverse-embed-0.1 here</a>.</p>
+
+<p>To install it, unzip the archive, copy the <code>thingiverse-embed</code> directory into your Wordpress install&rsquo;s plugins directory (usually <code>/wp-content/plugins</code>), and activate the plugin.</p>
+
+<p>You&rsquo;ll probably want to check out the <code>thingiverse-embed/readme.txt</code> for more information about how to use the plugin.</p>
+
+<p>In addition to the <a href="http://plugins.svn.wordpress.org/thingiverse-embed/">Wordpress Plugins SVN repository</a>, you can also find the code for this plugin in the <a href="http://github.com/martymcguire/wp-thingiverse-embed">wp-thingiverse-embed</a> repository on GitHub, for your forking pleasure.</p>
+
+<p>It&rsquo;s been fun a fun weekend developing this plugin, as it&rsquo;s my first Wordpress plugin, and the first &ldquo;serious&rdquo; PHP I&rsquo;ve written.  Of course, it is filled with nasty HTML parsing and XPath tricks, and could use lots of cleanup, so please give me feedback if you use it!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/embed/" class="label label-default">#<span class="p-category">embed</span></a>
+
+      
+        <a href="/tag/plugin/" class="label label-default">#<span class="p-category">plugin</span></a>
+
+      
+        <a href="/tag/shortcode/" class="label label-default">#<span class="p-category">shortcode</span></a>
+
+      
+        <a href="/tag/thingiverse/" class="label label-default">#<span class="p-category">thingiverse</span></a>
+
+      
+        <a href="/tag/widget/" class="label label-default">#<span class="p-category">widget</span></a>
+
+      
+        <a href="/tag/wordpress/" class="label label-default">#<span class="p-category">wordpress</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/476400"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/08/05/thingiverse-embed-plugin-for-wordpress/"><time class="dt-published" datetime="2010-08-05T00:00:00-0400">August 5, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

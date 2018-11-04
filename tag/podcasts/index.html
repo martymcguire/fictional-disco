@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Podcasts&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/podcasts/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/podcasts/" title="Posts tagged 'Podcasts'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/podcasts/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Tue Oct 17</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/10/17/native-html5-captions-and-titles-for-audio-content-with-webvtt/">Native HTML5 captions and titles for audio content with WebVTT</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>
+	This is a write-up of my Sunday hack day project from <a href="https://indieweb.org/2017/NYC">IndieWebCamp NYC 2017</a>!
+  <br/>
+	You can see <a href="https://www.youtube.com/watch?v=6qan5Ipr4e0&feature=youtu.be&t=4m59s">my portion of the IWC NYC demos here</a>.
+</p>
+<h2>Prelude: Videos for audio content</h2>
+<p>Feel free to <a href="#tldr">skip this intro</a> if you are just here for the HTML how-to!</p>
+<p>I've been doing a short ~10 minute podcast about the <a href="https://indieweb.org/">IndieWeb</a> community since February, an audio edition of the <a href="https://indieweb.org/this-week">This Week in the IndieWeb</a> weekly newsletter cleverly titled <a href="https://martymcgui.re/podcasts/indieweb/">This Week in the IndieWeb Audio Edition</a>.</p>
+<p>After the <a href="https://2017.indieweb.org/">2017 IndieWeb Summit</a>, each episode of the podcast also featured a brief ~1 minute interview with one of the participants there. As a way of highlighting these interviews outside the podcast itself, I became interested in the idea of "audiograms" – videos that are primarily audio content for sharing on platforms like Twitter and Facebook. I wrote up <a href="https://martymcgui.re/2017/08/10/180614/">my first steps into audiograms using WNYC's audiogram generator</a>.</p>
+<p>While these audiograms were able to show visually interesting dynamic elements like waveforms or graphic equalizer data, I thought it would be more interesting to include subtitles from the interviews in the videos. I learned that <a href="https://www.facebook.com/help/261764017354370?helpref=faq_content">Facebook supports captions</a> in a common format called SRT. However, Twitter's video offerings have no support for captions.</p>
+<p>Thankfully, I discovered the <a href="https://github.com/BBC-News-Labs/audiogram">BBC's open source fork of audiogram</a>, which supports subtitles and captioning, including the ability to "bake in" subtitles by encoding the words directly into the video frames. It also relies heavily on BBC web infrastructure, and required quite a bit of hacking up to work with what I had available.</p>
+<p><figure><img src="https://media.martymcgui.re/81/3d/cd/10/3d2b13a8173da7e2877a065e34c839de85c8ac0679f3336fab1542f5.png" /><figcaption>The BBC Audiogram captioning interface.</figcaption></figure></p>
+<p></p>
+<p>In the end, my process looked like this:</p>
+<ul>
+  <li>
+    Export the audio of the ~1 minute interview to an mp3.
+  </li>
+  <li>Type up a text transcript of the audio. Using <a href="https://www.videolan.org/vlc/">VLC</a>'s playback controls and turning the speed down to 0.33 made this pretty easy.</li>
+  <li>Use a "forced alignment" tool called <a href="https://github.com/lowerquality/gentle/">gentle</a> to create a big JSON data file containing all the utterances and their timestamps.</li>
+  <li>Use the <a href="https://stedolan.github.io/jq/">jq</a> command line tool to munge that JSON data into a format that my hacked-up version of the BBC audiogram generator can understand.</li>
+  <li>Use the BBC audiogram generator to edit the timings and word groupings for the subtitles and generate the final video.</li>
+  <li>Bonus: the BBC audiogram generator can output subtitles in SRT format - but if I've already "baked them in" this feels redundant.</li>
+</ul>
+<p>You can see an <a href="https://media.martymcgui.re/10/ef/8f/99/b181f11e199c00112d921955fd2bf5d78254ea0a9fef2a118aa37c30.mp4">early example here</a>. I liked these posts and found them easy to post to my site as well as Facebook, Twitter, Mastodon, etc. Over time I evolved them a bit to include more info about the interviewee. <a href="https://martymcgui.re/2017/09/12/115322/">Here's a later example</a>.</p>
+<p>One thing that has stuck with me is the idea that Facebook could be displaying these subtitles, if only I was exporting them in the SRT format. Additionally, I had done some research into <a href="https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/Adding_captions_and_subtitles_to_HTML5_video">subtitles for HTML5 video with WebVTT and the &lt;track&gt; element</a> and wondered if it could work for audio content with some "tricks".</p>
+<a name="tldr"></a>
+<h2>TL;DR - Browsers will show captions for audio if you pretend it is a video</h2>
+<p>Let's skip to the end and see what we're talking about. I wanted to make a version of my podcast where the entire ~10 minutes could be listened to along with timed subtitles, without creating a 10-minute long video. And I did!</p>
+<p>Here is a sample from my <a href="https://martymcgui.re/2017/09/29/221157/">example post of an audio track inside an HTML5 &lt;video&gt; element with a subtitle track</a>. You will probably have to click the "<strong>CC</strong>" button to enable the captioning</p>
+<p><video controls="" poster="https://media.martymcgui.re/6b/4c/75/34/e23d5c25dd43a47b16ec2668c7163f35ff6349bf26d734f4b448da75.png" crossorigin="anonymous" style="width: 100%" src="https://media.martymcgui.re/b0/c8/a5/07/df8ed0503adbdb716f750cf4a8215c7e2ef3b3dd5b2e5459958ed9ed.mp3">
+    <source class="u-audio" type="audio/mpeg" src="https://media.martymcgui.re/b0/c8/a5/07/df8ed0503adbdb716f750cf4a8215c7e2ef3b3dd5b2e5459958ed9ed.mp3">
+    <track label="English" kind="subtitles" srclang="en" src="https://media.martymcgui.re/bd/96/6f/4a/3421551b530208d7a037769342def51744a249ca3a4d70cffda5d479.vtt">
+</video>
+</p>
+<p>How does it work? Well, browsers aren't actually too picky about the data types of the &lt;source&gt; elements inside. You can absolutely give them an audio source.</p>
+<p>Add in a poster attribute to the &lt;video&gt; element, and you can give the appearance of a "real" video.</p>
+<p>And finally, add in the &lt;source&gt; element with your subtitle track and you are good to go.</p>
+<p>The relevant source for my example post looks something like this:</p>
+<pre>
+&lt;video controls poster="poster.png" crossorigin="anonymous" style="width: 100%" src="audio.mp3"&gt;
+  &lt;source class="u-audio" type="audio/mpeg" src="audio.mp3"&gt;
+  &lt;track label="English" kind="subtitles" srclang="en" src="https://media.martymcgui.re/.../subtitles.vtt"&gt;
+&lt;/video&gt;
+</pre>
+<p>So, basically:</p>
+<ul>
+  <li>
+    Use a &lt;video&gt; element
+    <br />
+  </li>
+  <li>Give it a poster attribute for a nice background</li>
+  <li>Use an audio file for the &lt;source&gt; inside</li>
+  <li>Use the &lt;track&gt; element for your captions/subtitles/etc.</li>
+</ul>
+<p>But is that the whole story? Sadly, no.</p>
+<h2>Creating Subtitles/Captions in WebVTT Format</h2>
+<p>In some ways, This Week in the IndieWeb Audio Edition is perfectly suited for automated captioning. In order to keep it short, I spend a good amount of time summarizing the newsletter into a <a href="https://media.martymcgui.re/7d/c2/ce/37/b46a74fb433e0faeced637a81545e3ba8b4706fbf0c65fef4ab5d51b.txt">concise script</a>, which I read almost verbatim. I typically end up including the transcript when I post the podcast, hidden inside a <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details">&lt;details&gt;</a> element.</p>
+<p>This script can be fed into gentle, along with the audio, to find all the alignments - but then I have a bunch of JSON data that is not particularly useful to the browser or even Facebook's player.</p>
+<p>Thankfully, as I mentioned above, the BBC audiogram generator can output a Facebook-flavored SRT file, and that is pretty close.</p>
+<p>After reading into the <a href="https://www.matroska.org/technical/specs/subtitles/webvtt.html">pretty expressive WebVTT spec</a>, playing with an <a href="https://github.com/silviapfeiffer/silviapfeiffer.github.io">SRT to WebVTT converter tool</a>, and finding an <a href="https://quuz.org/webvtt/">in-browser WebVTT validator</a>, I found a pretty quick way of converting those in my favorite text editor which basically boils down to changing something like this:</p>
+<pre>
+00:00:02,24 --&gt; 00:00:04,77
+While at the 2017 IndieWeb Summit,
+
+00:00:04,84 --&gt; 00:00:07,07
+I sat down with some of the
+participants to ask:
+</pre>
+<p>Into this:</p>
+<pre>
+WEBVTT
+
+00:00:02.240 --&gt; 00:00:04.770
+While at the 2017 IndieWeb Summit,
+
+00:00:04.840 --&gt; 00:00:07.070
+I sat down with some of the
+  participants to ask:
+</pre>
+<p>Yep. When stripped down to the minimum, the only real differences in these formats is the time format. Decimals delimit subsecond time offsets (instead of commas), and three digits of precision instead of two. Ha!</p>
+<h2>The Future</h2>
+<p>If you've been following the podcast, you may have noticed that I have not started doing this for every episode.</p>
+<p>The primary reason is that the BBC audiogram tool becomes verrrrry sluggish when working with a 10-minute long transcript. Editing the timings for my test post took the better part of an hour before I had an SRT file I was happy with. I <i>think</i> I could streamline the process by editing the existing text transcript into "caption-sized" chunks, and write a bit of code that will use the pre-chunked text file and the word-timings from gentle to directly create SRT and WebVTT files.</p>
+<p>Additionally, I'd like to make these tools more widely available to other folks. My current workflow to get gentle's output into the BBC audiogram tool is an ugly hack, but I believe I could make it as "easy" as making sure that gentle is running in the background when you run the audiogram generator.</p>
+<p>
+  Beyond the technical aspects, I am excited about this as a way to add extra visual interest to, and potentially increase listener comprehension for, these short audio posts. There are folks doing lots of interesting things with audio, such as the folks at <a href="https://www.gretta.com/">Gretta</a>, who are doing "live transcripts" with a sort of dual navigation mode where you can click on a paragraph to jump the audio around and click on the audio timeline and the transcript highlights the right spot. <a href="https://www.gretta.com/1262100467/10010015/">Here's an example of what I mean</a>.
+  <br />
+</p>
+<p>I don't know what I'll end up doing with this next, but I'm interested in feedback! Let me know what you think!</p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/iwcnyc2017/" class="label label-default">#<span class="p-category">IWCNYC2017</span></a>
+
+      
+        <a href="/tag/iwcnyc/" class="label label-default">#<span class="p-category">IWCNYC</span></a>
+
+      
+        <a href="/tag/iwc/" class="label label-default">#<span class="p-category">IWC</span></a>
+
+      
+        <a href="/tag/audio/" class="label label-default">#<span class="p-category">audio</span></a>
+
+      
+        <a href="/tag/video/" class="label label-default">#<span class="p-category">video</span></a>
+
+      
+        <a href="/tag/captioning/" class="label label-default">#<span class="p-category">captioning</span></a>
+
+      
+        <a href="/tag/subtitles/" class="label label-default">#<span class="p-category">subtitles</span></a>
+
+      
+        <a href="/tag/audiogram/" class="label label-default">#<span class="p-category">audiogram</span></a>
+
+      
+        <a href="/tag/webvtt/" class="label label-default">#<span class="p-category">WebVTT</span></a>
+
+      
+        <a href="/tag/podcasts/" class="label label-default">#<span class="p-category">podcasts</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4qx0x1"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/10/17/native-html5-captions-and-titles-for-audio-content-with-webvtt/"><time class="dt-published" datetime="2017-10-17T20:57:01-0400">October 17, 2017 at 8:57PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/920460655530053632" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://www.facebook.com/marty.mcguire.54/posts/10210526660264724" title="Facebook
+"><i class="fa fa-facebook"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/10/17/205701/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Tue May 30</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/05/30/-what-podcasts-am-i-listening-to-may-2017-edition/">🎧 What Podcasts am I Listening To? May 2017 Edition</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>When <a href="https://gregorlove.com/">gRegor</a> became the third person in a week to ask me what podcasts I listen to, I realized that this is something that changes a lot, and might be worth taking the time to review periodically!</p>
+<p>I tend to think of my podcasts by category, so I'll attempt to break them down below.</p>
+<p>Obligatory (several people recommended them and/or they're advertised everywhere):</p>
+<ul>
+  <li>
+    <a href="https://stownpodcast.org/">S-Town</a> (yep, it is really very good. also, it is finite!)
+    <br />
+  </li>
+  <li><a href="http://99percentinvisible.org/">99% Invisible</a> (everything is designed by people and that is beautiful and troubling)</li>
+</ul>
+<p>Comedy</p>
+<ul>
+  <li>
+    <a href="https://www.myfavoritemurder.com/">My Favorite Murder</a> (❤️ so funny. also, sometimes completely horrifying!)
+    <br />
+  </li>
+  <li><a href="http://www.maximumfun.org/shows/my-brother-my-brother-and-me">My Brother, My Brother, and Me</a> (gotta love those McElroys)</li>
+  <li><a href="http://www.maximumfun.org/shows/adventure-zone">The Adventure Zone</a> (the McElroys play D&amp;D and are remarkably wonderful)</li>
+  <li>
+    <a href="http://www.harmontown.com/">Harmontown</a> (hilarious and off-putting)
+    <br />
+  </li>
+  <li><a href="http://www.feralaudio.com/show/reductress-mouth-time/">Mouth Time with Reductress</a> (Reductress has a podcast. YEP.)</li>
+  <li>
+    <a href="http://coolgamesinc.com/">CoolGames Inc</a> (two silly boys make up video games)
+    <br />
+  </li>
+  <li><a href="http://www.illusionoid.com/">ILLUSIONOID</a> (hilarious improvised old-timey sci-fi radio dramas)</li>
+  <li><a href="http://28playslater.com/">28 Plays Later</a> (an <a href="http://chainsawsuit.com/">American cartoonist</a> and an <a href="https://twitter.com/paulverhoeven">Australian actor and game reviewer</a> are good friends)</li>
+  <li><a href="http://scaredyet.chainsawsuit.com/">Scared Yet: The Podcast</a> (the same American cartoonist from above and another <a href="https://www.jspowerhour.com/">American cartoonist</a> talk about what kinds of horror scares people good)</li>
+</ul>
+<p>Tech</p>
+<ul>
+  <li>
+    <a href="http://revisionpath.com/">Revision Path</a> (weekly interviews showcasing Black designers and developers. Maurice is great and this podcast is great)
+    <br />
+  </li>
+  <li><a href="http://podcast.contrafabulists.com/">The Contrafabulists</a> (taking apart mainstream tech stories to find the people and issues beneath)</li>
+  <li>
+    <a href="https://martymcgui.re/tag/this-week-indieweb-podcast/">This Week in the IndieWeb</a> (disclaimer: I make this podcast)
+    <br />
+  </li>
+</ul>
+<p>Narrative</p>
+<ul>
+  <li><a href="http://welcometonightvale.com/">Welcome to Night Vale</a> (weird and fun and funny)</li>
+  <li><a href="http://www.nightvalepresents.com/aliceisntdead">Alice Isn't Dead</a> (weird and fun and spooky)</li>
+  <li><a href="http://orbitinghumancircus.com/podcast.html">The Orbiting Human Circus of the Air</a> (adorable and artsy)</li>
+  <li><a href="http://geeklyinc.com/category/sayer/">SAYER</a> (scifi and horror. returning soon with Season 4!)</li>
+  <li><a href="http://thrillingadventurehour.com/">Thrilling Adventure Hour</a> (live old-timey radio shows. so funny. still putting out content despite being "over"!)</li>
+  <li><a href="http://www.nightvalepresents.com/withinthewires/">Within the Wires</a> (weird and spooky and sad)</li>
+</ul>
+<p>Gaming (RPG and Otherwise)</p>
+<ul>
+  <li>
+    <a href="http://rpg.academy/">The RPG Academy</a> (disclaimer, I am part of <a href="http://therpgacademy.com/tag/lawful-orderly/">one of the shows</a> there)
+    <br />
+  </li>
+  <li><a href="http://sasgeek.com/">She's a Super Geek</a> (fun people playing interesting RPGs focusing on women as GMs)</li>
+  <li><a href="http://oneshotpodcast.com/category/podcasts/modifier/">Modifier</a> (discussions about making games accessible and more!)</li>
+  <li><a href="http://oneshotpodcast.com/">One Shot</a> (hilarious people playing interesting RPGs)</li>
+  <li>
+    <a href="https://t.co/Z0UcZVKRog">Party of One Podcast</a> (fun single person playing interesting RPGs with one GM)
+    <br />
+  </li>
+  <li><a href="http://dorkshelf.com/category/playdead/">Play Dead</a> (serious conversations about death in games. reminds me of one of my favorite YouTube channels, <a href="http://www.caitlindoughty.com/">Caitlin Doughty</a>'s <a href="https://www.youtube.com/channel/UCi5iiEyLwSLvlqnMi02u5gQ">Ask a Mortician</a>)</li>
+</ul>
+<p>Friends' Projects (disclaimer: I have been a guest on some of these)</p>
+<ul>
+  <li><a href="http://latta.fun/sfs">Springtime for Springsteen</a> (silly dudes ostensibly talking about Bruce Springsteen)</li>
+  <li><a href="http://www.hobotrashcan.com/features/hobo-radio/">Hobo Radio</a> (Joel and Lars give each other such a hard time about everything but mostly pop culture)</li>
+  <li><a href="http://www.thecurioso.com/">TheCurioso</a> (Joe and Chris investigate the unusual and report back)</li>
+  <li>
+    <a href="https://soundcloud.com/bigimprov">Baltimore Improv Group Podcast</a> (sketches and interviews with local improv friends. disclaimer: I help produce this podcast)
+    <br />
+  </li>
+  <li>
+    <a href="http://www.sexisfunny.co/">The 4-Play Sex and Comedy Podcast</a> (by lovely local folks and improv friends)
+    <br />
+  </li>
+  <li>
+    <a href="https://soundcloud.com/monarchbn">Monarch Broadcasting</a> (my co-host Jonathan teaches his student to make their own podcasts!)
+    <br />
+  </li>
+  <li><a href="http://uncannycreativity.com/">Uncanny Creativity</a> (<a href="http://brianey.com/">Brian</a> is an improv buddy)</li>
+  <li><a href="https://player.fm/series/expert-of-nothing">Expert of Nothing</a> (local Baltimore comedy game show)</li>
+  <li>
+    <a href="https://soundcloud.com/vb9i58eiynb8">Friends with Black People</a> (hasn't updated in a while but one of my favorite ideas for a podcast)
+    <br />
+  </li>
+  <li>
+    <a href="https://wehavetoask.com/">We Have to Ask</a> (disclaimer: I co-host this podcast. Comic improvisation in alternate realities)
+    <br />
+  </li>
+</ul>
+<p>Politics and World Issues</p>
+<ul>
+  <li>
+    <a href="http://www.npr.org/podcasts/510312/codeswitch">Code Switch</a> (super good 
+    <br />
+  </li>
+  <li><a href="https://getcrookedmedia.com/pod-save-the-people-56bc42af53d">Pod Save the People</a> (❤️ <a href="https://twitter.com/deray">@deray</a>)</li>
+  <li><a href="http://www.riseofcharmcity.com/">Baltimore: The Rise of Charm City</a> (<a href="https://twitter.com/slb79">Stacia L. Brown</a> is amazing)</li>
+  <li><a href="https://soundcloud.com/hopechestpodcast">Hope Chest: A Podcast</a> (seriously, listen to Stacia L. Brown)</li>
+  <li>
+    <a href="https://www.si.edu/sidedoor/">Sidedoor</a> (from the Smithsonian. started listening because I read they hired <a href="https://twitter.com/slb79">Stacia L. Brown</a> to help produce)
+    <br />
+  </li>
+  <li>
+    <a href="http://longnow.org/seminars/podcast/">Seminars About Long-term Thinking</a> (longer TED talks about deeper issues like whether human culture can survive 10,000 years)
+    <br />
+  </li>
+  <li>Dan Carlin's <a href="http://www.dancarlin.com/common-sense-home-landing-page/">Common Sense</a> and <a href="http://www.dancarlin.com/hardcore-history-series/">Hardcore History</a> (now extra upsetting in this political climate!)</li>
+</ul>
+<p>Whew! This took a while. I have a frightening number of podcasts in my reader (I use <a href="http://antennapod.org/">AntennaPod</a>).</p>
+<p>What do you think? Any surprise overlaps? Anything you want to check out, or suggest that I check out?</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/podcasts/" class="label label-default">#<span class="p-category">podcasts</span></a>
+
+      
+        <a href="/tag/listen/" class="label label-default">#<span class="p-category">listen</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4obNSt"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/05/30/-what-podcasts-am-i-listening-to-may-2017-edition/"><time class="dt-published" datetime="2017-05-30T18:26:53-0400">May 30, 2017 at 6:26PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://www.facebook.com/marty.mcguire.54/posts/10209441591858692" title="Facebook
+"><i class="fa fa-facebook"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/869684340762050560" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

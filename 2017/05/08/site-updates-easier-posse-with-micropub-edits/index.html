@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Jonathan Prozzi and I have challenged one another to make a post about improving our websites once a week. This one should have gone up last week! A few weeks ago I posted some thoughts about my IndieWeb setup called &#34;Easier POSSE with Micropub Edits?&#34; in which I wished for a tool that would let me take a given post from my site, syndicate it to silos like Twitter and Facebook (tweaking the content if I want), and updating the post on my site to show the links to those syndicated copies.">
+  
+  <title>Site-Updates: Easier POSSE with Micropub Edits!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2017/05/08/site-updates-easier-posse-with-micropub-edits/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/05/08/site-updates-easier-posse-with-micropub-edits/">Site-Updates: Easier POSSE with Micropub Edits!</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>
+  <i><a href="https://jonathanprozzi.net/">Jonathan Prozzi</a> and I have challenged one another to make a post about improving our websites once a week. This one should have gone up last week!</i>
+  <br />
+</p>
+<p>A few weeks ago I posted some thoughts about <a href="https://indieweb.org/User:Martymcgui.re#My_IndieWeb_Setup">my IndieWeb setup</a> called "<a href="https://martymcgui.re/2017/04/19/151612/">Easier POSSE with Micropub Edits?</a>" in which I wished for a tool that would let me take a given post from my site, syndicate it to silos like Twitter and Facebook (tweaking the content if I want), and updating the post on my site to show the links to those syndicated copies.</p>
+<h3>Why?</h3>
+<p>I failed to make at least one important thing clear in my original post – why do I care about syndication links? There are many reasons.</p>
+<ul>
+  <li>I have set up a <a href="https://martymcgui.re/2017/03/29/161441/">system to notify me when my posts get webmentions from other sites</a>.</li>
+  <li>
+    <a href="https://brid.gy/">Brid.gy</a> will <a href="https://indieweb.org/backfeed">backfeed</a> comments and reactions from sites like Twitter and Facebook to my site via webmention, but <a href="https://brid.gy/about#link">only if brid.gy knows which posts on those silos correspond to a post on my site</a>.
+    <br />
+  </li>
+</ul>
+<p>If I decide that a post should be syndicated to a silo, it's because I want it to reach the people who follow me there and, if that is true, I also want their interactions to come back to my site. So, in these ways, a post isn't "done" unless it is on my site, with syndicated copies on the silos I care about, and with syndication links for brid.gy to feed the interactions back.</p>
+<h3>Starting at the End</h3>
+<p>I decided to start by making my site's Micropub server support <a href="https://www.w3.org/TR/micropub/#source-content">Micropub Source Content Queries</a> and <a href="https://www.w3.org/TR/micropub/#update">Micropub Updates</a>. Any tool that helped automate syndication would need this plumbing to operate.</p>
+<p>When implementing a new feature, it always helps to have something to test against. So, I went looking for a Micropub <b>client</b> which supported queries and edits. The test suite for Micropub at micropub.rocks includes a lovely <a href="https://micropub.rocks/implementation-reports/clients/">implementation report grid</a>, showing which Micropub clients support what features of the spec.</p>
+<p>Of the clients listed, two of them were web-based and Open Source. I had played with and liked <a href="https://inklings.io/inkstone/">Inkstone</a> in the past, but its edit features are currently considered a work-in-progress. So, I tried out <a href="https://micropublish.net/">Micropublish.net</a>, and it was exactly what I was looking for.</p>
+<p>Micropublish has a feature to let you enter a URL for a post on your site to edit. It will use Micropub source content queries to get the source data for that post and let you edit the content and other properties of the post. It can then send a Micropub update to save the updated version of the post back to your site, if your server supports updates. It even has a great feature for developers - a "Preview" button will show you exactly what request will be sent to your server for the update.</p>
+<figure>
+  <img src="https://media.martymcgui.re/f9/c2/b1/cb/ba7349e148b0317eb85be5c0275f5b9d1428907a31851bf39b345118.png" alt="" />
+  <figcaption>Screenshot of micropublish.net preview for an update to add a syndication link to a post</figcaption>
+</figure>
+<p>Micropublish.net is a great tool for testing out Micropub query and update support, but my Micropub server is bespoke, hastily-written, hand-rolled Python. So, while it was easy enough to add query support, it took me a while to get my code structure cleaned up, write some tests, and actually implement updates.</p>
+<h3>A New Workflow</h3>
+<p>I am pleased to say that it works and, with the help of Micropublish.net, I now have a functioning workflow for publishing to my site and syndicating to silos like Twitter and Facebook, even from my phone, without having to open my laptop, edit YAML data, and push git repositories around. It looks like this.</p>
+<ul>
+  <li>
+    Make a new post to my site with a micropub client like <a href="https://quill.p3k.io/">Quill</a>.
+    <br />
+  </li>
+  <li>Open the post for editing in micropublish.net (I use Url Forwarder for Android to make this super easy on my phone, a bookmarklet makes it easy on my laptop).</li>
+  <li>
+    In a new tab, log in to Twitter and make a similar post, copy the URL to the new tweet into the Syndication field on my post.
+    <br />
+  </li>
+  <li>Repeat the steps to make posts on Facebook, Mastodon, etc., copying their URLs into the Syndication field.</li>
+  <li>
+    Finally, hit "Update" in micropublish.net to update my post with the syndication links.
+    <br />
+  </li>
+</ul>
+<figure>
+  <img src="https://media.martymcgui.re/70/ed/84/78/0723d7a27cc5cacff92adbf0a8d19b902cf7598132f25023a74c532b.png" alt="" />
+  <figcaption>Screenshot of micropublish.net with new syndication links</figcaption>
+</figure>
+<p>This is still a very manual process, but it now makes it <b>possible</b> to <b>finish</b> a post in a way that I couldn't before. In the spirit of <a href="https://indieweb.org/manual_until_it_hurts">manual until it hurts</a>, I will use this for a while and see what existing pain points remain, and what new ones appear, to help decide what comes next.</p>
+<p>Thanks to <a href="https://barryfrost.com/">Barry Frost</a> for micropublish.net and to <a href="http://tantek.com/">Tantek</a> for the nudge to write an update!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/micropub/" class="label label-default">#<span class="p-category">Micropub</span></a>
+
+      
+        <a href="/tag/posse/" class="label label-default">#<span class="p-category">POSSE</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4oEK5T"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/05/08/site-updates-easier-posse-with-micropub-edits/"><time class="dt-published" datetime="2017-05-08T15:05:27-0400">May 8, 2017 at 3:05PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/05/08/150527/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2017/05/08/site-updates-easier-posse-with-micropub-edits/" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    <h4>Likes</h4>
+  <div class="row" style="margin-bottom: 1em"><div class="col-xs-12">
+  <div class="facepile">
+    <div class="face p-like h-cite">
+          <a class="u-url" href="https://aaronparecki.com/2017/05/08/8/"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/aaronparecki.com/2b8e1668dcd9cfa6a170b3724df740695f73a15c2a825962fd0a0967ec11ecdc.jpeg" alt="Aaron Parecki" title="Aaron Parecki"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://j4y.co/p/20170530080441_592d2799bbae0"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/j4y.co/61e1e64588888a3d63fcd9bc43c14a2ce0ad86045373f6347efa30b78dfeb12c.jpeg" alt="Jay Robinson" title="Jay Robinson"/></span></a></div>
+      </div>
+</div></div>
+
+
+  
+    <h4>Mentions</h4> 
+  <div class="mentions">
+    <div class="u-comment h-cite" id="comment-60cb7fd3dc6b0279f7a0f17a00961f28da251971">
+  <a class="u-author h-card" href="https://barryfrost.com/"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/barryf.s3.amazonaws.com/a3216644fe765c08d8913f3aabcf3cabd95908c8646c03fa6fecfa5dd7cad1f7.jpeg" alt="Barry Frost"/>
+  <span class="p-name">Barry Frost</span></a>
+  at
+  <a class="u-url" href="https://barryfrost.com/2017/05/thanks-marty-you-ve-made-my"><time class="published" datetime="2017-05-09T15:33:40">2017-05-09T15:33:40</time></a>
+  said:
+  <p class="p-content p-name">Thanks, Marty! You’ve made my day seeing Micropublish being used productively! And that’s the same workflow I use if I want to hand-craft a tweet rather than rely on my site to trim the content.
+</p>
+    </div>
+
+    </div>
+
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

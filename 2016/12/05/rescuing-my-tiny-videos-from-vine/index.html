@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Ah, Vine. I loved the idea of a platform for sharing tiny video moments. It was truly a platform for some really amazing things.
+Personally, I didn&#39;t make very many posts. Most that I did centered around my involvement with the BlinkyTape Kickstarter that we ran at the height of my awareness of Vine. So, while I had not thought about Vine for quite some time, I was disappointed to hear that it was shutting down the ability to upload.">
+  
+  <title>Rescuing my tiny videos from Vine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2016/12/05/rescuing-my-tiny-videos-from-vine/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2016/12/05/rescuing-my-tiny-videos-from-vine/">Rescuing my tiny videos from Vine</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p class="">Ah, <a href="https://vine.co/">Vine</a>. I loved the idea of a platform for sharing tiny video moments. It was truly a platform for some <a href="https://vine.co/v/OWeJzpi6JuW">really amazing things</a>.</p><p class="">Personally, I didn't make very many posts. Most that I did centered around my involvement with the <a href="https://www.kickstarter.com/projects/740956622/blinkytape-the-led-strip-reinvented">BlinkyTape Kickstarter</a> that we ran at the height of my awareness of Vine. So, while I had not thought about Vine for quite some time, I was disappointed to hear that it was <a href="https://medium.com/@vine/important-news-about-vine-909c5f4ae7a7">shutting down the ability to upload</a>.</p><p class="">Announcement <a href="https://ourincrediblejourney.tumblr.com/">like these</a> tend to trigger my <a href="http://indieweb.org/site-deaths">site-deaths</a> reflex, so although they have announced plans for <a href="http://help.vine.co/post/152688513385/discontinuing-the-vine-app-faqs">some kind of easy export mechanism</a>, I thought: why wait?</p><p class="">This post documents the haphazard, poke-it-with-a-stick-and-see-what-happens method by which I rescued my Vines and their metadata to post them on my own site.</p><h2>Getting all my Vine URLs</h2><p class="">First up, I needed a way to get all of the permalinks to my Vines. The first stumbling block here was that Vine uses an "infinite scroll" technique that shows only the latest vines until you scroll down the page, triggering it to load more for display. Checking out the source of the page, I realized that I could simply scroll to the bottom of my <a href="https://vine.co/schmarty?mode=list">List view</a> to get all the Vine metadata loaded into the page, and I could then open up the Developer Console for Chrome, and drop in a short one-liner to print out all the URLs for my permalinks:</p><pre>&gt; console.log($('li.permalink a').map((i,el) =&gt; el.href));
+["https://vine.co/v/hUt0rDdrlK6", "https://vine.co/v/hDIMuqQgtU0", ...
+</pre><p class="">After copying this to a text file and editing out all the quotes and commas, I had a simple text file with the permalink for one of my Vines on each line.</p><h2>Fetching the HTML</h2><p class="">Next up, I grabbed the HTML for each Vine's permalink with a simple script:</p><pre>#!/usr/bin/env bash<br># Usage: ./fetch_htmls.sh &lt; some_file_full_of_vine_urls.txt<br>while read url<br>do
+  # each vine has a unique id after the last '/' character<br>  id=`echo "${url}" | cut -d'/' -f 5`<br>  html_file="htmls/${id}"<br>  if [ ! -f "${html_file}" ]; then<br>    wget -O "${html_file}" "${url}"<br>    sleep 5<br>  fi<br>done</pre><h2>Extracting the Useful Data</h2><p class="">It's often "enough" to have all the HTML on a page - you can write a script to parse the HTML, select out various attributes and text values from the elements on the page, and grab whatever data you need. In the case of Vine, they make it a little easier. Each HTML page has an embedded &lt;script&gt; element in <a href="http://json-ld.org/">JSON-LD</a> format:</p><div class="medium-insert-images ui-sortable"><figure>
+    <img src="https://media.martymcgui.re/0c/b1/29/44/3b10a202a97db23fd45dd282b8c297aac3954b32f2e25dd783e3d39f.png" alt="" class="ui-sortable-handle">
+        
+</figure></div><p class="">After playing with the data in there a bit, I wrote a quick script using the <a href="https://github.com/ericchiang/pup">pup</a> command line tool to do parse the HTML and extract the (valid parts of the) JSON-LD chunks from each HTML page.</p><pre>#!/usr/bin/env bash<br># Usage: ./extract_ld_json.sh htmls/*<br># Extract &lt;script type="application/ld+json"&gt; content from Vine<br># page, filtering out attributes that are not valid JSON.<br>#<br># - description - invalid quoting and redundant with author and name values<br># - duration - invalid non-value<br>for html_file in "$@"<br>do<br>  id=`basename "${html_file}"`<br>  jsonld_file="json_lds/${id}"<br>  if [ ! -f "${jsonld_file}" ]; then<br>    pup 'script[type="application/ld+json"] text{}' &lt; "${html_file}" \<br>      | grep -v '"description":' \<br>      | grep -v '"duration" :' \<br>      &gt; "${jsonld_file}"<br>  fi<br>done</pre><p class="">These JSON-LD chunks gave me all the metadata I cared about, including URLs to the media that I wanted to save: the videos, their thumbnail images, and the avatar image that accompanied each post. So, it was time to write tools to extract those, too. One of my recent favorite command line tools is <a href="https://stedolan.github.io/jq/">jq</a> aka "sed for JSON", so I used that to extract the URLs I needed to fetch all the media.</p><p class="">The videos:</p><pre>#!/usr/bin/env bash<br># Usage: ./fetch_videos.sh json_lds/*<br>for jsonld_file in "$@"<br>do<br>  id=`basename "${jsonld_file}"`<br>  video_file="videos/${id}.mp4"<br>  if [ ! -f "${video_file}" ]; then<br>    video_url=`jq -r '.contentUrl' &lt; "${jsonld_file}"`<br>    wget -O "${video_file}" "${video_url}"<br>    sleep 6<br>  fi<br>done</pre><p class="">The thumbnails:</p><pre>#!/usr/bin/env bash<br># Usage: ./fetch_thumbs.sh json_lds/*<br>for jsonld_file in "$@"<br>do<br>  id=`basename "${jsonld_file}"`<br>  thumb_file="thumbs/${id}.jpg"<br>  if [ ! -f "${thumb_file}" ]; then<br>    thumb_url=`jq -r '.thumbnailUrl' &lt; "${jsonld_file}"`<br>    wget -O "${thumb_file}" "${thumb_url}"<br>    sleep 6<br>  fi<br>done</pre><p class="">And finally, the avatars. I really could have just manually saved my one avatar image, but that is not my way. Instead, this script finds every avatar URL, hashes that URL to get a filename-safe name, and fetches it (once):</p><pre>#!/usr/bin/env bash<br># Usage: ./fetch_avatars.sh json_lds/*<br>for jsonld_file in "$@"<br>do<br>  avatar_url=`jq -r '.author .image' &lt; "${jsonld_file}"`<br>  id=`echo "${avatar_url}" | shasum - | awk '{ print $1; }'`<br>  avatar_file="avatars/${id}.jpg"<br>  if [ ! -f "${avatar_file}" ]; then<br>    wget -O "${avatar_file}" "${avatar_url}"<br>    sleep 6<br>  fi<br>done</pre><p class="">Finally, it was time to synthesize all of this info to put these Vines on my own site. I currently use <a href="https://jekyllrb.com/">Jekyll</a> to generate my website, so I wrote a pair of scripts to convert the JSON-LD data into Jekyll posts. First, a Python script that converts a single Vine into a Jekyll post with YAML metadata:</p><pre>#!/usr/bin/env python<br>import json<br>import sys<br>import yaml<br>import os<br>with open(sys.argv[], 'r') as f:<br>  jsonld = json.load(f, )<br>vineid = os.path.basename(jsonld['url']) <br>post_meta = {<br>  'date': jsonld['datePublished'],<br>  'files': [ vineid + ".mp4" ],<br>  'filemeta': {<br>    (vineid + ".mp4"): {<br>      'poster': (vineid + ".jpg")<br>    }<br>  },<br>  'h': 'entry',<br>  'syndication': [ jsonld['url'] ],<br>  'vine_metadata': jsonld,<br>  'updated': jsonld['datePublished']<br>}<br>content = jsonld['name']<br>print "---"<br>print yaml.safe_dump(post_meta)<br>print "---"<br>print ""<br>print content</pre><p class="">And finally a shell script to run the Python converter over each JSON-LD file, save the resulting Jekyll post output in the appropriate place, and copy over the related media assets:</p><pre>#!/usr/bin/env bash<br># Usage ./vines_to_jekyll.sh json_lds/*<br>BASEDIR=~/me/martymcgui.re<br>for vine in "$@"<br>do<br>  vineid=`basename "${vine}"`<br>  vinedate=`jq -r '.datePublished' &lt; "${vine}"`<br>  filename="${BASEDIR}"/_posts/`date -j -f "%FT%H:%M:%S" "${vinedate}" +"%F-%H%M%S"`.md<br>  asset_dir="${BASEDIR}"/_assets/posts/`date -j -f "%FT%H:%M:%S" "${vinedate}" +"%Y/%m/%d/%H%M%S"`<br>  echo "${vine}"<br>  mkdir -p "${asset_dir}"<br>  cp videos/"${vineid}.mp4" "${asset_dir}"<br>  cp thumbs/"${vineid}.jpg" "${asset_dir}"<br>  python vine_to_jekyll.py "${vine}" &gt; "${filename}"<br>done</pre><p class="">At last, I created a Jekyll include to render the Vines out as <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video">HTML5 video elements</a>, with the thumbnail as the poster image, visible play controls, and the obligatory feature of looping forever once started. My Jekyll theme is a bit out of scope for this post, but it pretty much looks like this:</p><pre>{% raw %}{% capture poster %}
+  {% if include.filemeta and include.filemeta.poster %}
+    poster="{{ page | asset_path | append: include.filemeta.poster }}"
+  {% endif %}
+{% endcapture %}{% endraw %}<br>&lt;video loop controls {{ poster }} style="width: 100%"&gt;<br>  &lt;source class="u-video" type="video/mp4" src="{{ include.asset }}" /&gt;<br>&lt;/video&gt;
+</pre><p class="">What is the end result? How about <a href="https://martymcgui.re/2013/05/24/235116/">some</a> <a href="https://martymcgui.re/2013/07/29/204100/">example</a> <a href="https://martymcgui.re/2013/04/26/125322/">posts</a>?<br></p><p class="">While I am not particularly happy that Vine is seemingly closing down, I do enjoy data liberation projects like these. I learned a bit about how Vine was built, got to play with some neat tools, and I now <a href="http://indieweb.org/ownyourdata">own my Vines</a>, having <a href="http://indieweb.org/PESOS">brought them into my own site</a>. While I'm not in control of whether Vine works in the future, I do have control over the future of the videos that I posted there.<br></p><p class="">Was this useful to you? Let me know! I don't have my <a href="https://www.w3.org/TR/webmention/">#indieweb comments</a> system in place, yet, but you can hit me up on Twitter or Facebook and I'd love to read your thoughts!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4kg3hi"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2016/12/05/rescuing-my-tiny-videos-from-vine/"><time class="dt-published" datetime="2016-12-05T22:42:43-0500">December 5, 2016 at 10:42PM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2016/12/05/224243/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/805985275465912320" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://www.facebook.com/marty.mcguire.54/posts/10207975560848833" title="Facebook
+"><i class="fa fa-facebook"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2016/12/05/rescuing-my-tiny-videos-from-vine/" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    <h4>Likes</h4>
+  <div class="row" style="margin-bottom: 1em"><div class="col-xs-12">
+  <div class="facepile">
+    <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10207975560848833#liked-by-10208493125100679"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/32055a2ffc6f4d05ce35176790a82bf03c8802438be07406b0a55a6341293fe6.jpeg" alt="Kaye Bailey Laymance" title="Kaye Bailey Laymance"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10207975560848833#liked-by-10103274235517575"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/e57a1231d9c9c717ca909cce54e3039a88b4d77e90f7d119e5143672908bd181.jpeg" alt="Nate Parsons" title="Nate Parsons"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10207975560848833#liked-by-1114565795246215"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/aca635d2b305e97037bd7269b8d56e64001ba0ff95e7c48765a44c35da3f1112.jpeg" alt="Adam Bouhmad" title="Adam Bouhmad"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10207975560848833#liked-by-10108679791300590"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/64d46a976816aa459db2c6b9ead78ea6485f6b74a0d067562ce881a1021c9dd9.jpeg" alt="Matthew L Beckler" title="Matthew L Beckler"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10207975560848833#liked-by-10100499769010892"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/a9aae2bcfac701f0f1bc58ffd97fc2dc3ef0eb835c7bc6e949572444995197e2.jpeg" alt="Jonathan Prozzi" title="Jonathan Prozzi"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10207975560848833#liked-by-10100256698102469"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/22de74ff2062d6393b57a0481f3a85cfa957b2b396faecac52f3513119e4d9ed.jpeg" alt="Brian E. Young" title="Brian E. Young"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10207975560848833#liked-by-753710166984"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/04bed7e1574cc68ea9b6fcc77b29165d48a1780de14a2f66213fa9ab50ab4490.jpeg" alt="Chris Widget DiMauro" title="Chris Widget DiMauro"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10207975560848833#liked-by-10205854219794035"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/5c42429f0db8d45712bbaa990c975d5156cd6f0baefec8b3295bf3324317c872.jpeg" alt="Lisa Anthony" title="Lisa Anthony"/></span></a></div>
+      </div>
+</div></div>
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    <h4>Mentions</h4> 
+  <div class="mentions">
+    <div class="u-comment h-cite" id="comment-83e4763bb9cd1076f340b216b0ebf21d0d817932">
+  <a class="u-author h-card" href="https://twitter.com/hn_frontpage"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/f62929d0a92700ab725c84e5ab3bef64ae5cfc1d462934d3eb81ae6559c63412.png" alt="HN Front Page"/>
+  <span class="p-name">HN Front Page</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/hn_frontpage/status/805996110334590977"><time class="published" datetime="2016-12-06T04:43:42&#43;00:00">2016-12-06T04:43:42&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine L: martymcgui.re/2016/12/05/224… C: news.ycombinator.com/item?id=131122…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-1af1e626e210503f8b36cbbbcb5503adbbcd3ca3">
+  <a class="u-author h-card" href="http://news.ycombinator.com"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/bd356e0cf7174aed2286323e5c0af0fbd2ba52cddb77eadd4520eb5f7f4a27b8.png" alt="Hacker News"/>
+  <span class="p-name">Hacker News</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/HNTweets/status/805997704086163456"><time class="published" datetime="2016-12-06T04:50:02&#43;00:00">2016-12-06T04:50:02&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine: martymcgui.re/2016/12/05/224… Comments: news.ycombinator.com/item?id=131122…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-a3a5cbcf333f59574b147f68d7d840932d909486">
+  <a class="u-author h-card" href="https://news.ycombinator.com"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/1ff23ec76b7aeb4b2218bb50dcfdf624727a4b88e68642e3df3fb8b6be1fe16d.png" alt="HN Front Pager"/>
+  <span class="p-name">HN Front Pager</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/FrontPageHN/status/805996356674482177"><time class="published" datetime="2016-12-06T04:44:40&#43;00:00">2016-12-06T04:44:40&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine martymcgui.re/2016/12/05/224… (cmts news.ycombinator.com/item?id=131122…)</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-4d36872be6557cf8b0cfb645c5724ecc9cc550ff">
+  <a class="u-author h-card" href="https://jrsmith3.github.io"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/989f0a1ab913138ce127b5aea479de09647e86881d7957e4b864442b2cc256e5.jpeg" alt="Joshua Ryan Smith"/>
+  <span class="p-name">Joshua Ryan Smith</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/joshua_r_smith/status/805992211099906048"><time class="published" datetime="2016-12-06T04:28:12&#43;00:00">2016-12-06T04:28:12&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">&#34;poke-it-with-a-stick-and-see-what-happens method&#34; (C) 2016 M McGuire 🙂</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-493d635a5488780ad0c29cb47924b60e73789ce3">
+  <a class="u-author h-card" href="https://track-chat.com"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/5ada4a8e18c73ed66265b9934e2a22f666190754213c623019e8b75ff54ea332.png" alt="TrackChat"/>
+  <span class="p-name">TrackChat</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/Track_Chat/status/806000220257615872"><time class="published" datetime="2016-12-06T05:00:01&#43;00:00">2016-12-06T05:00:01&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">IT news: Rescuing my tiny videos from Vine martymcgui.re/2016/12/05/224…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-5983fe0dea5128a3f2c0223c6159fb1865738675">
+  <a class="u-author h-card" href="http://securityjar.com"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/21112ebec93ab117dda30b8546fd13de803509f7e203d80c1e748a59b367b8f8.jpeg" alt="SecurityJar"/>
+  <span class="p-name">SecurityJar</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/SecurityJar/status/806002413031149569"><time class="published" datetime="2016-12-06T05:08:44&#43;00:00">2016-12-06T05:08:44&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine martymcgui.re/2016/12/05/224… </p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-24d9045b2798a67a086a5e3803c919bf8948d6c6">
+  <a class="u-author h-card" href="http://www.relaso.com/sales-crm/"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/fce09e9b8ef93a8573de40d8c2ef8684063b2a0a1e797b5def73e022282b6a63.jpeg" alt="Angsuman Chakraborty"/>
+  <span class="p-name">Angsuman Chakraborty</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/angsuman/status/805998215648538624"><time class="published" datetime="2016-12-06T04:52:03&#43;00:00">2016-12-06T04:52:03&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine martymcgui.re/2016/12/05/224…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-2e26d8699942380eac44e15e9618135f2fa43d5c">
+  <a class="u-author h-card" href="http://facebook.com/hacker.news.21/"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/e29a0d7dd389ab34c3b5daa9686ac7aeb813d01664f9270956b163e3b26a6428.jpeg" alt="Hacker News"/>
+  <span class="p-name">Hacker News</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/hacker_news_hir/status/805998414982848512"><time class="published" datetime="2016-12-06T04:52:51&#43;00:00">2016-12-06T04:52:51&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine : martymcgui.re/2016/12/05/224… Comments: news.ycombinator.com/item?id=131122…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-2c2f9c3778fca779ceeb826c2d1d5d56474db10f">
+  <a class="u-author h-card" href="http://www.linkedin.com/in/scottpvalentine"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/37c737697d65cd6cf3541a155889f7baff444da399017574cd0bff143846814d.jpeg" alt="Scott Valentine"/>
+  <span class="p-name">Scott Valentine</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/ScottPValentine/status/805999014143553536"><time class="published" datetime="2016-12-06T04:55:14&#43;00:00">2016-12-06T04:55:14&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine martymcgui.re/2016/12/05/224… via ycombinator</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-9227c14bfcb8cfd165241953ea7ff3812e46d420">
+  <a class="u-author h-card" href="https://goo.gl/VogEWS"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/6824dd1b926231191f5d55723de567136fdf2d111c4bdfbd69a1f9f63c9ec87d.png" alt="Vishma Rai (ϑ ℛai)"/>
+  <span class="p-name">Vishma Rai (ϑ ℛai)</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/vrai777/status/805998343675592705"><time class="published" datetime="2016-12-06T04:52:34&#43;00:00">2016-12-06T04:52:34&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine ☄ ⛱ ℅ ⚡#startup ⚗ #YCombinator martymcgui.re/2016/12/05/224…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-ef38cd319c4582be2f95ae481feeda7b1e0c1f30">
+  <a class="u-author h-card" href="https://twitter.com/Peta_Eaton"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/bd843233056f90ded226f02c49031fecff585a6c64ed231eee9f132464736d92.jpeg" alt="Peta Eaton"/>
+  <span class="p-name">Peta Eaton</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/Peta_Eaton/status/805999715347234816"><time class="published" datetime="2016-12-06T04:58:01&#43;00:00">2016-12-06T04:58:01&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine martymcgui.re/2016/12/05/224…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-1f1b0bd370d4e43b860f11dde5e16140635fae90">
+  <a class="u-author h-card" href="https://techstories.org"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/f21c77410f96f18a7ee541eeb8e9145356338fd1540e6d0d450151208ae3e8db.png" alt="Tech Stories"/>
+  <span class="p-name">Tech Stories</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/_techstories/status/806002267434446848"><time class="published" datetime="2016-12-06T05:08:10&#43;00:00">2016-12-06T05:08:10&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine martymcgui.re/2016/12/05/224…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-e49b1d88fe5013c2d54b8932b334a788dd4966b5">
+  <a class="u-author h-card" href="http://tweetingmachine.com"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/29fe397b1104255f0683f4131982ad206bf0d8fb2ff25a18edbd511343617ffc.png" alt="Thomas Buck"/>
+  <span class="p-name">Thomas Buck</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/tm_interesting/status/806000220899340288"><time class="published" datetime="2016-12-06T05:00:02&#43;00:00">2016-12-06T05:00:02&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">IT news: Rescuing my tiny videos from Vine martymcgui.re/2016/12/05/224…</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-c6f3bbd127ffcf77958decafbe069948e33a9fbe">
+  <a class="u-author h-card" href="https://levels.io"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/d8bba364b4e1b7233269049baef1aff4d9fda6e8146f0b6f02ee244ec4984ff7.png" alt="The Feed"/>
+  <span class="p-name">The Feed</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/thefeed2000/status/806060643165958144"><time class="published" datetime="2016-12-06T09:00:07&#43;00:00">2016-12-06T09:00:07&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">j.mp/2g4ewYq Rescuing my tiny videos from Vine (@schmarty) </p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-a62ff9b7f97fe8a3ca35db9c76694ab584acc905">
+  <a class="u-author h-card" href="http://www.boffosocko.com"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/http://1.gravatar.com/avatar/d5fb4e498fe609cc29b04e5b7ad688c4?s=49&amp;d=mm&amp;r=pg" alt="Chris Aldrich"/>
+  <span class="p-name">Chris Aldrich</span></a>
+  at
+  <a class="u-url" href="http://boffosocko.com/2016/12/05/chris-aldrich-is-reading-rescuing-my-tiny-videos-from-vine/"><time class="published" datetime="2016-12-05T20:24:33&#43;00:00">2016-12-05T20:24:33&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Rescuing my tiny videos from Vine by Marty McGuire (martymcgui.re)Ah, Vine. I loved the idea of a platform for sharing tiny video moments. It was truly a platform for some really amazing things.Personally, I didn&#39;t make ver...There are some additional methods and discussion here.
+Syndicated copies to:  Related Author: Chris Aldrich  I&#39;m a biomedical and electrical engineer with interests in information theory, complexity, evolution, genetics, signal processing, theoretical mathematics, and big …</p>
+    </div>
+
+    </div>
+
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

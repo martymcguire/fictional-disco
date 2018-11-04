@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="This is a write-up of my Sunday hack day project from IndieWebCamp NYC 2017!  You can see my portion of the IWC NYC demos here. Prelude: Videos for audio content Feel free to skip this intro if you are just here for the HTML how-to!
+I&#39;ve been doing a short ~10 minute podcast about the IndieWeb community since February, an audio edition of the This Week in the IndieWeb weekly newsletter cleverly titled This Week in the IndieWeb Audio Edition.">
+  
+  <title>Native HTML5 captions and titles for audio content with WebVTT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2017/10/17/native-html5-captions-and-titles-for-audio-content-with-webvtt/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/10/17/native-html5-captions-and-titles-for-audio-content-with-webvtt/">Native HTML5 captions and titles for audio content with WebVTT</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>
+	This is a write-up of my Sunday hack day project from <a href="https://indieweb.org/2017/NYC">IndieWebCamp NYC 2017</a>!
+  <br/>
+	You can see <a href="https://www.youtube.com/watch?v=6qan5Ipr4e0&feature=youtu.be&t=4m59s">my portion of the IWC NYC demos here</a>.
+</p>
+<h2>Prelude: Videos for audio content</h2>
+<p>Feel free to <a href="#tldr">skip this intro</a> if you are just here for the HTML how-to!</p>
+<p>I've been doing a short ~10 minute podcast about the <a href="https://indieweb.org/">IndieWeb</a> community since February, an audio edition of the <a href="https://indieweb.org/this-week">This Week in the IndieWeb</a> weekly newsletter cleverly titled <a href="https://martymcgui.re/podcasts/indieweb/">This Week in the IndieWeb Audio Edition</a>.</p>
+<p>After the <a href="https://2017.indieweb.org/">2017 IndieWeb Summit</a>, each episode of the podcast also featured a brief ~1 minute interview with one of the participants there. As a way of highlighting these interviews outside the podcast itself, I became interested in the idea of "audiograms" – videos that are primarily audio content for sharing on platforms like Twitter and Facebook. I wrote up <a href="https://martymcgui.re/2017/08/10/180614/">my first steps into audiograms using WNYC's audiogram generator</a>.</p>
+<p>While these audiograms were able to show visually interesting dynamic elements like waveforms or graphic equalizer data, I thought it would be more interesting to include subtitles from the interviews in the videos. I learned that <a href="https://www.facebook.com/help/261764017354370?helpref=faq_content">Facebook supports captions</a> in a common format called SRT. However, Twitter's video offerings have no support for captions.</p>
+<p>Thankfully, I discovered the <a href="https://github.com/BBC-News-Labs/audiogram">BBC's open source fork of audiogram</a>, which supports subtitles and captioning, including the ability to "bake in" subtitles by encoding the words directly into the video frames. It also relies heavily on BBC web infrastructure, and required quite a bit of hacking up to work with what I had available.</p>
+<p><figure><img src="https://media.martymcgui.re/81/3d/cd/10/3d2b13a8173da7e2877a065e34c839de85c8ac0679f3336fab1542f5.png" /><figcaption>The BBC Audiogram captioning interface.</figcaption></figure></p>
+<p></p>
+<p>In the end, my process looked like this:</p>
+<ul>
+  <li>
+    Export the audio of the ~1 minute interview to an mp3.
+  </li>
+  <li>Type up a text transcript of the audio. Using <a href="https://www.videolan.org/vlc/">VLC</a>'s playback controls and turning the speed down to 0.33 made this pretty easy.</li>
+  <li>Use a "forced alignment" tool called <a href="https://github.com/lowerquality/gentle/">gentle</a> to create a big JSON data file containing all the utterances and their timestamps.</li>
+  <li>Use the <a href="https://stedolan.github.io/jq/">jq</a> command line tool to munge that JSON data into a format that my hacked-up version of the BBC audiogram generator can understand.</li>
+  <li>Use the BBC audiogram generator to edit the timings and word groupings for the subtitles and generate the final video.</li>
+  <li>Bonus: the BBC audiogram generator can output subtitles in SRT format - but if I've already "baked them in" this feels redundant.</li>
+</ul>
+<p>You can see an <a href="https://media.martymcgui.re/10/ef/8f/99/b181f11e199c00112d921955fd2bf5d78254ea0a9fef2a118aa37c30.mp4">early example here</a>. I liked these posts and found them easy to post to my site as well as Facebook, Twitter, Mastodon, etc. Over time I evolved them a bit to include more info about the interviewee. <a href="https://martymcgui.re/2017/09/12/115322/">Here's a later example</a>.</p>
+<p>One thing that has stuck with me is the idea that Facebook could be displaying these subtitles, if only I was exporting them in the SRT format. Additionally, I had done some research into <a href="https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/Adding_captions_and_subtitles_to_HTML5_video">subtitles for HTML5 video with WebVTT and the &lt;track&gt; element</a> and wondered if it could work for audio content with some "tricks".</p>
+<a name="tldr"></a>
+<h2>TL;DR - Browsers will show captions for audio if you pretend it is a video</h2>
+<p>Let's skip to the end and see what we're talking about. I wanted to make a version of my podcast where the entire ~10 minutes could be listened to along with timed subtitles, without creating a 10-minute long video. And I did!</p>
+<p>Here is a sample from my <a href="https://martymcgui.re/2017/09/29/221157/">example post of an audio track inside an HTML5 &lt;video&gt; element with a subtitle track</a>. You will probably have to click the "<strong>CC</strong>" button to enable the captioning</p>
+<p><video controls="" poster="https://media.martymcgui.re/6b/4c/75/34/e23d5c25dd43a47b16ec2668c7163f35ff6349bf26d734f4b448da75.png" crossorigin="anonymous" style="width: 100%" src="https://media.martymcgui.re/b0/c8/a5/07/df8ed0503adbdb716f750cf4a8215c7e2ef3b3dd5b2e5459958ed9ed.mp3">
+    <source class="u-audio" type="audio/mpeg" src="https://media.martymcgui.re/b0/c8/a5/07/df8ed0503adbdb716f750cf4a8215c7e2ef3b3dd5b2e5459958ed9ed.mp3">
+    <track label="English" kind="subtitles" srclang="en" src="https://media.martymcgui.re/bd/96/6f/4a/3421551b530208d7a037769342def51744a249ca3a4d70cffda5d479.vtt">
+</video>
+</p>
+<p>How does it work? Well, browsers aren't actually too picky about the data types of the &lt;source&gt; elements inside. You can absolutely give them an audio source.</p>
+<p>Add in a poster attribute to the &lt;video&gt; element, and you can give the appearance of a "real" video.</p>
+<p>And finally, add in the &lt;source&gt; element with your subtitle track and you are good to go.</p>
+<p>The relevant source for my example post looks something like this:</p>
+<pre>
+&lt;video controls poster="poster.png" crossorigin="anonymous" style="width: 100%" src="audio.mp3"&gt;
+  &lt;source class="u-audio" type="audio/mpeg" src="audio.mp3"&gt;
+  &lt;track label="English" kind="subtitles" srclang="en" src="https://media.martymcgui.re/.../subtitles.vtt"&gt;
+&lt;/video&gt;
+</pre>
+<p>So, basically:</p>
+<ul>
+  <li>
+    Use a &lt;video&gt; element
+    <br />
+  </li>
+  <li>Give it a poster attribute for a nice background</li>
+  <li>Use an audio file for the &lt;source&gt; inside</li>
+  <li>Use the &lt;track&gt; element for your captions/subtitles/etc.</li>
+</ul>
+<p>But is that the whole story? Sadly, no.</p>
+<h2>Creating Subtitles/Captions in WebVTT Format</h2>
+<p>In some ways, This Week in the IndieWeb Audio Edition is perfectly suited for automated captioning. In order to keep it short, I spend a good amount of time summarizing the newsletter into a <a href="https://media.martymcgui.re/7d/c2/ce/37/b46a74fb433e0faeced637a81545e3ba8b4706fbf0c65fef4ab5d51b.txt">concise script</a>, which I read almost verbatim. I typically end up including the transcript when I post the podcast, hidden inside a <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details">&lt;details&gt;</a> element.</p>
+<p>This script can be fed into gentle, along with the audio, to find all the alignments - but then I have a bunch of JSON data that is not particularly useful to the browser or even Facebook's player.</p>
+<p>Thankfully, as I mentioned above, the BBC audiogram generator can output a Facebook-flavored SRT file, and that is pretty close.</p>
+<p>After reading into the <a href="https://www.matroska.org/technical/specs/subtitles/webvtt.html">pretty expressive WebVTT spec</a>, playing with an <a href="https://github.com/silviapfeiffer/silviapfeiffer.github.io">SRT to WebVTT converter tool</a>, and finding an <a href="https://quuz.org/webvtt/">in-browser WebVTT validator</a>, I found a pretty quick way of converting those in my favorite text editor which basically boils down to changing something like this:</p>
+<pre>
+00:00:02,24 --&gt; 00:00:04,77
+While at the 2017 IndieWeb Summit,
+
+00:00:04,84 --&gt; 00:00:07,07
+I sat down with some of the
+participants to ask:
+</pre>
+<p>Into this:</p>
+<pre>
+WEBVTT
+
+00:00:02.240 --&gt; 00:00:04.770
+While at the 2017 IndieWeb Summit,
+
+00:00:04.840 --&gt; 00:00:07.070
+I sat down with some of the
+  participants to ask:
+</pre>
+<p>Yep. When stripped down to the minimum, the only real differences in these formats is the time format. Decimals delimit subsecond time offsets (instead of commas), and three digits of precision instead of two. Ha!</p>
+<h2>The Future</h2>
+<p>If you've been following the podcast, you may have noticed that I have not started doing this for every episode.</p>
+<p>The primary reason is that the BBC audiogram tool becomes verrrrry sluggish when working with a 10-minute long transcript. Editing the timings for my test post took the better part of an hour before I had an SRT file I was happy with. I <i>think</i> I could streamline the process by editing the existing text transcript into "caption-sized" chunks, and write a bit of code that will use the pre-chunked text file and the word-timings from gentle to directly create SRT and WebVTT files.</p>
+<p>Additionally, I'd like to make these tools more widely available to other folks. My current workflow to get gentle's output into the BBC audiogram tool is an ugly hack, but I believe I could make it as "easy" as making sure that gentle is running in the background when you run the audiogram generator.</p>
+<p>
+  Beyond the technical aspects, I am excited about this as a way to add extra visual interest to, and potentially increase listener comprehension for, these short audio posts. There are folks doing lots of interesting things with audio, such as the folks at <a href="https://www.gretta.com/">Gretta</a>, who are doing "live transcripts" with a sort of dual navigation mode where you can click on a paragraph to jump the audio around and click on the audio timeline and the transcript highlights the right spot. <a href="https://www.gretta.com/1262100467/10010015/">Here's an example of what I mean</a>.
+  <br />
+</p>
+<p>I don't know what I'll end up doing with this next, but I'm interested in feedback! Let me know what you think!</p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/iwcnyc2017/" class="label label-default">#<span class="p-category">IWCNYC2017</span></a>
+
+      
+        <a href="/tag/iwcnyc/" class="label label-default">#<span class="p-category">IWCNYC</span></a>
+
+      
+        <a href="/tag/iwc/" class="label label-default">#<span class="p-category">IWC</span></a>
+
+      
+        <a href="/tag/audio/" class="label label-default">#<span class="p-category">audio</span></a>
+
+      
+        <a href="/tag/video/" class="label label-default">#<span class="p-category">video</span></a>
+
+      
+        <a href="/tag/captioning/" class="label label-default">#<span class="p-category">captioning</span></a>
+
+      
+        <a href="/tag/subtitles/" class="label label-default">#<span class="p-category">subtitles</span></a>
+
+      
+        <a href="/tag/audiogram/" class="label label-default">#<span class="p-category">audiogram</span></a>
+
+      
+        <a href="/tag/webvtt/" class="label label-default">#<span class="p-category">WebVTT</span></a>
+
+      
+        <a href="/tag/podcasts/" class="label label-default">#<span class="p-category">podcasts</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4qx0x1"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/10/17/native-html5-captions-and-titles-for-audio-content-with-webvtt/"><time class="dt-published" datetime="2017-10-17T20:57:01-0400">October 17, 2017 at 8:57PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/920460655530053632" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://www.facebook.com/marty.mcguire.54/posts/10210526660264724" title="Facebook
+"><i class="fa fa-facebook"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/10/17/205701/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2017/10/17/native-html5-captions-and-titles-for-audio-content-with-webvtt/" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    <h4>Likes</h4>
+  <div class="row" style="margin-bottom: 1em"><div class="col-xs-12">
+  <div class="facepile">
+    <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10210526660264724#liked-by-10208493125100679"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/32055a2ffc6f4d05ce35176790a82bf03c8802438be07406b0a55a6341293fe6.jpeg" alt="Kaye Bailey Laymance" title="Kaye Bailey Laymance"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10210526660264724#liked-by-10157521428315054"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/74b58d98d12415682e60e96001ad5e2cd2b74d079a36d4fe60c4508f09bf6e8a.jpg" alt="Kristen L. McKenzie" title="Kristen L. McKenzie"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://twitter.com/schmarty/status/920460655530053632#favorited-by-961661"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/ce4f2f04b015ad5bd826584ceac5e6dbf0c8c1b9be2bdce80df7bc7a1d83bdcd.jpeg" alt="TomWithTheWeather" title="TomWithTheWeather"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10210526660264724#liked-by-10100256698102469"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/b50386e2a480af9c7e5c1f3c2b99c837530fd30b2277233dda6e510275ecc68f.jpg" alt="Brian E. Young" title="Brian E. Young"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10210526660264724#liked-by-10212802885816113"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/12c0cfbcad7c8faa0ca29f7dfe94289fda32defea7d7ea5e505ce252862e7af5.jpg" alt="Ari Douglas" title="Ari Douglas"/></span></a></div>
+      </div>
+</div></div>
+
+<h4>Reposts</h4>
+  <div class="row" style="margin-bottom: 1em"><div class="col-xs-12">
+  <div class="facepile">
+    <div class="face p-repost h-cite">
+          <a class="u-url" href="https://twitter.com/jimpick/status/920557245166792710"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/6624b5ab449927e2a31b64a3680f4e70f1264c4d48416324bffaaf5b295b04b1.jpeg" alt="Jim Pick" title="Jim Pick"/></span></a></div>
+      <div class="face p-repost h-cite">
+          <a class="u-url" href="https://twitter.com/cswordpress/status/920638281846583301"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/f857ae597fa2ca438c5d8450fd707a8a8f9f2d48ea6295797a96a9c8d453e68b.jpg" alt="Amanda J. Rush" title="Amanda J. Rush"/></span></a></div>
+      </div>
+</div></div>
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  <h4>Mentions</h4> 
+  <div class="mentions">
+    <div class="u-comment h-cite" id="comment-cc8ed203d54d07e61c0b134c490fb96f85b2caee">
+  <a class="u-author h-card" href="http://rhodesjason.com"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/813b08bc2a9c2ed4d3cfddbccf9796b710fc357b6f039f1eb8ab5dadc02ac34e.png" alt="not shocked"/>
+  <span class="p-name">not shocked</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/rhodesjason/status/920475088113340416"><time class="published" datetime="2017-10-18T02:22:17&#43;00:00">2017-10-18T02:22:17&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">ccjs talk plz</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-841398ecf5242faf6e4a4b5e32a70df02c18adc1">
+  <a class="u-author h-card" href="http://cweiske.de/"><span class="p-name">Christian Weiske</span></a>
+  at
+  <a class="u-url" href="http://cweiske.de/tagebuch/podcast-transkript.htm"><time class="published" datetime="2017-11-15T21:03:58&#43;01:00">2017-11-15T21:03:58&#43;01:00</time></a>
+  said:
+  <p class="p-content p-name"> Einer von mir gern gehörten Podcasts ist Logbuch Netzpolitik und ich finde den Inhalt so wichtig, daß ich gerne eine Niederschrift (Transkript) der Gespräche hätte - das erhöht die Findbarkeit mit Suchmaschinen enorm. ​
+ 2015 machte ich schon mal einen Versuch, einzelne Folgen per Crowdsourcing über einen inzwischen nicht mehr verfügbaren Webdienst zu transkribieren, allerdings fanden sich nicht genug Leute - es wurde nicht mal eine Folge fertig. ​
+ Das Thema ließ mich nicht los, und vor zwei …</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-0b238d9944e88f83a6f90eba99c9b039e5a24c51">
+  <a class="u-author h-card" href="https://readwriterespond.com/"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/secure.gravatar.com/1e1294896537ac907480484617bd7d318bbed25e872e771427fcc6f97984af02.jpg" alt="Aaron Davis"/>
+  <span class="p-name">Aaron Davis</span></a>
+  at
+  <a class="u-url" href="https://collect.readwriterespond.com/this-week-in-the-indieweb-audio-edition/"><time class="published" datetime="2018-02-22T09:11:30&#43;11:00">2018-02-22T09:11:30&#43;11:00</time></a>
+  said:
+  <p class="p-content p-name">Just as with the Domain of One’s Own, the #IndieWeb is as much a mindset, an approach to a more open and democratic web, as it is about the tools. Marty McGuire’s weekly take on the IndieWeb News is a great way to stay abreast of this evolving space. A regular mix of interviews, events, posts and wiki updates is a great place to capture ideas and be inspired. McGuire also provides captions to support the audio.</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-46a05721f302c19f6373360ccbed60217bafefec">
+  <a class="u-author h-card" href="http://www.boffosocko.com"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/1.gravatar.com/c3ee975e95e5f5db00b1ce20795a6419c36bebe0de76937f3fbd70567509e58b.jpg" alt="Chris Aldrich"/>
+  <span class="p-name">Chris Aldrich</span></a>
+  at
+  <a class="u-url" href="http://boffosocko.com/2018/01/22/the-trick-that-makes-transcribing-quick-and-easy-youtube/#comment-47601"><time class="published" datetime="2018-03-08T14:39:14-08:00">2018-03-08T14:39:14-08:00</time></a>
+  said:
+  <p class="p-content p-name">It dawns on me that Marty McGuire may appreciate this trick if he hasn’t come across it.
+</p>
+    </div>
+
+    </div>
+
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:https://heady-land.glitch.me/2017/02/04/cryptoparty-baltimore/
+DTSTART:20170204T180000-0500
+DTEND:20170204T210000-0500
+SUMMARY:CryptoParty Baltimore
+DESCRIPTION:You lock your doors, so why not lock up your data? It&rsquo;s 2017 but it&rsquo;s time to party like it&rsquo;s 1983! (todo: think of a third clever thing to say about crypto before posting this event)!\nThe first(?) CryptoParty Baltimore will take place at Digital Harbor Foundation (1045 Light St. Baltimore, MD) on February 4th, 2017 from 6pm to 9pm!\nA CryptoParty is a meetup that is free and open to everyone, but especially folks without prior experience, who want to learn and share knowledge about ways to protect yourself in the digital space. Bring your laptop, smartphone, tablet, and/or USB sticks to try the tools and apps directly at the CryptoParty!\nFor more information and to RSVP, check out the Baltimore CryptoParty page at: https://www.cryptoparty.in/baltimore\nPlease spread the word! If you like, there&rsquo;s a printable 8.5&rdquo;x11&rdquo; flyer available here: https://www.cryptoparty.in/_media/cryptoparty-baltimore-2017-02.pdf\n
+LOCATION:https://martymcgui.re/venues/digital-harbor-foundation-tech-center/
+END:VEVENT
+END:VCALENDAR

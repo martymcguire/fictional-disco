@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Gitlfs&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/gitlfs/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/gitlfs/" title="Posts tagged 'Gitlfs'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/gitlfs/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Thu Apr 13</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/04/13/site-updates-simplifying-media-complicating-mentions/">Site updates: simplifying media, complicating mentions</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>
+  <a href="https://jonathanprozzi.net/">Jonathan Prozzi</a> and I have challenged one another to make a post about improving our websites once a week. I'm late with this one!
+  <br />
+</p>
+<p>Most of the features on my website are experiments in learning new things. Sometimes I learn a better way of doing something that I've already built into the site and it's time to migrate!</p>
+<h2>Moving Media files from Git LFS to a Media Endpoint</h2>
+<p>I build my site with <a href="https://jekyllrb.com/">Jekyll</a>, and I store my site's configuration and text content via <a href="https://git-scm.com/">Git</a>. One of the things that most folks avoid with Git is storing text content (which fits into Git's model of efficiently storing differences over time) with large binary files like images, etc. (which Git cannot manage as efficiently).</p>
+<p>When I first set up my site, I made use of <a href="https://git-lfs.github.com/">Git LFS</a> ("Large File Storage") for managing anything that wasn't text. Any images, video, or audio that I added to my site was stored in an _assets/ folder in a way that matched uploaded files to the posts they were a part of. Git LFS would transparently ship those files off to a secondary server rather than include their content in the Git repository itself. I had to go through some hoops to set up my local <a href="https://about.gitlab.com/">GitLab</a> server to support Git LFS and to set up Git LFS with the server that handles receiving new posts via <a href="https://www.w3.org/TR/micropub/">Micropub</a>, compiling and deploying the site.</p>
+<p>
+  It turns out that there are many reasons that a site would want to handle media files separately from the text content that refers to them. In fact, it is a common enough pattern that the Micropub standard includes a definition for a separate "<a href="https://www.w3.org/TR/micropub/#media-endpoint">media endpoint</a>" to handle file uploads. I shared a Micropub media endpoint implementation that I built called <a href="https://martymcgui.re/2017/01/26/122700/">Spano</a> a while back, and it has been working well with support from tools like <a href="https://quill.p3k.io/">Quill</a>. So the text content of my site is served from https://martymcgui.re/, and my media files from https://media.martymcgui.re/. With a couple of changes in my code and my workflows, this has become the way I handle all media files for my site.
+  <br />
+</p>
+<p>However, I still had a bunch of files in site being handled by Git LFS, and some of my Jekyll code (plugins and templates) for showing embeds expected files to be on the local filesystem. This past week I took some time to write some scripts to find all references to those local files, migrate them to my media server, and update the outgoing links. I also updated my embed handling so it didn't rely on local files. This let me delete a lot of local metadata I was keeping but not using, like all the EXIF tags in uploaded photos. I am now Git LFS free and it feels like one less thing to worry about.</p>
+<h2>Better Caching for Mentions from Webmention.io</h2>
+<p>When I finally started <a href="https://martymcgui.re/2017/03/22/003710/">displaying webmentions</a>, I had a very simple model for how to cache all the info from webmention.io. Basically: I stored all mentions in a big array and, when my site went to fetch new mentions, it would keep fetching until it saw the "last" mention again. This led to a bit of a bug where someone might send me a mention, update their page, and send the mention again. My site would not be able to recognize the "last" mention, so it would fetch all my mentions again, leading to everything appearing twice.</p>
+<p>This past week I rewrote my mention handling to avoid this problem by replacing this array and storing mentions in a hash based on the source and target. The new code also checks to see if the verification date of the mention has changed (giving me a way to detect and notify about changed mentions in the future). I also reorganized my mention cache to include an index by the target URL on my site. This makes it a bit quicker to find mentions for a given page when rendering out the site.</p>
+<p>Neither of these changes are really visible to readers of my site, but they have been useful for cleaning things up. The webmention.io handling in particular has brought my plugin a lot closer to being something I could release for other people to use!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/webmention.io/" class="label label-default">#<span class="p-category">Webmention.io</span></a>
+
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/git/" class="label label-default">#<span class="p-category">Git</span></a>
+
+      
+        <a href="/tag/gitlfs/" class="label label-default">#<span class="p-category">GitLFS</span></a>
+
+      
+        <a href="/tag/micropub/" class="label label-default">#<span class="p-category">Micropub</span></a>
+
+      
+        <a href="/tag/media-endpoint/" class="label label-default">#<span class="p-category">media-endpoint</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4npJVX"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/04/13/site-updates-simplifying-media-complicating-mentions/"><time class="dt-published" datetime="2017-04-13T14:29:31-0400">April 13, 2017 at 2:29PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

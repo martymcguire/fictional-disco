@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Hack&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/hack/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/hack/" title="Posts tagged 'Hack'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/hack/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Mon Feb 1</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/02/01/automatic-makerbot-camera-pt.-1---remote-control-camera-with-chdk/">Automatic MakerBot Camera Pt. 1 - Remote control camera with CHDK</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="http://camura.com/s/Be2"><img class="alignright" style="margin-left: 10px; margin-bottom: 2px; float: right;" title="SD300 running CHDK with Remote Control" src="http://static.camura.com/media/images/m/ddb3ff73f26e44cb02c79434d0fd1aed.jpg" alt="" width="240" height="180" /></a>One problem with making <a href="http://www.youtube.com/watch?v=ox_Ng9gDgVE">time-lapse videos</a> of <a href="http://www.youtube.com/watch?v=mcn8Hu8c7qU">MakerBot prints</a> is the fact that the MakerBot works by moving the build platform (and therefore the object being built) around in the XY plane, resulting in an unwatchable blur.</p>
+
+<p>It recently occurred to me that, since the MakerBot is such a hackable platform, I could probably make nice time-lapse videos by taking a picture of each layer.  The idea is to have the MakerBot pose the object after each layer, and trigger a camera to take a snapshot.</p>
+
+<p>When discussing this idea with fellow <a href="http://hackpittsburgh.org/">HackPittsburgh</a> member <a href="http://cibomahto.com/">Matt Mets</a>, he recommended I try out a Canon camera with the <a href="http://chdk.wikia.com/wiki/CHDK">Canon Hack Development Kit (CHDK)</a>.  Making a quick stop on eBay, I soon had an <a href="http://chdk.wikia.com/wiki/SD300">SD300</a> in my hands, ready to be hacked!</p>
+
+<p>I started by <a href="http://chdk.wikia.com/wiki/FAQ#Q._How_can_I_get_the_original_firmware_version_number_of_my_camera.3F">figuring out which firmware my SD300 was running</a>, which told me which <a href="http://mighty-hoernsche.de/bins/ixus40_sd300-100k-0.9.9-872-full.zip">version of CHDK to download</a> for my camera&rsquo;s particular model/firmware combo.  Using an SD card reader, I copied the contents of the CHDK zip file onto my camera&rsquo;s SD card and followed the instructions to <a href="http://chdk.wikia.com/wiki/FAQ#Q._How_can_I_make_the_CHDK_program_load_automatically_at_startup.3F">make CHDK auto-load</a> when the camera starts up.  I also changed my <a href="http://chdk.wikia.com/wiki/CHDK_firmware_usage">CHDK firmware settings</a> to set &ldquo;Disable LCD off&rdquo; to &ldquo;[Script]&ldquo;, so the camera wouldn&rsquo;t shut down on its own.</p>
+
+<p>Once CHDK was loaded and configured, I followed the <a href="http://chdk.wikia.com/wiki/USB_Remote_Cable">USB Remote Cable instructions</a> from the CHDK wiki.  The basic idea is to set Enable Remote to on, and load a script that is ready to handle USB remote events.  The one on the wiki page didn&rsquo;t work as-is for me, presumably because my camera has half-shoot (i.e. focus and charge flash) and full-shoot (take picture) settings.  Here is the result that worked for me:</p>
+
+<script src="//gist.github.com/292276.js"></script>
+
+<p>As the script says, I now turn the camera on in record mode, disable the flash, and start the script.  After that, the camera will automatically take a photo whenever I plug in the USB to my computer.</p>
+
+<p>More from this series:</p>
+
+<p><ul>
+<li>Part 1: Remote control camera with CHDK [YOU ARE HERE]</li>
+<li><a href="/2010/02/16/000000/">Part 2: Wiring it up!</a></li>
+<li><a href="/2010/07/16/000000/">Part 3: Updating the MakerBot Firmware</a></li>
+<li><a href="/2010/07/25/000000/">Part 4: Updating ReplicatorG</a></li>
+<li>Part 5: Printing with the Camera!</li>
+<ul></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/canon/" class="label label-default">#<span class="p-category">canon</span></a>
+
+      
+        <a href="/tag/chdk/" class="label label-default">#<span class="p-category">chdk</span></a>
+
+      
+        <a href="/tag/hack/" class="label label-default">#<span class="p-category">hack</span></a>
+
+      
+        <a href="/tag/makerbot-131/" class="label label-default">#<span class="p-category">makerbot 131</span></a>
+
+      
+        <a href="/tag/point-and-shoot/" class="label label-default">#<span class="p-category">point-and-shoot</span></a>
+
+      
+        <a href="/tag/sd300/" class="label label-default">#<span class="p-category">sd300</span></a>
+
+      
+        <a href="/tag/usb/" class="label label-default">#<span class="p-category">usb</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/441500"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/02/01/automatic-makerbot-camera-pt.-1---remote-control-camera-with-chdk/"><time class="dt-published" datetime="2010-02-01T00:00:00-0500">February 1, 2010 at 12:00AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

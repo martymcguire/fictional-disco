@@ -1,0 +1,73 @@
+https://keybase.io/schmarty
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://martymcgui.re
+  * I am schmarty (https://keybase.io/schmarty) on keybase.
+  * I have a public key with fingerprint DD7F 6B41 4E54 F883 93F2  F546 B36C 9A5E 8F7A 6619
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "client": {
+            "name": "keybase.io node.js client",
+            "version": "0.8.25"
+        },
+        "key": {
+            "eldest_kid": "0101acc68ea33d979fa840630946dc2ace9e9cb9fc7c6830759ada02c4f6a344287e0a",
+            "fingerprint": "dd7f6b414e54f88393f2f546b36c9a5e8f7a6619",
+            "host": "keybase.io",
+            "key_id": "b36c9a5e8f7a6619",
+            "kid": "0101acc68ea33d979fa840630946dc2ace9e9cb9fc7c6830759ada02c4f6a344287e0a",
+            "uid": "014bacdc27024a5302d98ac537f80d19",
+            "username": "schmarty"
+        },
+        "service": {
+            "hostname": "martymcgui.re",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1453864832,
+    "expire_in": 157680000,
+    "prev": "d67caf9ba7b000d8dde46014bbf6bd75cda921f646899716c6b1901e804df777",
+    "seqno": 10,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+
+owGtUmtQVGUYBtIFZIGY0oJsogOT0TDLuV+gIqChJhGpHIcYdD3nO9/ZPbCcXXfP
+ri4Xqxm7wCjlKoHEpRoaQTNUrhFDOhiG9oNyvKCBjGZIUNS0IRAOncNsP5rpZ9+v
+b773eZ73fZ73ez/yvqCw4A5b/fb3SqXY4AtTQtDWVuZAGSLYRS+SWoYAmwwVVb8p
+fAlEUpFi6BV4FzTJ9njFLkJTkSs+gElGPNDpku2KhkJNrAmnkIpkHa+zoU2ELtVc
+LIt6FUMxHgCahTxBiBzDSTxLojSBciQtApwHkIMcEDgJMBqIQBmK40UexQEp0TxB
+kjjLQJTXGkqyYoFOh1PWR0REkZFogcRISJESyxIcIeESRdICQQOOpyArMTxNY5xG
+tNpd6r/MICuTmlfG+w/8/zy3OyBHCjzQiAyKkzxFoLjIsTygCEZiUXGlr9sFnYHg
+XcBawjtVrx6q9uqRAdSD1Z0EECvlEmBxyyYn1MgOp121A7tNK1lV1eFK1amq16Fj
+d0HBHFAxC7IiakGuLLA+sEFMgwJV1nUxkiJYmmQJPBmBux2yE5plHUExNItqR28E
+PXr+NAN4iRN4RtCeRVYUIUnrJgVtLSJDAZHncEyiSZrlOAajAS1gHIpBFiVFiWEY
+RDe2U7Fr2pqoylt017JF4VW35qeiMmT9qqDgsCDD6hD9jwatCb//n49beyl6ebPh
+TEhEes07G08PV7Hxt2Nygy9xF3oi1klS5z7/QzMveAbxgdlPvjl+8FZZRmEiG//W
+UktTTEe3syzVsC4TXcjfhOL5+SXmv65/vdt9zDr2RG2sd2fFNpsFROKGmfS9WVED
+uWNzXYvpLt+p5dmYsfH5xWipaDlNTE/2L9SY07EBky2y8fGD3QX9j1in8866aze0
+nJws7Yxg0Ybl5fYOoq2133XCX9cR7bt5Zv0fdefalWc+u8gIH2H+e6crM+ptOeev
+NPcUjoRe+3bxR+PkaMtXV9eeTDmcNjoanb368ru+iKRdUc/P32xofG5/b+ImrG/z
+x6D+4ufXYh/zOCLyJuThR6vuGp/+Jd44cvanrk+zm7cVVo9tP7L0p9H6tm/L4Zz8
+Z8fLbTPerunknsGFLdW3f0hoIie+oyars+89WEAnYa3G/p/vnB9w37DFfJkwnDCD
+L8yF7/ntQ7X46L7SxXzfU+FDzWE5/rWWLF9xYnDflZytsq/zV1ZCYy+/ejUsNq2g
+8pbp9f07aq3kaNOhV6Y2HjcMvRGaMg+EHbMPV4vtNXWHWqrLh0x7/S9m/j5cWTTd
+fSNkD4xrbTAk5famnMprjqqw9Imeni/axuulc7mZNaN33jzSG1reWNQ23v19xoZV
+WeRLr80pPSMnco1qQVzV1NKEb+LlD5S6wQNHhQfirq95svXusb8B
+=D5//
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/schmarty

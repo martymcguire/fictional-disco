@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="A couple of days ago I wrote up a set of instructions for setting up a self-hosted copy of Woodwind with nginx and upstart. Since then I noticed that many images were broken on the feeds I was looking at - a common problem when a site that is served with HTTPS is displaying images and other content from another site that is served with HTTP.
+ Broken images are so 90s.">
+  
+  <title>Configuring Woodwind with imageproxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2016/11/30/configuring-woodwind-with-imageproxy/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2016/11/30/configuring-woodwind-with-imageproxy/">Configuring Woodwind with imageproxy</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p class="">A couple of days ago I wrote up a set of instructions for <a href="https://martymcgui.re/2016/11/28/124055/">setting up a self-hosted copy of Woodwind with nginx and upstart</a>. Since then I noticed that many images were broken on the feeds I was looking at - a common problem when a site that is served with HTTPS is displaying images and other content from another site that is served with HTTP.</p><div class="medium-insert-images ui-sortable"><figure>
+    <img src="https://media.martymcgui.re/00/eb/b7/cb/64d4d3c006585e950d0a743ad2c6b4b443f8336bee2c696b26520657.png" alt="" class="ui-sortable-handle">
+        
+<figcaption class="">Broken images are so 90s. But, like, sad 90s.</figcaption></figure></div><p class="">I noticed that the main site woodwind.xyz was serving images through special URLs like:</p><pre>https://woodwind.xyz/imageproxy/?url=https%3A%2F%2Fmartymcgui.re%2Fimages%2Flogo.jpg&amp;op=noop&amp;sig=...</pre><p class="">Looking in the source code, I found that <a href="https://woodwind.xyz/imageproxy/?url=https%3A%2F%2Fmartymcgui.re%2Fimages%2Flogo.jpg&amp;op=noop&amp;sig=73d286817747f1ed807dfa23fba0d381d0d104ca">Woodwind has support for image proxies</a>, which are neat little services that can help serve remote HTTP content over HTTPS, resize images on the fly, and more.</p><p class="">I'd been meaning to set up one of these services for my own site, so this seemed like a good time to jump in!</p><p class="">Since my server already has <a href="https://golang.org/">Go</a> I chose <a href="https://github.com/willnorris/imageproxy">Will Norris' imageproxy</a>, which has a similar deployment setup to how I am already running Woodwind: Upstart manages a standalone process and nginx acts as a proxy to pass along requests.</p><p class="">Installation was fairly simple, once I had my GOPATH set up correctly:</p><pre>go get https://github.com/willnorris/imageproxy</pre><p class="">For running a persistent service, Will has an <a href="https://raw.githubusercontent.com/willnorris/imageproxy/master/etc/imageproxy.conf">example Upstart configuration</a>, which I modified a bit and placed in /etc/init/imageproxy.conf:</p><pre><code>description "Image Proxy server"
+start on (net-device-up)
+stop on runlevel [!2345]
+
+respawn
+exec start-stop-daemon --start -c www-data --exec /home/imageproxy_user/go/bin/imageproxy -- \
+    -addr localhost:4593 \
+    -log_dir /var/log/imageproxy \
+    -cache /var/cache/imageproxy \
+    -signatureKey @/etc/imageproxy.key</code></pre><p class="">Before starting up the service, there were a few extra steps:</p><p class="">Create /var/log/imageproxy and /var/cache/imageproxy and make sure they are owned by the www-data user.</p><p class="">Create the "<a href="https://github.com/willnorris/imageproxy/#signed-requests">signature key</a>" in /etc/imageproxy.key. This is used to authorize each image request so that random folks can't proxy random stuff through your imageproxy. I used the command line openssl tool for this, with an extra pass through awk to remove the newline character that openssl spits out.</p><pre>$ sudo openssl rand -base64 42 | awk 'BEGIN{ORS="";} {print} &gt; /etc/imageproxy.key</pre><p class="">I also made sure that /etc/imageproxy.key was owned and readable by www-data and no other user.</p><p class="">I could then start up the server with:</p><pre>sudo start imageproxy</pre><p class="">Next it was time to configure nginx to send proxied image requests along to imageproxy. I opened up the nginx woodwind.conf file that I had created and added a new location block:</p><pre>location ~ ^/imageproxy/ {<br>        # pattern match to capture the original URL to prevent URL<br>        # canonicalization, which would strip double slashes<br>        if ($request_uri ~ "/imageproxy/(.+)") {<br>            set $path $1;<br>            rewrite .* /$path break;<br>        }<br>        proxy_pass http://localhost:4593;<br>    }</pre><p class="">After restarting nginx, requests to https://woodwind.yourdomain.com/imageproxy/... would be forwarded to the imageproxy server.</p><p class="">Finally, it was time to configure Woodwind to use the proxy. I opened up woodwind.cfg and added two lines:</p><pre>IMAGEPROXY_URL = '/imageproxy'<br>IMAGEPROXY_KEY = '...' # the contents of /etc/imageproxy.key</pre><p class="">A quick restart of the Woodwind service, a browser refresh and I have images aplenty!</p><div class="medium-insert-images ui-sortable"><figure>
+    <img src="https://media.martymcgui.re/60/d2/ee/c0/1ac78aaf7042e34cc941fa258f1c5005a5e32b603dc7f5830e269d46.png" alt="" class="ui-sortable-handle">
+        
+</figure></div><p class="">Thanks for reading! I hope this little HOWTO was useful. I look forward to more fun with imageproxy in my IndieWeb adventures. How might you be able to put imageproxy to use?</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/woodwind/" class="label label-default">#<span class="p-category">Woodwind</span></a>
+
+      
+        <a href="/tag/imageproxy/" class="label label-default">#<span class="p-category">imageproxy</span></a>
+
+      
+        <a href="/tag/self-hosting/" class="label label-default">#<span class="p-category">self-hosting</span></a>
+
+      
+        <a href="/tag/howto/" class="label label-default">#<span class="p-category">HOWTO</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4ka5yj"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2016/11/30/configuring-woodwind-with-imageproxy/"><time class="dt-published" datetime="2016-11-30T00:58:44-0500">November 30, 2016 at 12:58AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2016/11/30/005844/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2016/11/30/configuring-woodwind-with-imageproxy/" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

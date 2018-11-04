@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Wnyc&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/wnyc/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/wnyc/" title="Posts tagged 'Wnyc'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/wnyc/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Thu Aug 10</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/08/10/syndicating-audio-posts-with-wnycs-audiogram-generator/">Syndicating Audio Posts with WNYC&#39;s Audiogram Generator</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>I publish a <a href="https://martymcgui.re/tag/this-week-indieweb-podcast/">few</a> <a href="https://wehavetoask.com/">different</a> <a href="https://soundcloud.com/bigimprov">podcasts</a> and often find myself advertising new episodes by syndicating new posts to various social media silos.</p>
+<p>Sadly, few social media services consider audio to be "a thing", despite often having robust support for video.</p>
+<p>I'm certainly not the first person to notice this, and the fine folks at <a href="https://medium.com/@WNYC/socialaudio-e648e8a5f2e9">WNYC have taken this audio sharing problem head-on</a>.</p>
+<p>Enter the <a href="https://github.com/nypublicradio/audiogram/">Audiogram Generator</a>, an open source project that runs on NodeJS and uses FFMPEG to take samples from your audio files and munge them into short videos for sharing on social networks.</p>
+<figure>
+  <img src="https://media.martymcgui.re/c9/a5/74/e2/55643f40672e93224a89569f92db05c4d3fda4e466caa962d2c26551.png" alt="" />
+</figure>
+<p>Here's a quick rundown of how I got the Audiogram Generator running on my macOS laptop using Docker.</p>
+<p>I use <a href="https://brew.sh/">Homebrew</a>, so first I installed docker and docker-machine and created a new default machine:</p>
+<pre>
+  brew install docker docker-machine
+  docker-machine create -d virtualbox default
+</pre>
+<p>Once that finished, I set my environment variables so the docker command line utility can talk to this machine:</p>
+<pre>eval $(docker-machine env)</pre>
+<p>Next, it was time to download the source for the audiogram generator from GitHub and build the Docker container for it:</p>
+<pre>
+  git clone https://github.com/nypublicradio/audiogram.git
+  cd audiogram
+  docker build -t audiogram .
+</pre>
+<p>Finally, I could run it:</p>
+<pre>
+  docker run -p 8888:8888 -t -i audiogram
+  npm start
+</pre>
+<p>Once up, I pointed my browser at <a href="http://192.168.99.100:8888/">http://192.168.99.100:8888/</a> and I saw pretty much the interface that you see in the screenshot above.</p>
+<p>The basic usage steps are:</p>
+<ul>
+  <li>Choose an audio file</li>
+  <li>
+    Choose a template
+    <ul>
+      <li>Templates w/ images are hardcoded into the app, so if you want to use them with your own images you'll have to make changes to the source.</li>
+    </ul>
+  </li>
+  <li>Choose a selection of the audio that is less than 300 seconds long</li>
+  <li>Add any text if the template requires it</li>
+  <li>Generate!</li>
+  <li>Download</li>
+  <li>Upload to silos!</li>
+</ul>
+<p>I made a <a href="https://martymcgui.re/2017/08/09/190935/">sample post to my own site using a selection of an interview</a> and then syndicated that post by uploading the same video to <a href="https://twitter.com/schmarty/status/895423872115146754">Twitter</a>, <a href="https://www.facebook.com/marty.mcguire.54/videos/vb.1292103610/10210046638744486/">Facebook</a>, <s>and Mastodon</s>.</p>
+<p>I don't yet know exactly how I'll choose what portions to share on each silo, what text and links to accompany them to encourage folks to listen to the full episodes, and so on. There are also some quirks to learn. For example, Twitter <a href="https://support.twitter.com/articles/20172128?lang=en#video-formats">has a maximum length of 2:20 for videos</a>, and its cropping tool would glitch out and reset to defaults unless I stopped it "near" the end.</p>
+<p>Thankfully, there is a very detailed <a href="https://docs.google.com/document/d/1US1llZexMtJi0uIYT_GKShFlD2nRjRmZuVB024zOjSo/edit#">Audiogram Generator usage doc</a> with lots of examples and guidelines for making attention-getting posts.</p>
+<p>For the near term I want to play with the tool to see what kinds of results I can make. Long-term I think this would be a really neat addition to my <a href="https://indieweb.org/Screech">Screech</a> tool, which is designed for posting audio to your own website.</p>
+<p>How do you feel about audiograms? I'd love to hear other folks' thoughts!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/podcasting/" class="label label-default">#<span class="p-category">podcasting</span></a>
+
+      
+        <a href="/tag/audio/" class="label label-default">#<span class="p-category">audio</span></a>
+
+      
+        <a href="/tag/video/" class="label label-default">#<span class="p-category">video</span></a>
+
+      
+        <a href="/tag/silos/" class="label label-default">#<span class="p-category">silos</span></a>
+
+      
+        <a href="/tag/wnyc/" class="label label-default">#<span class="p-category">WNYC</span></a>
+
+      
+        <a href="/tag/audiograms/" class="label label-default">#<span class="p-category">audiograms</span></a>
+
+      
+        <a href="/tag/howto/" class="label label-default">#<span class="p-category">HowTo</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4poN6E"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/08/10/syndicating-audio-posts-with-wnycs-audiogram-generator/"><time class="dt-published" datetime="2017-08-10T18:06:14-0400">August 10, 2017 at 6:06PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/895769433892937729" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://www.facebook.com/marty.mcguire.54/posts/10210053646239669" title="Facebook
+"><i class="fa fa-facebook"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/08/10/180614/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

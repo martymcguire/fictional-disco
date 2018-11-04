@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="One of the things I&amp;rsquo;ve been longing to do with my mobile photo-sharing site Camura is to offer image annotations, like objects and faces. Over the last couple of years I have been increasingly frustrated by the appearance of face tagging on services like Facebook, and the recent addition of face recognition to iPhoto has brought this frustration to the surface once again. I don&amp;rsquo;t even want to do something as complex as face recognition - I just want to find faces in an image.">
+  
+  <title>Face Detection in Static Images with Python</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2009/02/20/face-detection-in-static-images-with-python/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2009/02/20/face-detection-in-static-images-with-python/">Face Detection in Static Images with Python</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>One of the things I&rsquo;ve been longing to do with my mobile photo-sharing site <a href="http://camura.com/">Camura</a> is to offer image annotations, like objects and faces.  Over the last couple of years I have been increasingly frustrated by the appearance of face tagging on services like Facebook, and the recent <a href="http://www.apple.com/ilife/iphoto/#faces">addition of face recognition to iPhoto</a> has brought this frustration to the surface once again.  I don&rsquo;t even want to do something as complex as face recognition - I just want to find faces in an image.</p>
+
+<p>Googling for things like &ldquo;open source face detector&rdquo; doesn&rsquo;t come up with much.  The landscape seems to be comprised of mostly expensive for-pay libraries written for Windows, abandoned research projects, and lots of research papers full of equations &ndash; but no code that I could get to run.</p>
+
+<p>To make a long post short, it turns out that Intel&rsquo;s <a href="http://sourceforge.net/projects/opencvlibrary/">OpenCV</a> computer vision library comes with a <a href="http://opencv.willowgarage.com/wiki/FaceDetection">face detector</a> example that should work out of the box.  Better yet, there are now some decent <a href="http://wwwx.cs.unc.edu/~gb/wp/blog/2007/02/04/python-opencv-wrapper-using-ctypes/">Python bindings</a> for OpenCV that come pre-packaged with OpenCV for Ubuntu and Debian.  You can install them with:
+<code>
+$ sudo apt-get install python-opencv
+</code></p>
+
+<p>Now, it seems that most OpenCV <a href="http://blog.jozilla.net/2008/06/27/fun-with-python-opencv-and-face-detection/">face detector examples</a> are meant to be run &ldquo;live&rdquo;, usually taking the image from a webcam and highlighting faces with a red box in real-time.  However, I have a large database of static images that I want to consider individually, and I simply want to save the face coordinates for later use, rather than altering the picture.</p>
+
+<p>So, with a bit more Googling, I found a Python script that I could chop up and use for this purpose, and here is what I came up with:</p>
+
+<script src="//gist.github.com/67044.js"></script>
+
+<p>An example run of the script looks something like this:</p>
+
+<pre><code>$ python face_detect.py marty_mcguire.jpg
+[(50,36) -&gt; (115,101)]
+</code></pre>
+
+<p>You can overlay that rectangle on an output image with ImageMagick&rsquo;s &ldquo;convert&rdquo;:</p>
+
+<pre><code>$ convert marty_mcguire.jpg -stroke red -fill none -draw &quot;rectangle 50,36 115,101&quot; output.jpg
+</code></pre>
+
+<p>And the output might look something like this:</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2009/02/output.jpg"><img class="size-medium wp-image-18" title="My face: detected!" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2009/02/output.jpg" alt="My face, it has been detected." width="180" height="240" /></a></p>
+
+<p>Pretty fun stuff!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/debian/" class="label label-default">#<span class="p-category">debian</span></a>
+
+      
+        <a href="/tag/face-detection/" class="label label-default">#<span class="p-category">face detection</span></a>
+
+      
+        <a href="/tag/open-source/" class="label label-default">#<span class="p-category">open source</span></a>
+
+      
+        <a href="/tag/opencv/" class="label label-default">#<span class="p-category">opencv</span></a>
+
+      
+        <a href="/tag/python/" class="label label-default">#<span class="p-category">python</span></a>
+
+      
+        <a href="/tag/static-image/" class="label label-default">#<span class="p-category">static image</span></a>
+
+      
+        <a href="/tag/ubuntu/" class="label label-default">#<span class="p-category">ubuntu</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/3yF500"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2009/02/20/face-detection-in-static-images-with-python/"><time class="dt-published" datetime="2009-02-20T00:00:00-0500">February 20, 2009 at 12:00AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2009/02/20/face-detection-in-static-images-with-python/" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

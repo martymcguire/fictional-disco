@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Speaking&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/speaking/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/speaking/" title="Posts tagged 'Speaking'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/speaking/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Mon Mar 12</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2018/03/12/a-ghost-party-is-haunting-the-silod-web/">A Ghost (Party) is Haunting the Silo&#39;d Web</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>This post is a rough summary of a lightning talk that I gave on February 28th at the <a href="https://hackaday.com/2018/02/23/next-week-bring-a-hack-in-nyc/">Bring-A-Hack NYC with Hackaday + Ultimaker + New Lab</a>. Many thanks to Shayna Gentiluomo for organizing and sometimes co-conspirator <a href="https://mfgriffin.com/">Matt Griffin</a> for nudging me to speak!</p>
+<hr />
+<p>I have a lot of distrust for social silos like Facebook and Twitter which draw us in with the promise of connecting with family, friends, and interesting people, but I sometimes have trouble articulating that in a succinct way. Thankfully, I saw a perfect example this morning:</p>
+<blockquote>Posting on the @facebook website is not working in Mac OS today. JavaScript eats CSS &amp; HTML, making data entry field disappear except for a spookily disembodied close-box X. Been this way a few hours. — <a href="https://twitter.com/zeldman">@zeldman</a>, <a href="https://twitter.com/zeldman/status/968861672541708290">9:53 AM - 28 Feb 2018</a></blockquote>
+<p>Some Facebook team pushed an (untested?) update which broke the website, preventing some users from posting. "Move fast and break things". These silos don't value us or our content. So, we should get out. But what is the alternative?</p>
+<p>The <a href="https://indieweb.org/">IndieWeb</a> helps us take our content back, by posting to our own websites on our own domains. With some work, we can even get the benefits of these social networks and take our conversations with us. There’s a whole lot of great stuff on the IndieWeb website, so <a href="https://indieweb.org/Getting_Started">go spend a couple of days reading it</a>. But I’m not here to talk about all those good things today. I’m here to talk about how I used them to do a dumb hack.
+  <br />
+</p>
+<p><a href="https://ghostparty.today/">ghostparty.today</a> is a website for Ghost Party – an improv project that has a ... certain aesthetic. Specifically the website was pitched as “exactly like the Heaven’s Gate website” but we compromised on “extreme Geocities”.</p>
+<p></p>
+<figure><img src="https://media.martymcgui.re/09/a1/ac/48/9365fceee9147050b56175762179446084558b2611bec008d03146ed.png" alt="Ugly large text says 'Welcome to GHOST PARTY'" /><figcaption>We have an aesthetic.</figcaption></figure>
+<p>My Ghost Party co-host (co-ghost) built the first version of the site on <a href="https://neocities.org/">Neocities.org</a>, a lovely hosting provider that recaptures the feel of editing raw HTML directly in your browser. However, hand-editing HTML gets exhausting and sometimes you just want to post things to Instagram (and, of course,  <a href="https://instagram.com/ghostpartyimprov/">Ghost Party has an Instagram</a>).</p>
+<p>And Instagram is fine as a marketing platform! Lots of people look at it and like the pictures. But what about our website? <i>Our aesthetic</i>?</p>
+<p><a href="https://indieweb.org/Micropub">Micropub</a> is a standard (and now W3C Recommendation) designed over some years of practice from the IndieWeb community that defines a way for apps and clients to easily make new posts to any website (even yours) if it supports Micropub.</p>
+<p>I used <a href="https://glitch.com/">Glitch</a>, an amazing community and JavaScript-server-app hosting service, to make a simple micropub service for ghostparty.today.</p>
+<p></p>
+<figure><img src="https://media.martymcgui.re/9c/e4/3b/6a/2acaa5622a3129066fbe2cccae3e41bbaa56db82ff3d0eff51f9e2ed.png" alt="Screenshot of code in the Glitch UI"/></figure>
+<p>It accepts posts via micropub, including file uploads, and uses the Neocities API (hey, it’s not the 90s! Neocities has an API!) to upload the files to our website. Then, it fetches our site’s index.html, adds the content of the new post, and uploads it back. <a href="https://glitch.com/edit/#!/prism-dirt">You can find the source here on Glitch and fork it for your own purposes</a>!</p>
+<p>Now that our site supports micropub, we can make use of a wonderful service called <a href="https://ownyourgram.com/">OwnYourGram</a>. Once we give OwnYourGram permission to post to our site and read our Instagram feed, it will poll our Instagram account and copy each new post back to our website, where we can display it however we want.</p>
+<figure><img src="https://media.martymcgui.re/2c/fe/90/e7/881eb3e2066c4fe6230eb7f6005921d22ff1691171c389dc92f2527f.png" alt="Super simplified Instagram photo on Ghost Party website"/><figcaption>Aesthetic</figcaption></figure>
+<p>We can go a step further, using an IndieWeb building block called <a href="https://indieweb.org/Webmention">Webmention</a> and a service called <a href="https://brid.gy/">brid.gy</a>, to bring all of those responses, those Instagram and Facebook likes and comments, Twitter retweets, and more, back to our site for display.</p>
+<p>And to show how it works, here’s a micropub client call <a href="https://quill.p3k.io/">Quill</a> that works for any micropub-enabled site. Let’s make a quick post, now!</p>
+<figure><img src="https://media.martymcgui.re/50/c3/e5/91/56ecb23b74abdd71f8a31a41040a321dbd94b70b8da981dd954a11ae.png" alt="Posting interface with 'Hello from New Lab' typed into note field"/><figcaption>Quill's note interface</figcaption></figure>
+<p>Once we hit the "Post" button and refresh the homepage, we can see the new post on the site!</p>
+<figure><img src="https://media.martymcgui.re/82/0a/5e/fc/19b83c42948ee8517be2677de6f120ba374aeb0ed1d5343ba053409f.png" alt="'Hello from New Lab' text with ghost separator image" /><figcaption><em>Aesthetic</em></figcaption></figure>
+<p>This was the end of time time. I would have like to further encourage folks to check out <a href="https://indieweb.org/Homebrew_Website_Club">Homebrew Website Club</a>s in their own communities, or to start one if they don't exist. They're part show-and-tell, part support group, and part mad science lab for people who love the web!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/ghostparty/" class="label label-default">#<span class="p-category">ghostparty</span></a>
+
+      
+        <a href="/tag/micropub/" class="label label-default">#<span class="p-category">micropub</span></a>
+
+      
+        <a href="/tag/speaking/" class="label label-default">#<span class="p-category">speaking</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4tNF89"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2018/03/12/a-ghost-party-is-haunting-the-silod-web/"><time class="dt-published" datetime="2018-03-12T11:08:09-0400">March 12, 2018 at 11:08AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/973219715907772416" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://www.facebook.com/marty.mcguire.54/posts/10211595313620390" title="Facebook
+"><i class="fa fa-facebook"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="This post used to be on Posterous. I rescued my posts before Posterous shut down and am now sharing them here.
+After exporting a bunch of Hershey vector fonts to SVG the other day, I was concerned that the next step in using them in a program would be painful. Specifically, I expected to have to create a mapping from each ASCII character I care about to the individual glyphs that represent them.">
+  
+  <title>Thing-a-Day 2011 #8 - Hershey font rendering in JavaScript with Raphaël</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2011/02/08/thing-a-day-2011-">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2011/02/08/thing-a-day-2011-#8---hershey-font-rendering-in-javascript-with-rapha%C3%ABl/">Thing-a-Day 2011 #8 - Hershey font rendering in JavaScript with Raphaël</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><em style="font-size: 0.8em">This post used to be on Posterous. I rescued my posts before Posterous shut down and am now sharing them here.</em></p>
+
+<p>After exporting a bunch of Hershey vector fonts to SVG <a href="http://thing-a-day.com/thing-a-day-2011-6-hershey-fonts-in-svg">the other day</a>, I was concerned that the next step in using them in a program would be painful. Specifically, I expected to have to create a mapping from each ASCII character I care about to the individual glyphs that represent them.</p>
+<p>Halfway through a couple of different strategies for making the mapping easy, I realized that these fonts are, for the most part, already aligned with ASCII.  So, the "space" character (ASCII 32) is the first glyph in most of the Hershey fonts, and the other characters follow thereafter. So to get the glyph for a given ASCII, I just have to pull it out of the array at glyph[character - 32].</p>
+<p>My code for this is starting to take shape, but it's not useful (or clean) enough to share, yet. Still, it is worth a nice picture:</p>
+<p></p><div class="p_embed p_image_embed">
+<a href="http://static.creatingwithcode.com/thing-a-day-2011/getfile8.posterous.com/getfile/files.posterous.com/temp-2011-02-08/ykmvaGvmqEqmihqJIkxefHDGIJvvjIpwjGIDFHnEbjpDubkphJHeaIcIFfkd/hershey_fonts_in_js.png.scaled1000.png"><img alt="Hershey_fonts_in_js" height="173" src="http://static.creatingwithcode.com/thing-a-day-2011/getfile3.posterous.com/getfile/files.posterous.com/temp-2011-02-08/ykmvaGvmqEqmihqJIkxefHDGIJvvjIpwjGIDFHnEbjpDubkphJHeaIcIFfkd/hershey_fonts_in_js.png.scaled500.png" width="500"></a>
+</div>
+
+<p>I'm having a really good time doing Thing-a-Day. It's been very challenging to find the time to keep going, but each time I do I am quite happy with what I'm able to produce. The undeniably awesome part is that these things are all adding up to bigger projects I would have never had time to tackle, otherwise!</p>
+<p><strong>Update: <span style="font-family: mceinline;">I could not resist adding a text field and going crazy with live rendering:</span></strong></p>
+<p></p><div class="p_embed p_image_embed">
+<a href="http://static.creatingwithcode.com/thing-a-day-2011/getfile5.posterous.com/getfile/files.posterous.com/temp-2011-02-08/jwcixGekksfgdIyCaginyxqrDbvjCjHgFtrsdydgfidDhAghEsyviDAzJDwe/hershey_font_js_lulz.png.scaled1000.png"><img alt="Hershey_font_js_lulz" height="309" src="http://static.creatingwithcode.com/thing-a-day-2011/getfile0.posterous.com/getfile/files.posterous.com/temp-2011-02-08/jwcixGekksfgdIyCaginyxqrDbvjCjHgFtrsdydgfidDhAghEsyviDAzJDwe/hershey_font_js_lulz.png.scaled500.png" width="500"></a>
+</div>
+
+<p> </p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4AD500"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2011/02/08/thing-a-day-2011-"><time class="dt-published" datetime="2011-02-08T00:00:00-0500">February 8, 2011 at 12:00AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2011/02/08/thing-a-day-2011-" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

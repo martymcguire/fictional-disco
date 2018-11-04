@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="I&amp;rsquo;ve been into hardware hacking on and off for much of my life, but I&amp;rsquo;ve never really had the time and confidence to design and build my own hardware. In recent years, projects like the open source Arduino have been slowly convincing me that I just might be able to do this stuff.
+When a recent Make blog article showed nearly step-by-step instructions for building a breadboard-friendly Arduino clone called the Boarduino, I felt compelled to order one and try to get it working with my new MacBook.">
+  
+  <title>Getting the Boarduino working with OS X Leopard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2008/06/12/getting-the-boarduino-working-with-os-x-leopard/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2008/06/12/getting-the-boarduino-working-with-os-x-leopard/">Getting the Boarduino working with OS X Leopard</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>I&rsquo;ve been into hardware hacking on and off for much of my life, but I&rsquo;ve never really had the time and confidence to design and build my own hardware.  In recent years, projects like the open source <a href="http://arduino.cc/">Arduino</a> have been slowly convincing me that I just might be able to do this stuff.</p>
+
+<p>When a recent <a href="http://blog.makezine.com/archive/2008/06/build_make_a_boarduino.html">Make blog article</a> showed nearly step-by-step instructions for building a breadboard-friendly Arduino clone called the <a href="http://ladyada.net/make/boarduino/index.html">Boarduino</a>, I felt compelled to order one and try to get it working with my new MacBook.</p>
+
+<p>I ordered the DC Boarduino kit from <a href="http://www.adafruit.com/index.php?main_page=index&cPath=19">LadyAda&rsquo;s website</a>, along with the USB TTL-232 cable that would connect to my laptop&rsquo;s USB port.  I also ordered the 9V power supply on the site to power the Boarduino.</p>
+
+<p>I found building the Boarduino to be pretty easy (=ahem= with only one screwup on my part) thanks to <a href="http://www.ladyada.net/make/boarduino/solder.html">LadyAda&rsquo;s detailed instructions</a>.  It was the first soldering project I had done in awhile, so I am happy that it went so well.</p>
+
+<p>I next looked to the <a href="http://www.arduino.cc/en/Guide/MacOSX">Arduino OS X</a> guide for the software download and installation instructions.  I ended up grabbing version 11 of the Arduino software.  After unpacking the .zip file from the site, I installed the FTDI driver and rebooted, then plugged in the Boarduino&rsquo;s power and connected it to the laptop via USB.</p>
+
+<p>Next, I double-clicked the Arduino application to start it, and nothing happened.  After messing around with it on the command line for awhile, I determined that it didn&rsquo;t like the version of Java I&rsquo;m using (I have the 64-bit version of Java 6 as my default).</p>
+
+<p>So, to run the Arduino software, I had to temporarily set my preferred Java version to 5.0 via the Java Preferences panel in /Applications/Utilities/Java/.  Once I had changed my Java version, the Arduino app started right up with a double-click.  Once I was done with the app, I could set my Java preferences back to Java 6.</p>
+
+<p>In the Arduino app, I set it up to communicate with the Boarduino by selecting &ldquo;Arduino NG or older w/ ATmega168&rdquo; under the <code>Tools | Board</code> menu.  I then opened up the Blink test program under <code>File | Sketchbook | Examples | Digital | Blink</code>.  To load the program onto the Boarduino, I pressed its reset button, then quickly clicked the &ldquo;Upload to I/O Board&rdquo; button on the interface.</p>
+
+<p>The red LED on the Boarduino blinked rapidly as data was received, then it started blinking slowly as it ran the Blink program!  Hooray!</p>
+
+<p>I&rsquo;m excited that it&rsquo;s so easy to get something as powerful and versatile as the Boarduino up and running in just a couple of hours.  I&rsquo;m going to try and think of a couple of projects for it.  Whatever I do, I&rsquo;ll be sure to post about it here.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/arduino/" class="label label-default">#<span class="p-category">arduino</span></a>
+
+      
+        <a href="/tag/boarduino/" class="label label-default">#<span class="p-category">boarduino</span></a>
+
+      
+        <a href="/tag/hardware/" class="label label-default">#<span class="p-category">hardware</span></a>
+
+      
+        <a href="/tag/java/" class="label label-default">#<span class="p-category">java</span></a>
+
+      
+        <a href="/tag/leopard/" class="label label-default">#<span class="p-category">leopard</span></a>
+
+      
+        <a href="/tag/os-x/" class="label label-default">#<span class="p-category">os x</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/3u2401"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2008/06/12/getting-the-boarduino-working-with-os-x-leopard/"><time class="dt-published" datetime="2008-06-12T00:00:01-0400">June 12, 2008 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2008/06/12/getting-the-boarduino-working-with-os-x-leopard/" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

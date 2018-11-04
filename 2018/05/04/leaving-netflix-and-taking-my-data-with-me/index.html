@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Netflix has been a staple in my life for years, from the early days of mailing (and neglecting) mostly-unscratched DVDs through the first Netflix original series and films. With Netflix as my catalog, I felt free to rid myself of countless DVDs and series box sets. Through Netflix I caught up on &#34;must-see&#34; films and shows that I missed the first time around, discovered unexpected (and wonderfully strange) things I would never have seen otherwise.">
+  
+  <title>Leaving Netflix (and taking my data with me)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/2018/05/04/leaving-netflix-and-taking-my-data-with-me/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  <article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2018/05/04/leaving-netflix-and-taking-my-data-with-me/">Leaving Netflix (and taking my data with me)</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="https://www.netflix.com/">Netflix</a> has been a staple in my life for years, from the early days of mailing (and neglecting) mostly-unscratched DVDs through the first Netflix original series and films. With Netflix as my catalog, I felt free to rid myself of countless DVDs and series box sets. Through Netflix I caught up on "must-see" films and shows that I missed the first time around, discovered unexpected (and wonderfully strange) things I would never have seen otherwise. Countless conversations have hinged around something that I've seen / am binging / must add to my list.</p>
+<p>At times, this has been a problem. It's so easy to start a show on Netflix and simply let it run. At home we frequently spend a whole evening grinding through the show du jour. Sometimes whole days and weekends disappear. This be can true for more and more streaming services but, in my house, it is most true for Netflix. We want to better use our time, and avoid the temptation to put up our <a href="http://makeit.netflix.com/projects/socks">stocking'd feet</a>, settle in, and drop out.</p>
+<p>It's easy enough to cancel a subscription, and even easier to start up again later if we change our minds. However, Netflix has one, even bigger, hook into my life: my data. Literal years of viewing history, ratings, and the list of films and shows that I (probably) want to watch some day. I wanted to take that data with me, in case we <b>don't</b> come back and they delete it.</p>
+<p>Netflix had an API, but after they shut it down in 2014, it's so far dead that even the <a href="http://developer.netflix.com/blog/read/Retiring_the_Netflix_Public_API">blog post announcing the API shutdown</a> is now gone from the internet.</p>
+<p>Despite no longer having a formal API, <a href="https://medium.com/netflix-techblog/netflix-likes-react-509675426db">Netflix is really into the single-page application</a> style of development for their website. Typically this is a batch of HTML, CSS, and JavaScript that runs in your browser and uses internal APIs to fetch data from their service. Even better, they are fans of infinite scrolling, so you can open up a page like your "My List", and it loads more data as you scroll, until you've got it all loaded in your browser.</p>
+<p>Once you've got all that information in your browser, you can script it right out of there!</p>
+<p>After some brief Googling, I found a promising result about <a href="https://gist.github.com/jordan314/6bdc9af962fd8620a4fb">using the Developer Console in your browser to grab your My List data</a>. That gave me the inspiration I needed to write some JavaScript snippets to grab the three main lists of data that I care about:</p>
+<ul>
+  <li>
+    My List of films and shows to watch (<a href="https://www.netflix.com/browse/my-list">https://www.netflix.com/browse/my-list</a>)
+    <br />
+  </li>
+  <li>All of my Ratings for various films and shows (<a href="https://www.netflix.com/MoviesYouveSeen">https://www.netflix.com/MoviesYouveSeen</a>)</li>
+  <li>
+    My watch history (<a href="https://www.netflix.com/viewingactivity">https://www.netflix.com/viewingactivity</a>)
+    <br />
+  </li>
+</ul>
+<p>Each of these pages displays slightly different data, in HTML that can be extracted with very little javascript, and each loads more data as you scroll the page until it's all loaded. To extract it, I needed some code to walk the entries on the page, extract the info I want, store it in a list, turn the list into a JSON string, and the copy that JSON data to the clipboard. From there I can paste that JSON data into a data file to mess with later, if I want.</p>
+<h2>Extracting my Netflix Watch List</h2>
+<figure><img src="https://media.martymcgui.re/ea/73/e9/b7/0c1a1e80ebfc18a3e756f3182768d8e01e038c3442b1b70679a9ed0e.png" /><figcaption>A screenshot of my watch list</figcaption></figure>
+<p>The My List page has a handful of useful pieces of data that we can extract:</p>
+<ul>
+  <li>
+    Name of the show / film
+    <br />
+  </li>
+  <li>URL to that show on Netflix</li>
+  <li>A thumbnail of art for the show!</li>
+</ul>
+<p>After eyeballing the HTML, I came up with this snippet of code to pull out the data and copy it to the clipboard:</p>
+<pre>(function(list){
+  document.querySelectorAll('a.slider-refocus')
+    .forEach(item =&gt; {
+      list.push({
+        title: item.getAttribute('aria-label'),
+        url: item.getAttribute('href'),
+        art: item.querySelector('.video-artwork').style.backgroundImage.slice(5,-2)
+      })
+    });
+  copy(JSON.stringify(list, null, 2));
+}([]));</pre>
+<p>The resulting data in the clipboard is an array of JSON objects like:</p>
+<pre>[
+  {
+    "title": "The Magicians",
+    "url": "/watch/80092801?tctx=1%2C1%2C%2C%2C",
+    "art": "https://occ-0-2433-2430.1.nflxso.net/art/b1eff/9548aa8d5237b3977aba4bddba257e94ee7b1eff.webp"
+  },
+  ...
+]</pre>
+<p>I like this very much! I probably won't end up using the Netflix URLs or the art, since it belongs to Netflix and not me, but a list of show titles will make a nice TODO list, at least for the shows I want to watch that are <b>not</b> on Netflix.</p>
+<h2>Extracting my Netflix Ratings</h2>
+<figure><img src="https://media.martymcgui.re/12/7a/d0/30/985f2ee105ee7ae803b56ae75cbb9ffe2f46035cb0e9b61c6a104ae0.png" /><figcaption>A screenshot of my ratings list</figcaption></figure>
+<p></p>
+<p>More important to me than my to-watch list was my literal years of rating data. This page is very different from the image-heavy watch list page, and is a little harder to find. It's under the account settings section on the website, and is a largely text-based page consisting of:</p>
+<ul>
+  <li>date of rating (as "day/month/year")</li>
+  <li>title</li>
+  <li>URL (on Netflix)</li>
+  <li>rating (as a number of star elements. Lit up stars indicate the rating that I gave, and these can be counted to get a numerical value of the number of stars.)</li>
+</ul>
+<p>The code I used to extract this info looks like this:</p>
+<pre>(function(list){
+  document.querySelectorAll('li.retableRow')
+    .forEach(function(item){
+      list.push({
+        date: item.querySelector('.date').innerText,
+        title: item.querySelector('.title a').innerText,
+        url: item.querySelector('.title a').getAttribute('href'),
+        rating: item.querySelectorAll('.rating .star.personal').length
+      });
+    });
+  copy(JSON.stringify(list, null, 2));
+}([]));</pre>
+<p>The resulting data looks like:</p>
+<pre>[
+  {
+    "date": "9/27/14",
+    "title": "Print the Legend",
+    "url": "/title/80005444",
+    "rating": 5
+  },
+  ...
+]</pre>
+<p>
+  While the URL probably isn't that useful, I find it super interesting to have the date that I actually rated each show!</p>
+<p>One thing to note, although I wasn't affect by it, Netflix has replaced their 0-to-5 star rating system with a thumbs up / down system. You'd have to tweak the script a bit to extract those values.</p>
+<h2>Extracting my Netflix Watch History</h2>
+<figure><img src="https://media.martymcgui.re/1d/c3/ce/fa/19ae11bb9eacfebecfb352df485329fbd06c6eb361a8fa1cb6947c29.png"><figcaption>A screenshot of my watch history page</figcaption></figure>
+<p></p>
+<p>One type of data I was surprised and delighted to find available was my watch history. This was another text-heavy page, with:</p>
+<ul>
+  <li>date watched</li>
+  <li>name of show (including episode for many series)</li>
+  <li>URL (on Netflix)</li>
+</ul>
+<p>The code I used to extract it looked like this:</p>
+<pre>(function(list){
+  document.querySelectorAll('li.retableRow')
+    .forEach(function(item){
+      list.push({
+        date: item.querySelector('.date').innerText,
+        title: item.querySelector('.title a').innerText,
+        url: item.querySelector('.title a').getAttribute('href')
+      });
+    });
+  copy(JSON.stringify(list, null, 2));
+}([]));</pre>
+<p>The resulting data looks like:</p>
+<pre>[
+  {
+    "date": "3/20/18",
+    "title": "Marvel's Jessica Jones: Season 2: \"AKA The Octopus\"",
+    "url": "/title/80130318"
+  },
+  ...
+]</pre>
+<h2>Moving forward</h2>
+<p>One thing I didn't grab was my Netflix Reviews, which are visible to other Netflix users. I never used this feature, so I didn't have anything to extract. If you are leaving and want that data, I hope that it's similarly easy to extract.</p>
+<p>With all this data in hand, I felt much safer going through the steps to deactivate my account. Netflix makes this easy enough, though they also make it extremely tempting to reactivate. Not only do they let you keep watching until the end of the current paid period – they tell you clearly that if you reactivate in 10 months, your data <b>won't</b> be deleted.</p>
+<p>That particular temptation won't be a problem for me.</p>
+<p></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/silos/" class="label label-default">#<span class="p-category">silos</span></a>
+
+      
+        <a href="/tag/ownyourdata/" class="label label-default">#<span class="p-category">ownyourdata</span></a>
+
+      
+        <a href="/tag/netflix/" class="label label-default">#<span class="p-category">Netflix</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4uFKDc"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2018/05/04/leaving-netflix-and-taking-my-data-with-me/"><time class="dt-published" datetime="2018-05-04T15:13:37-0400">May 4, 2018 at 3:13PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/992486736994471936" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://www.facebook.com/marty.mcguire.54/posts/10211973638798283" title="Facebook
+"><i class="fa fa-facebook"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  <hr />
+    <form class="webmention-form" method="POST" action="https://webmention.io/martymcgui.re/webmention">
+  <input type="hidden" name="target" value="https://heady-land.glitch.me/2018/05/04/leaving-netflix-and-taking-my-data-with-me/" />
+  <div>
+    <label>Have you posted a <a href="https://indieweb.org/response">response</a> to this? Let me know the URL:</label>
+  </div>
+  <input type="text" name="source" />
+  <input type="submit" value="Send Webmention" />
+</form>
+
+    <h4>Likes</h4>
+  <div class="row" style="margin-bottom: 1em"><div class="col-xs-12">
+  <div class="facepile">
+    <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10211973638798283#liked-by-10153919184621194"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/b09fad3826c34a0a8d7c4c6e8affc6ff8de240c932d574d6409dcae0ad797195.jpg" alt="Clare Lochary" title="Clare Lochary"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://twitter.com/schmarty/status/992486736994471936#favorited-by-68050228"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/0d1fd25a00c47c75e3c18583dbcad20ff3b95b1d9c9ef079b2b5a35520f6b011.png" alt="John De Cristofaro" title="John De Cristofaro"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10211973638798283#liked-by-10100256698102469"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/8d1f580689b0d658995b137f6b1194845adfdcc78cc0099b80a923cc791dd68e.jpg" alt="Brian E. Young" title="Brian E. Young"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://twitter.com/schmarty/status/992486736994471936#favorited-by-14350726"><span class="p-author h-card"><img class="u-photo" src="https://webmention.io/avatar/pbs.twimg.com/38451a6378b75a00d0615a391a653c51897aad1b1dace51e83a61b8ee04a08ed.gif" alt="teeth7" title="teeth7"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://twitter.com/schmarty/status/992486736994471936#favorited-by-724610221130285056"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/a43af68ace518d89e3c2c27cdfb7138e84dbb5b2047ad54b848a6524c338c7fd.jpg" alt="pandadeath" title="pandadeath"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://aaronparecki.com/2018/05/04/11/"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/aaronparecki.com/2b8e1668dcd9cfa6a170b3724df740695f73a15c2a825962fd0a0967ec11ecdc.jpg" alt="Aaron Parecki" title="Aaron Parecki"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10211973638798283#liked-by-10207109870964807"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/207d299f51b36a3032bebdfd247231a4076bfa78eeb5cc6c896bfcdac78ffd7e.jpg" alt="Jonathan Monroe" title="Jonathan Monroe"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://twitter.com/schmarty/status/992486736994471936#favorited-by-14447132"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/c7105b728b71e17a737ae312fc2a6205949582efc7134428673c9000133ce68b.jpeg" alt="Aaron Parecki" title="Aaron Parecki"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://cleverdevil.io/2018/leaving-netflix-and-taking-my-data-with-me"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/cleverdevil.io/abdf4969f052cb64177f73cda9be6a709931eb55607f8c1fb2c69eb135841acf.jpg" alt="Jonathan LaCour" title="Jonathan LaCour"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10211973638798283#liked-by-10157521428315054"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/74b58d98d12415682e60e96001ad5e2cd2b74d079a36d4fe60c4508f09bf6e8a.jpg" alt="Kristen L. McKenzie" title="Kristen L. McKenzie"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://twitter.com/schmarty/status/992486736994471936#favorited-by-13645402"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/4410412a431cda5b1b79cd70d3a369571c2ab26e2b20a8c7d1a55796687a47ed.jpg" alt="Chris Aldrich" title="Chris Aldrich"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10211973638798283#liked-by-10154059832022796"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/3a9bba6f0b269b47d8a4682b13c8bd3b07243af28fcdfa0092aeab4e8f5f2528.jpg" alt="Johannes Ernst" title="Johannes Ernst"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://fed.brid.gy/"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://media-proxy.p83.nl/48/https://peterstuifzand.nl/img/profile.jpg" alt="Peter Stuifzand" title="Peter Stuifzand"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10211973638798283#liked-by-10208293140314837"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/a51ce4e0a4735c0570136db830e142b6b737ec8500fc3e07542ced6a95d04d1a.jpg" alt="Matt Stultz" title="Matt Stultz"/></span></a></div>
+      <div class="face p-like h-cite">
+          <a class="u-url" href="https://twitter.com/schmarty/status/992486736994471936#favorited-by-20524599"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/25905c4043dfa2386d46b64523e193d7901eb7533f65a9fafb53a511df646977.jpeg" alt="Amy Hurst" title="Amy Hurst"/></span></a></div>
+      </div>
+</div></div>
+
+<h4>Reposts</h4>
+  <div class="row" style="margin-bottom: 1em"><div class="col-xs-12">
+  <div class="facepile">
+    <div class="face p-repost h-cite">
+          <a class="u-url" href="https://twitter.com/the_pandadeath/status/992500257593405441"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/a43af68ace518d89e3c2c27cdfb7138e84dbb5b2047ad54b848a6524c338c7fd.jpg" alt="pandadeath" title="pandadeath"/></span></a></div>
+      <div class="face p-repost h-cite">
+          <a class="u-url" href="https://twitter.com/amyhurst/status/992851385493356544"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/pbs.twimg.com/25905c4043dfa2386d46b64523e193d7901eb7533f65a9fafb53a511df646977.jpeg" alt="Amy Hurst" title="Amy Hurst"/></span></a></div>
+      </div>
+</div></div>
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+  
+  
+  
+  
+    
+  
+    
+  
+    <h4>Reactions</h4>
+  <div class="row" style="margin-bottom: 1em"><div class="col-xs-12">
+  <div class="facepile">
+    <div class="face p-reacji h-cite">
+          <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10211973638798283#wow-by-10100499769010892"><span class="p-author h-card"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_60,c_fill/https://webmention.io/avatar/graph.facebook.com/7ab69db69fdac431742c030ce7865719fb8c305dbd9ea91fbf1f120c76832b03.jpg" alt="Jonathan Prozzi" title="Jonathan Prozzi"/></span></a><span class='activity-icon'>😮</span></div>
+      </div>
+</div></div>
+
+<h4>Mentions</h4> 
+  <div class="mentions">
+    <div class="u-comment h-cite" id="comment-fc912ab9e58a5de32f1ebd256238bb1fbcaf450f">
+  <a class="u-author h-card" href="https://micro.blog/roelio"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/www.gravatar.com/39cf56ba8d47758661b65394c178c85f1d5a307c4bd346f63a98c8f179956cfe.jpg" alt="roelio"/>
+  <span class="p-name">roelio</span></a>
+  at
+  <a class="u-url" href="https://micro.blog/roelio/537081"><time class="published" datetime="2018-05-04T23:09:43&#43;00:00">2018-05-04T23:09:43&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">@schmarty Thanks for sharing! I bookmarked it for future reference, since I can definitely identify with your goal of trying to get away from the time sink that Netflix can be. </p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-c224630bc9657f4ee49d80370a96a51c981eb90e">
+  <a class="u-author h-card" href="https://cleverdevil.io/profile/cleverdevil"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/cleverdevil.io/abdf4969f052cb64177f73cda9be6a709931eb55607f8c1fb2c69eb135841acf.jpg" alt="Jonathan LaCour"/>
+  <span class="p-name">Jonathan LaCour</span></a>
+  at
+  <a class="u-url" href="https://cleverdevil.io/2018/really-cool-marty-i-am-not-personally"><time class="published" datetime="2018-05-05T01:17:16&#43;00:00">2018-05-05T01:17:16&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Really cool, Marty! I am not personally interested in leaving Netflix, but I’m definitely interested in liberating my data. Your scripts would prove useful!</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-5be704c35e452d6d1b1c02354ec7c31924f04d6e">
+  <a class="u-author h-card" href="https://www.facebook.com/10100499769010892"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/graph.facebook.com/7ab69db69fdac431742c030ce7865719fb8c305dbd9ea91fbf1f120c76832b03.jpg" alt="Jonathan Prozzi"/>
+  <span class="p-name">Jonathan Prozzi</span></a>
+  at
+  <a class="u-url" href="https://www.facebook.com/10205860140564648/posts/10211973638798283?comment_id=10211975128115515"><time class="published" datetime="2018-05-05T01:14:44&#43;00:00">2018-05-05T01:14:44&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">That is so awesome Marty. Love .forEach :D</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-d213c3a7b71d5f09e998ca53819eb9bee7700b66">
+  <a class="u-author h-card" href="https://cleverdevil.io"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/7c4d1313e98367d10093ee94ef283e0b31e81355aca76569ea2059a4052cb04f.jpg" alt="Jonathan LaCour"/>
+  <span class="p-name">Jonathan LaCour</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/cleverdevil/status/992573912553803776"><time class="published" datetime="2018-05-05T01:17:16&#43;00:00">2018-05-05T01:17:16&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Really cool, Marty! I am not personally interested in leaving Netflix, but I’m definitely interested in liberating my data. Your scripts would prove useful!</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-17f12778341e2f2118978dc071f9d9bf736295bc">
+  <a class="u-author h-card" href=""><span class="p-name"></span></a>
+  at
+  <a class="u-url" href="https://abraham.red/">https://abraham.red/
+    </a>
+  said:
+  
+    
+        <img src="https://secure.gravatar.com/avatar/83b3d886fcbae3e954d0a361861b7e79?s=250&amp;d=default&amp;r=g" class="u-photo" />
+      </div>
+
+    <div class="u-comment h-cite" id="comment-88b5685e4e8193928c798c2728382bcdcc5a4f36">
+  <a class="u-author h-card" href=""><span class="p-name"></span></a>
+  at
+  <a class="u-url" href="https://abraham.uno/">https://abraham.uno/
+    </a>
+  said:
+  
+    
+        <img src="https://secure.gravatar.com/avatar/83b3d886fcbae3e954d0a361861b7e79?s=250&amp;d=default&amp;r=g" class="u-photo" />
+      </div>
+
+    <div class="u-comment h-cite" id="comment-444a2706b094375ae44ed614222044723e20690e">
+  <a class="u-author h-card" href="https://jrsmith3.github.io"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/989f0a1ab913138ce127b5aea479de09647e86881d7957e4b864442b2cc256e5.jpeg" alt="Joshua Ryan Smith"/>
+  <span class="p-name">Joshua Ryan Smith</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/joshua_r_smith/status/992778176647450624"><time class="published" datetime="2018-05-05T14:48:56&#43;00:00">2018-05-05T14:48:56&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">You’re bailing on Netflix because it’s a time suck? Not a bad idea.</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-a4ebae35e02a1b5aee91dffe80bc9a9a555db353">
+  <a class="u-author h-card" href="https://martymcgui.re/"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/3919ec91266d3a2c53a79b0dc955df891d1498435509ec5a62a7b1aaf281c67a.jpeg" alt="Marty McGuire"/>
+  <span class="p-name">Marty McGuire</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/schmarty/status/992851281927720961"><time class="published" datetime="2018-05-05T19:39:26&#43;00:00">2018-05-05T19:39:26&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Yeah! If I was going to stick around, or if I ever come back, I think it&#39;s easy enough that I&#39;d capture that info regularly.</p>
+    </div>
+
+    <div class="u-comment h-cite" id="comment-c54bad4b7c01ff5582bddf1561bd30222066cce7">
+  <a class="u-author h-card" href="https://martymcgui.re/"><img class="u-photo" src="https://res.cloudinary.com/schmarty/image/fetch/w_30,c_fill/https://webmention.io/avatar/pbs.twimg.com/3919ec91266d3a2c53a79b0dc955df891d1498435509ec5a62a7b1aaf281c67a.jpeg" alt="Marty McGuire"/>
+  <span class="p-name">Marty McGuire</span></a>
+  at
+  <a class="u-url" href="https://twitter.com/schmarty/status/992851026628763648"><time class="published" datetime="2018-05-05T19:38:25&#43;00:00">2018-05-05T19:38:25&#43;00:00</time></a>
+  said:
+  <p class="p-content p-name">Yep! Nothing against &#39;em, but we want to remove the temptation.</p>
+    </div>
+
+    </div>
+
+  </article>
+
+
+    
+
+  </body>
+
+</html>
+

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Tab&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/tab/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/tab/" title="Posts tagged 'Tab'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/tab/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Thu Jun 12</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2008/06/12/a-couple-of-leopard-configuration-tricks/">A couple of Leopard configuration tricks</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>I find Google to be a more and more valuable resource as time goes on, especially when seeking knowledge about how to make this new MacBook act like I want it to.</p>
+
+<p>One thing I noticed early on was that pressing Tab to move around various interfaces, from Finder dialogs to web pages, would only tab to text entry fields.  Coming from a primarily Windows background, I am used to tabbing my way to checkboxes, dropdowns, and buttons in my interfaces, so this crippled Tab navigation quickly became annoying.</p>
+
+<p>Thanks to <a href="http://www.mactips.org/archives/2008/04/30/tab-through-checkboxes-and-radio-buttons-in-safari/">this blog post</a>, I found the option to make Tab move through &ldquo;All Controls&rdquo; in <span style="font-style: italic;">System Preferences  | Keyboard &amp; Mouse | Keyboard Shortcuts</span></p>
+
+<p>Another big issue I came up against is the weird Java support that comes with OS X.  Because Apple releases their own versions of Java, we OS X users are kind of at their mercy with respect to what we can use and how we can configure it.  You can install Java 6 from <a href="http://developer.apple.com/java/">Apple&rsquo;s download page</a>, but Java 1.5 will still run by default.</p>
+
+<p>Apple provides a &ldquo;Java Preferences&rdquo; configuration utility in /Applications/Utilities/Java/ which lets you change the default version of Java that will be used in browsers and when double-clicking to launch Java apps.  However, this utility doesn&rsquo;t change which version of Java will be found by command-line apps in the terminal, such as <a href="http://ant.apache.org/">Apache Ant</a>.</p>
+
+<p>Another blog post <a href="http://www.docuverse.com/blog/donpark/2008/05/01/java-6-on-leopard">to the rescue</a>!  It turns out that you can change your default version of Java for command line apps freely by changing the <code>CurrentJDK</code> and <code>Current</code> symlinks in <code>/System/Library/Frameworks/JavaVM.framework/Versions/.</code> For example:
+<pre lang="bash">    cd /System/Library/Frameworks/JavaVM.framework/Versions
+    sudo ln -fhsv 1.6 CurrentJDK
+    sudo ln -fhsv 1.6 Current
+</pre></p>
+
+<p>Hopefully this post will be able to help others (or at least my future self).</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/java-6/" class="label label-default">#<span class="p-category">java 6</span></a>
+
+      
+        <a href="/tag/leopard/" class="label label-default">#<span class="p-category">leopard</span></a>
+
+      
+        <a href="/tag/os-x/" class="label label-default">#<span class="p-category">os x</span></a>
+
+      
+        <a href="/tag/preferences/" class="label label-default">#<span class="p-category">preferences</span></a>
+
+      
+        <a href="/tag/tab/" class="label label-default">#<span class="p-category">tab</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/3u2400"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2008/06/12/a-couple-of-leopard-configuration-tricks/"><time class="dt-published" datetime="2008-06-12T00:00:00-0400">June 12, 2008 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

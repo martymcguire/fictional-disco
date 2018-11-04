@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Mendel&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/mendel/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/mendel/" title="Posts tagged 'Mendel'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/mendel/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Sun Jun 13</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/06/13/makerbot-#131-makes-a-mendel/">MakerBot #131 Makes a Mendel!</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><code><a href="http://www.flickr.com/photos/cibomahto/4649260050/"><img class="alignnone" title="Mendel Parts, photo by Matt Mets" src="http://farm5.static.flickr.com/4019/4649260050_8514243bf4_b.jpg" alt="Image by Matt Mets" width="500" height="605" /></a></code></p>
+
+<p>Like many <a href="http://makerbot.com/">MakerBot</a> owners, I feel compelled to help spread desktop 3D printing throughout the world.  So, for the past several months, <a href="/makerbot_131">MakerBot #131</a> has been hard at work printing parts in 3D to make another 3D printer!</p>
+
+<p>The <a href="http://reprap.org/wiki/Mendel">Mendel</a> is the second (and current) design for the <a href="http://reprap.org/wiki/Main_Page">RepRap project</a>, whose goal is to create rapid-prototyping machines that can replicate themselves.  As an Open Source Hardware project, everything about the <a href="http://reprap.org/wiki/Subversion">Mendel&rsquo;s design is available online</a> via Subversion, from the mechanical parts to the electronics schematics, to the source code for the device and its host machine.  Additionally, there is a <a href="http://forums.reprap.org/">fantastic community</a> of very smart people who are constantly improving the design, trying new things, and helping others get their RepRaps working!</p>
+
+<p>While the Mendel requires various hardware bits such as motors, electronics, nuts and bolts, etc., its structure is about 51% 3D-printed parts.  This works out to about 98 individual pieces that need to be printed, and represents a huge number of printing hours.</p>
+
+<p>To get started, I used a .zip file full of the 3D STL files for these parts that someone very nicely prepared and uploaded to the <a href="http://groups.google.com/group/makerbot/">MakerBot Operators group</a>.  These files were from the 1.0 release of Mendel, so some of them ended up being out of date, and a few had issues that made them unprintable.  Thankfully, another kind MakerBot operator uploaded a <a href="http://www.thingiverse.com/thing:1768">fully prepared set</a> to <a href="http://thingiverse.com/">Thingiverse</a>, so I could go there for a replacement whenever I found a part that wouldn&rsquo;t print.
+<p style="text-align: left;">I started printing Mendel parts almost as soon as I got MakerBot #131 working.  Since I knew it was going to be a long process, I created a <a href="https://spreadsheets.google.com/ccc?key=0Ag-Fo1q90EdudDdTTndobmcyR2taaktXd3dTT2wyVkE#gid=0">spreadsheet to help me track and estimate</a> the time it would take to complete the build.  I also used some silly Javascript magic to display a progress bar on my MakerBot #131 page based on this spreadsheet data:</p>
+<p style="text-align: center;"><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/06/mendel_complete.png"><img class="size-full wp-image-122 aligncenter" style="border: 1px solid black;" title="100% Complete! So satisfying." src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/06/mendel_complete.png" alt="" width="504" height="100" /></a></p>
+<p style="text-align: left;">This hack was accomplished by building my own JSONP into some cells of the spreadsheet, and loading this content as Javascript using Google Spreadsheet&rsquo;s plain text export capability.  The spreadsheet cells were set up like this:</p>
+<p style="text-align: center;"><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/06/mendel_jsonp.png"><img class="aligncenter size-full wp-image-123" style="border: 1px solid black;" title="Here be dragons:   update_mendel_progress('    =N47    '   );" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/06/mendel_jsonp.png" alt="" width="500" height="33" /></a></p>
+<p style="text-align: left;">Here, column N47 contains the &ldquo;completeness&rdquo; of the Mendel as a value of 0.0 - 1.0 in terms of number of hours printed so far divided by the expected number of hours total.  This data could be used on an HTML page with an &ldquo;update_mendel_progress&rdquo; function by loading it with a script tag:</p>
+<p style="text-align: left;"><code>&lt;script src=&ldquo;<a href="http://spreadsheets.google.com/pub?key=t7SNwhng2GkZjKWwwSOl2VA&amp;single=true&amp;gid=0&amp;range=B52:E52&amp;output=txt&quot;&gt;&lt;/script&gt;">http://spreadsheets.google.com/pub?key=t7SNwhng2GkZjKWwwSOl2VA&amp;single=true&amp;gid=0&amp;range=B52:E52&amp;output=txt&quot;&gt;&lt;/script&gt;</a></code></p>
+<p style="text-align: left;">The range &ldquo;B52:E52&rdquo; are the cells in my spreadsheet containing the JSONP call, and the &ldquo;output=txt&rdquo; option returns the data as tab-separated data, which Javascript is happy to parse.  The update_mendel_progress method on that page parses the number that is passed in, looks for an HTML DIV element with an id of &ldquo;mendel_progress&rdquo;, updates it to be the appropriate width, and displays the percentage completion.</p>
+<p style="text-align: left;">At any rate, after a lot of tweaking, many hair-raising moments, a required upgrade with the <a href="http://store.makerbot.com/cupcake-cnc/makerbot-cupcake-heated-build-platform-v2-0.html">MakerBot Heated Build Platform v2.0</a>, and hours and hours of printing, the parts were finally complete!  I gave them to <a href="http://cibomahto.com/">Matt Mets</a>, a member of <a href="http://hackpittsburgh.org/">HackPittsburgh</a>, and you can see the photos he took of the parts, above!</p>
+<p style="text-align: left;">Despite some of the parts belonging to a slightly out-of-date design, Matt has been <a href="http://www.cibomahto.com/2010/06/mendel-progress/">making progress</a> on getting everything together!</p>
+<p style="text-align: left;"><a href="http://www.cibomahto.com/2010/06/mendel-progress/"><img class="alignnone" title="Matt's Mendel Progress, photo by Matt Mets." src="http://www.cibomahto.com/wp-content/uploads/2010/06/DSC_7132.jpg" alt="" width="500" height="375" /></a></p>
+<p style="text-align: left;">You can follow Matt&rsquo;s progress on <a href="http://www.cibomahto.com/">his blog</a>.</p>
+<p style="text-align: left;">I&rsquo;m very happy to have finished off such a large project with MakerBot #131, and I have a lot of plans for it in the future, so be sure to watch this space for more updates!</p></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/google-spreadsheets/" class="label label-default">#<span class="p-category">google spreadsheets</span></a>
+
+      
+        <a href="/tag/jsonp/" class="label label-default">#<span class="p-category">jsonp</span></a>
+
+      
+        <a href="/tag/makerbot/" class="label label-default">#<span class="p-category">MakerBot</span></a>
+
+      
+        <a href="/tag/makerbot-131/" class="label label-default">#<span class="p-category">makerbot 131</span></a>
+
+      
+        <a href="/tag/mendel/" class="label label-default">#<span class="p-category">mendel</span></a>
+
+      
+        <a href="/tag/reprap/" class="label label-default">#<span class="p-category">reprap</span></a>
+
+      
+        <a href="/tag/thingiverse/" class="label label-default">#<span class="p-category">thingiverse</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/46D400"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/06/13/makerbot-"><time class="dt-published" datetime="2010-06-13T00:00:00-0400">June 13, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Makerbot 131&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/makerbot-131/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/makerbot-131/" title="Posts tagged 'Makerbot 131'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/makerbot-131/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Sun Oct 24</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/10/24/experiments-with-pla-4043d/">Experiments with PLA 4043D</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8421.jpg"><img class="alignnone size-full wp-image-326" title="Bottle Opener made from PLA 4043D" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8421.jpg" alt="Bottle Opener made from PLA 4043D" width="512" height="384" /></a></p>
+
+<p>As I said in my <a href="/makerbot/mk5-plastruder/">last update</a>, I finally upgrade MakerBot #131 with a <a href="http://store.makerbot.com/plastruder-mk5.html">MK5 extruder</a> because it reportedly works great with the new <a href="http://store.makerbot.com/pla-4043d-5lb-coil.html">PLA 4043D</a>.</p>
+
+<p>I&rsquo;ve been having fun printing with the various <a href="http://store.makerbot.com/plastic.html">colors of ABS</a> that MakerBot offers, but have always been somewhat envious of folks that have been printing successfully with <a href="http://wiki.makerbot.com/pla">PLA</a>. I bought 5lb roll of the original 4032D that MakerBot sold, but ended up putting it on the shelf after reports from other operators that it was destroying their MK4 extruders.</p>
+
+<p>Getting the new PLA printing was surprisingly easy, given the challenge of using a new extruder (which needed temperature, PID, and flow rate calibration) and it&rsquo;s the first non-ABS plastic I&rsquo;ve printed, so it will have different optimal printing temperatures and more.</p>
+
+<p>I haven&rsquo;t carefully calibrated the thermistor on my MK5, and I wasn&rsquo;t sure of the right temperature to extrude PLA, so I started by setting the temperature to 180ºC and attempting to push some filament through by hand.  I raised the temperature slowly until it became easy to push through by hand, around 195ºC.  I had not yet locked down my PID settings, so I was getting some wild temperature swings.  To be safe, I set the temp to 200ºC and started printing my favorite <a href="http://www.thingiverse.com/thing:1842">bottle opener from Thingiverse</a>.</p>
+
+<p>It turns out the flow rate for the MK5 is a lot higher than it was for the MK4.  After putting down the raft, I was having trouble with the filament stripping inside the MK5 due to backpressure.  Still, by paying attention to the print and tightening the thumbwheel whenever the filament slipped, I was able to get a completed bottle opener.</p>
+
+<p>It was then that I noticed two things:
+<ul>
+    <li>The top two layers of the object sagged deep into the honeycomb fill layers below, giving a terrible finish on top.</li>
+    <li>PLA has no give, so there was no way that a penny would fit into the slot.  I have some nice bruises from trying to make it fit. :)</li>
+</ul>
+To fix the stripping and sagging problems, I figured that I should increase my Feedrate - the speed at which the platform moves to catch the extruded plastic.  I figured that a too-low Feedrate would cause some back pressure when printing the raft (leading to stripping), and would contribute to sagging overhangs.  I also guessed that the sagging is due in part to the high thermal mass of liquid PLA allowing it to sag before it cooled, so a lower extrusion temperature would let it solidify sooner, leading to less sagging.  I still use skeinforge-0006, so these settings are in &ldquo;raft.csv&rdquo; (various temperatures) and &ldquo;speed.csv&rdquo; (Feedrate), respectively.</p>
+
+<p>So, some calibration prints:</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8429.jpg"><img class="alignnone size-full wp-image-329" title="Bottle opener calibration prints with PLA" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8429.jpg" alt="Bottle opener calibration prints with PLA" width="512" height="384" /></a></p>
+
+<p>Starting with my first successful print in the upper-lefthand corner, with the temp of 200ºC and a feedrate of 26.5mm/s (which was working for my MK4), I slowly lowered my temp and increased feedrate.  At 180ºC I had a failed print due to the PLA freezing up, so I am going to stick with 185ºC going forward.  Increasing the feedrate by 25% immediately solved my filament stripping problem, but still left a pretty nasty top layer.  Increasing beyond that smoothed out the top pretty well, and left clean enough slots that I could actually insert some coins, albeit dimes rather than pennies.</p>
+
+<p>I may try increasing my feedrate further, but I found an odd result when going from 36.4375mm/s (slower, should have thicker walls) to 38.26mm/s (faster, should have thinner walls). Namely, they both seem like very solid objects, but the dime slid nicely into the slower-printed version using the edge of a desk, while I had to take a hammer to the faster-printed version, and actually ended up bending the dime rather than driving it into the plastic (PLA is tough stuff!).  I would have expected the opposite.</p>
+
+<p>Anyway, I hope these results are useful for some folks.  I hope to improve my calibration a bit more, and trying out the MK5 with my old roll of PLA 4032D.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/4043d/" class="label label-default">#<span class="p-category">4043D</span></a>
+
+      
+        <a href="/tag/calibration/" class="label label-default">#<span class="p-category">calibration</span></a>
+
+      
+        <a href="/tag/makerbot/" class="label label-default">#<span class="p-category">MakerBot</span></a>
+
+      
+        <a href="/tag/makerbot-131/" class="label label-default">#<span class="p-category">makerbot 131</span></a>
+
+      
+        <a href="/tag/pla/" class="label label-default">#<span class="p-category">PLA</span></a>
+
+      
+        <a href="/tag/skeinforge/" class="label label-default">#<span class="p-category">skeinforge</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/48S401"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/10/24/experiments-with-pla-4043d/"><time class="dt-published" datetime="2010-10-24T00:00:01-0400">October 24, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/10/24/makerbot-#131-gets-a-mk5-plastruder/">MakerBot #131 Gets a MK5 Plastruder!</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8407.jpg"><img class="alignnone size-full wp-image-319" title="MakerBot 131 w/ MK5 extruder and PLA 4043D" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8407-e1287972865456.jpg" alt="MakerBot 131 w/ MK5 extruder and PLA 4043D" width="480" height="640" /></a></p>
+
+<p>Actually, all sorts of new and exciting nonsense has happened to MakerBot #131.</p>
+
+<p>I was excited to order get my <a href="http://store.makerbot.com/plastruder-mk5.html">MK5 Plastruder kit</a> and join all of the cool people who have left the pinch-wheel and nichrome behind.  Unfortunately, I ran into <a href="http://groups.google.com/group/makerbot/browse_thread/thread/cbc2887983fca9b/46fcf70b25ba82c7?lnk=gst&amp;q=mk5+pid#46fcf70b25ba82c7">some problems</a> early on, and after buying some <a href="http://www.adafruit.com/index.php?main_page=product_info&amp;products_id=269">cool thermocouple parts</a> to try calibrating everything, finally determined that I had a bad thermistor.</p>
+
+<p>So, I decided to put the MK5 aside and moved on to some entirely unrelated projects.  I assembled a <a href="http://camura.com/s/DQq">Cyclops 3D scanner</a> (I need more practice, but it&rsquo;s promising!), and printed a <a href="http://www.thingiverse.com/derivative:4133">pink, printable version</a> of the <a href="http://store.makerbot.com/makerbot-unicorn-pen-plotter-kit.html">Unicorn pen plotter</a> (with some <a href="http://camura.com/s/DXk">better-than-expected results</a> - hence the Post-It Notes all over the &lsquo;bot).  I had generally decided that the MK4 was Good Enough, and would come back to the MK5 when it died.</p>
+
+<p>That was all, of course, before the new <a href="http://store.makerbot.com/pla-4043d-5lb-coil.html">MakerBot PLA 4043D</a> came out.  Once I got my hands on it, I had to go for the upgrade.  So, MakerBot #131 is now running the MK5, with the new relay board mounted with the <a href="http://store.makerbot.com/relay-board-kit-v1-0.html">official mounting kit</a>, and the extruder controller mounted with <a href="http://www.thingiverse.com/thing:4174">donutman_2000&rsquo;s awesome printable mount</a>.</p>
+
+<p>Stay tuned for details about my experience with the new PLA!  I am excited.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/makerbot/" class="label label-default">#<span class="p-category">MakerBot</span></a>
+
+      
+        <a href="/tag/makerbot-131/" class="label label-default">#<span class="p-category">makerbot 131</span></a>
+
+      
+        <a href="/tag/mk5/" class="label label-default">#<span class="p-category">mk5</span></a>
+
+      
+        <a href="/tag/plastruder/" class="label label-default">#<span class="p-category">plastruder</span></a>
+
+      
+        <a href="/tag/upgrade/" class="label label-default">#<span class="p-category">upgrade</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/48S400"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/10/24/makerbot-"><time class="dt-published" datetime="2010-10-24T00:00:00-0400">October 24, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Sun Jun 13</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/06/13/makerbot-#131-makes-a-mendel/">MakerBot #131 Makes a Mendel!</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><code><a href="http://www.flickr.com/photos/cibomahto/4649260050/"><img class="alignnone" title="Mendel Parts, photo by Matt Mets" src="http://farm5.static.flickr.com/4019/4649260050_8514243bf4_b.jpg" alt="Image by Matt Mets" width="500" height="605" /></a></code></p>
+
+<p>Like many <a href="http://makerbot.com/">MakerBot</a> owners, I feel compelled to help spread desktop 3D printing throughout the world.  So, for the past several months, <a href="/makerbot_131">MakerBot #131</a> has been hard at work printing parts in 3D to make another 3D printer!</p>
+
+<p>The <a href="http://reprap.org/wiki/Mendel">Mendel</a> is the second (and current) design for the <a href="http://reprap.org/wiki/Main_Page">RepRap project</a>, whose goal is to create rapid-prototyping machines that can replicate themselves.  As an Open Source Hardware project, everything about the <a href="http://reprap.org/wiki/Subversion">Mendel&rsquo;s design is available online</a> via Subversion, from the mechanical parts to the electronics schematics, to the source code for the device and its host machine.  Additionally, there is a <a href="http://forums.reprap.org/">fantastic community</a> of very smart people who are constantly improving the design, trying new things, and helping others get their RepRaps working!</p>
+
+<p>While the Mendel requires various hardware bits such as motors, electronics, nuts and bolts, etc., its structure is about 51% 3D-printed parts.  This works out to about 98 individual pieces that need to be printed, and represents a huge number of printing hours.</p>
+
+<p>To get started, I used a .zip file full of the 3D STL files for these parts that someone very nicely prepared and uploaded to the <a href="http://groups.google.com/group/makerbot/">MakerBot Operators group</a>.  These files were from the 1.0 release of Mendel, so some of them ended up being out of date, and a few had issues that made them unprintable.  Thankfully, another kind MakerBot operator uploaded a <a href="http://www.thingiverse.com/thing:1768">fully prepared set</a> to <a href="http://thingiverse.com/">Thingiverse</a>, so I could go there for a replacement whenever I found a part that wouldn&rsquo;t print.
+<p style="text-align: left;">I started printing Mendel parts almost as soon as I got MakerBot #131 working.  Since I knew it was going to be a long process, I created a <a href="https://spreadsheets.google.com/ccc?key=0Ag-Fo1q90EdudDdTTndobmcyR2taaktXd3dTT2wyVkE#gid=0">spreadsheet to help me track and estimate</a> the time it would take to complete the build.  I also used some silly Javascript magic to display a progress bar on my MakerBot #131 page based on this spreadsheet data:</p>
+<p style="text-align: center;"><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/06/mendel_complete.png"><img class="size-full wp-image-122 aligncenter" style="border: 1px solid black;" title="100% Complete! So satisfying." src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/06/mendel_complete.png" alt="" width="504" height="100" /></a></p>
+<p style="text-align: left;">This hack was accomplished by building my own JSONP into some cells of the spreadsheet, and loading this content as Javascript using Google Spreadsheet&rsquo;s plain text export capability.  The spreadsheet cells were set up like this:</p>
+<p style="text-align: center;"><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/06/mendel_jsonp.png"><img class="aligncenter size-full wp-image-123" style="border: 1px solid black;" title="Here be dragons:   update_mendel_progress('    =N47    '   );" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/06/mendel_jsonp.png" alt="" width="500" height="33" /></a></p>
+<p style="text-align: left;">Here, column N47 contains the &ldquo;completeness&rdquo; of the Mendel as a value of 0.0 - 1.0 in terms of number of hours printed so far divided by the expected number of hours total.  This data could be used on an HTML page with an &ldquo;update_mendel_progress&rdquo; function by loading it with a script tag:</p>
+<p style="text-align: left;"><code>&lt;script src=&ldquo;<a href="http://spreadsheets.google.com/pub?key=t7SNwhng2GkZjKWwwSOl2VA&amp;single=true&amp;gid=0&amp;range=B52:E52&amp;output=txt&quot;&gt;&lt;/script&gt;">http://spreadsheets.google.com/pub?key=t7SNwhng2GkZjKWwwSOl2VA&amp;single=true&amp;gid=0&amp;range=B52:E52&amp;output=txt&quot;&gt;&lt;/script&gt;</a></code></p>
+<p style="text-align: left;">The range &ldquo;B52:E52&rdquo; are the cells in my spreadsheet containing the JSONP call, and the &ldquo;output=txt&rdquo; option returns the data as tab-separated data, which Javascript is happy to parse.  The update_mendel_progress method on that page parses the number that is passed in, looks for an HTML DIV element with an id of &ldquo;mendel_progress&rdquo;, updates it to be the appropriate width, and displays the percentage completion.</p>
+<p style="text-align: left;">At any rate, after a lot of tweaking, many hair-raising moments, a required upgrade with the <a href="http://store.makerbot.com/cupcake-cnc/makerbot-cupcake-heated-build-platform-v2-0.html">MakerBot Heated Build Platform v2.0</a>, and hours and hours of printing, the parts were finally complete!  I gave them to <a href="http://cibomahto.com/">Matt Mets</a>, a member of <a href="http://hackpittsburgh.org/">HackPittsburgh</a>, and you can see the photos he took of the parts, above!</p>
+<p style="text-align: left;">Despite some of the parts belonging to a slightly out-of-date design, Matt has been <a href="http://www.cibomahto.com/2010/06/mendel-progress/">making progress</a> on getting everything together!</p>
+<p style="text-align: left;"><a href="http://www.cibomahto.com/2010/06/mendel-progress/"><img class="alignnone" title="Matt's Mendel Progress, photo by Matt Mets." src="http://www.cibomahto.com/wp-content/uploads/2010/06/DSC_7132.jpg" alt="" width="500" height="375" /></a></p>
+<p style="text-align: left;">You can follow Matt&rsquo;s progress on <a href="http://www.cibomahto.com/">his blog</a>.</p>
+<p style="text-align: left;">I&rsquo;m very happy to have finished off such a large project with MakerBot #131, and I have a lot of plans for it in the future, so be sure to watch this space for more updates!</p></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/google-spreadsheets/" class="label label-default">#<span class="p-category">google spreadsheets</span></a>
+
+      
+        <a href="/tag/jsonp/" class="label label-default">#<span class="p-category">jsonp</span></a>
+
+      
+        <a href="/tag/makerbot/" class="label label-default">#<span class="p-category">MakerBot</span></a>
+
+      
+        <a href="/tag/makerbot-131/" class="label label-default">#<span class="p-category">makerbot 131</span></a>
+
+      
+        <a href="/tag/mendel/" class="label label-default">#<span class="p-category">mendel</span></a>
+
+      
+        <a href="/tag/reprap/" class="label label-default">#<span class="p-category">reprap</span></a>
+
+      
+        <a href="/tag/thingiverse/" class="label label-default">#<span class="p-category">thingiverse</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/46D400"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/06/13/makerbot-"><time class="dt-published" datetime="2010-06-13T00:00:00-0400">June 13, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Tue Feb 16</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/02/16/automatic-makerbot-camera-pt.-2---wiring-it-up/">Automatic MakerBot Camera Pt. 2 - Wiring it up!</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>Recently (thanks to the Internet), I figured out how to <a href="/howto/makerbot-cam-1-chdk/">remote control a digital camera over USB using CHDK</a>. However, if I wanted my MakerBot to be able to automatically control that camera, I needed a way to wire it up!</p>
+
+<p>CHDK&rsquo;s remote USB trigger functionality works by detecting when it receives power over USB.  This happens when two wires inside the <a href="http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Delectronics&amp;field-keywords=usb+mini+b">USB mini-B</a> cable are connected to power: the red wire gets 5 volts, and the black wire gets connected to ground.</p>
+
+<p><a href="http://reprap.org/bin/view/Main/Extruder_Controller_2_2#Servo_Headers"><img class="alignright" style="margin-left: 5px; float: right" title="Free I/O pins 9 and 10 on the extruder controller board" src="http://farm4.static.flickr.com/3484/3457207368_f7f6af91c0.jpg" alt="" width="300" height="225" /></a>So, I chose to find somewhere on the MakerBot&rsquo;s electronics to hook up these power and ground wires such that the MakerBot could control when the red wire receives 5V.  The MakerBot uses <a href="http://store.makerbot.com/electronics/assembled-electronics/generation-3-electronics-mostly-assembled.html">RepRap Generation 3 electronics</a>, and let me tell you, the <a href="http://dev.www.reprap.org/bin/view/Main/Generation3Electronics">gen 3 electronics documentation</a> is fantastic!  Unfortunately, the <a href="http://reprap.org/bin/view/Main/Motherboard_1_2">docs for the main motherboard</a> reveal that there are some <a href="http://reprap.org/bin/view/Main/Motherboard_1_2#I2C_Headers">free I2C headers</a> for connecting serial devices, but no free general I/O pins.</p>
+
+<p>Luckily, the <a href="http://reprap.org/bin/view/Main/Extruder_Controller_2_2#Servo_Headers">extruder controller docs</a> show two free digital pins, conveniently broken out with 5V and ground connections next to them.  These are digital pins D9 and D10.  According to the docs, they are intended for hooking up servo motors, but they would absolutely work for my purposes!</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/02/camera_cable.jpg"><img class="size-medium wp-image-88 alignleft" style="margin-right: 5px; float: left" title="Camera cable with ultra-fancy labeling" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/02/camera_cable-300x184.jpg" alt="" width="300" height="184" /></a>The layout for pins D9 and D10 goes (from left to right): I/O pin, 5V, ground.  Since I wanted the data pin itself to provide the 5V, I chose to make a cable using a 3-pin piece of female header, soldering the red wire connecting to the I/O pin (on the left) and the black wire connecting to the ground pin (on the right).  The center pin has no connection.  You can see my &ldquo;super fancy&rdquo; cable on the left.</p>
+
+<p>I know this post isn&rsquo;t particularly about code, so stay tuned for the next parts of this series:
+<ul>
+    <li><a href="/2010/02/01/000000/">Part 1: Remote control camera with CHDK</a></li>
+    <li>Part 2: Wiring it up! [YOU ARE HERE]</li>
+    <li><a href="/2010/07/16/000000/">Part 3: Updating the MakerBot Firmware</a></li>
+    <li><a href="/2010/07/25/000000/">Part 4: Updating ReplicatorG</a></li>
+    <li>Part 5: Updating Skeinforge</li>
+</ul></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/camera/" class="label label-default">#<span class="p-category">camera</span></a>
+
+      
+        <a href="/tag/chdk/" class="label label-default">#<span class="p-category">chdk</span></a>
+
+      
+        <a href="/tag/makerbot/" class="label label-default">#<span class="p-category">MakerBot</span></a>
+
+      
+        <a href="/tag/makerbot-131/" class="label label-default">#<span class="p-category">makerbot 131</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/44G500"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/02/16/automatic-makerbot-camera-pt.-2---wiring-it-up/"><time class="dt-published" datetime="2010-02-16T00:00:00-0500">February 16, 2010 at 12:00AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Mon Feb 1</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/02/01/automatic-makerbot-camera-pt.-1---remote-control-camera-with-chdk/">Automatic MakerBot Camera Pt. 1 - Remote control camera with CHDK</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="http://camura.com/s/Be2"><img class="alignright" style="margin-left: 10px; margin-bottom: 2px; float: right;" title="SD300 running CHDK with Remote Control" src="http://static.camura.com/media/images/m/ddb3ff73f26e44cb02c79434d0fd1aed.jpg" alt="" width="240" height="180" /></a>One problem with making <a href="http://www.youtube.com/watch?v=ox_Ng9gDgVE">time-lapse videos</a> of <a href="http://www.youtube.com/watch?v=mcn8Hu8c7qU">MakerBot prints</a> is the fact that the MakerBot works by moving the build platform (and therefore the object being built) around in the XY plane, resulting in an unwatchable blur.</p>
+
+<p>It recently occurred to me that, since the MakerBot is such a hackable platform, I could probably make nice time-lapse videos by taking a picture of each layer.  The idea is to have the MakerBot pose the object after each layer, and trigger a camera to take a snapshot.</p>
+
+<p>When discussing this idea with fellow <a href="http://hackpittsburgh.org/">HackPittsburgh</a> member <a href="http://cibomahto.com/">Matt Mets</a>, he recommended I try out a Canon camera with the <a href="http://chdk.wikia.com/wiki/CHDK">Canon Hack Development Kit (CHDK)</a>.  Making a quick stop on eBay, I soon had an <a href="http://chdk.wikia.com/wiki/SD300">SD300</a> in my hands, ready to be hacked!</p>
+
+<p>I started by <a href="http://chdk.wikia.com/wiki/FAQ#Q._How_can_I_get_the_original_firmware_version_number_of_my_camera.3F">figuring out which firmware my SD300 was running</a>, which told me which <a href="http://mighty-hoernsche.de/bins/ixus40_sd300-100k-0.9.9-872-full.zip">version of CHDK to download</a> for my camera&rsquo;s particular model/firmware combo.  Using an SD card reader, I copied the contents of the CHDK zip file onto my camera&rsquo;s SD card and followed the instructions to <a href="http://chdk.wikia.com/wiki/FAQ#Q._How_can_I_make_the_CHDK_program_load_automatically_at_startup.3F">make CHDK auto-load</a> when the camera starts up.  I also changed my <a href="http://chdk.wikia.com/wiki/CHDK_firmware_usage">CHDK firmware settings</a> to set &ldquo;Disable LCD off&rdquo; to &ldquo;[Script]&ldquo;, so the camera wouldn&rsquo;t shut down on its own.</p>
+
+<p>Once CHDK was loaded and configured, I followed the <a href="http://chdk.wikia.com/wiki/USB_Remote_Cable">USB Remote Cable instructions</a> from the CHDK wiki.  The basic idea is to set Enable Remote to on, and load a script that is ready to handle USB remote events.  The one on the wiki page didn&rsquo;t work as-is for me, presumably because my camera has half-shoot (i.e. focus and charge flash) and full-shoot (take picture) settings.  Here is the result that worked for me:</p>
+
+<script src="//gist.github.com/292276.js"></script>
+
+<p>As the script says, I now turn the camera on in record mode, disable the flash, and start the script.  After that, the camera will automatically take a photo whenever I plug in the USB to my computer.</p>
+
+<p>More from this series:</p>
+
+<p><ul>
+<li>Part 1: Remote control camera with CHDK [YOU ARE HERE]</li>
+<li><a href="/2010/02/16/000000/">Part 2: Wiring it up!</a></li>
+<li><a href="/2010/07/16/000000/">Part 3: Updating the MakerBot Firmware</a></li>
+<li><a href="/2010/07/25/000000/">Part 4: Updating ReplicatorG</a></li>
+<li>Part 5: Printing with the Camera!</li>
+<ul></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/canon/" class="label label-default">#<span class="p-category">canon</span></a>
+
+      
+        <a href="/tag/chdk/" class="label label-default">#<span class="p-category">chdk</span></a>
+
+      
+        <a href="/tag/hack/" class="label label-default">#<span class="p-category">hack</span></a>
+
+      
+        <a href="/tag/makerbot-131/" class="label label-default">#<span class="p-category">makerbot 131</span></a>
+
+      
+        <a href="/tag/point-and-shoot/" class="label label-default">#<span class="p-category">point-and-shoot</span></a>
+
+      
+        <a href="/tag/sd300/" class="label label-default">#<span class="p-category">sd300</span></a>
+
+      
+        <a href="/tag/usb/" class="label label-default">#<span class="p-category">usb</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/441500"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/02/01/automatic-makerbot-camera-pt.-1---remote-control-camera-with-chdk/"><time class="dt-published" datetime="2010-02-01T00:00:00-0500">February 1, 2010 at 12:00AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

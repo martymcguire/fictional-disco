@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;3d Printing&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/3d-printing/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/3d-printing/" title="Posts tagged '3d Printing'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/3d-printing/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Fri Jul 16</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/07/16/automatic-makerbot-camera-pt.-3--updating-the-makerbot-firmware/">Automatic MakerBot Camera Pt. 3 – Updating the MakerBot Firmware</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p>In the previous post in this series, I figured out how to <a href="/howto/makerbot-cam-2-wiring/">wire up</a> my <a href="/howto/makerbot-cam-1-chdk/">hacked Canon SD300 with CHDK</a>.  I chose to use the &ldquo;D9&rdquo; port on the <a href="http://reprap.org/bin/view/Main/Extruder_Controller_2_2#Servo_Headers">Extruder controller board</a>, thinking that should make the software as simple as setting pin 9 to &ldquo;HIGH&rdquo; for a brief time whenever I wanted to trigger the camera.</p>
+
+<p>The next step was to update the software on the extruder controller so that it could activate (and deactivate) the camera, in response to commands from the motherboard.
+<h3><a style="text-decoration: none; color: #000" name="makerbot_comms">An aside on MakerBot communications</a></h3>
+The MakerBot electronics ecosystem is comprised of 3 parts: your computer, the <a href="http://reprap.org/wiki/Motherboard_1.2">MakerBot&rsquo;s motherboard</a>, and the <a href="http://reprap.org/wiki/Extruder_Controller_2.2">extruder controller board</a>.  Your computer talks to the motherboard via a USB&lt;-&gt;TTL interface (such as this <a href="http://www.sparkfun.com/commerce/product_info.php?products_id=9718">FTDI cable from SparkFun</a>).  In turn, the motherboard communicates with the extruder using another serial protocol, <a href="http://en.wikipedia.org/wiki/EIA-485">RS-485</a>, over an ethernet cable.  Finally, the extruder triggers the camera via the custom cable I made in the <a href="/howto/makerbot-cam-2-wiring/">previous post</a>.</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/MB-comms-diag.png"><img class="size-full wp-image-196 alignnone" style="margin: 10px;" title="MakerBot Communications Diagram - Computer, motherboard, extruder controller, camera" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/MB-comms-diag.png" alt="" width="500"/></a></p>
+
+<p>The software for all three components is available on <a href="http://github.com/">the indomitable GitHub</a>.  The software for your computer is called <a href="http://replicat.org/">ReplicatorG</a>, and the source can be found in the <a href="http://github.com/makerbot/ReplicatorG">MakerBot ReplicatorG GitHub repository</a>.  I&rsquo;ll talk more about ReplicatorG in the next post in this series.  For now, we want to focus on the <a href="http://github.com/makerbot/G3Firmware">MakerBot G3Firmware GitHub repository</a>, which contains the code for the motherboard (in the <a href="http://github.com/makerbot/G3Firmware/tree/master/SanguinoMaster/">SanguinoMaster</a> subdirectory), and for the extruder (in the <a href="http://github.com/makerbot/G3Firmware/tree/master/ArduinoSlaveExtruder/">ArduinoSlaveExtruder</a> directory).</p>
+
+<p>Browsing through the code, we see that these components use their serial interfaces to send packets, where each command is represented by a number.  The commands for the motherboard can be found in the <a href="http://github.com/makerbot/G3Firmware/blob/master/SanguinoMaster/Commands.h">SanguinoMaster/Commands.h</a>, and those for the extruder can be found in <a href="http://github.com/makerbot/G3Firmware/blob/master/ArduinoSlaveExtruder/PacketProcessor.cpp">ArduinoSlaveExtruder/PacketProcessor.cpp</a>.</p>
+
+<p>To send a message to the extruder - in this case, to activate or deactivate the camera - we must create a packet for the motherboard.  The <code>HOST_CMD_TOOL_QUERY</code> code allows us to send the motherboard a packet which it will then pass along to the extruder controller.</p>
+
+<p>That&rsquo;s great, because it means the motherboard part of this software hack is done!</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/MB-comms-diag_check1.png"><img src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/MB-comms-diag_check1.png" alt="" title="Motherboard - Check!" width="500" height="139" class="alignnone size-full wp-image-208" /></a></p>
+
+<p>In fact, we&rsquo;ve already hacked the camera, as well, so we&rsquo;re halfway there!</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/MB-comms-diag_check2.png"><img src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/MB-comms-diag_check2.png" alt="" title="Camera: Check!" width="513" height="139" class="alignnone size-full wp-image-209" /></a></p>
+
+<p><h3>Hacking a camera into the extruder controller</h3>
+Since the motherboard already does everything we need (passes along packets from the computer to the extruder controller), we only need to update the ArduinoSlaveExtruder code.</p>
+
+<p>To get this to work, I ended up changing the following files:
+<a href="http://github.com/martymcguire/G3Firmware/commit/c7ff1ffb5f6004a37a0bcb2b5455403daac447d9#diff-0">ArduinoSlaveExtruder/Configuration.h.dist</a> - added in configuration options for enabling the camera and setting the pin on which to activate it.
+<a href="http://github.com/martymcguire/G3Firmware/commit/c7ff1ffb5f6004a37a0bcb2b5455403daac447d9#diff-2">ArduinoSlaveExtruder/Extruder.h</a> - added function definitions for turning on/off the camera.
+<a href="http://github.com/martymcguire/G3Firmware/commit/c7ff1ffb5f6004a37a0bcb2b5455403daac447d9#diff-1">ArduinoSlaveExtruder/Extruder.cpp</a> - actually implemented turning on/off the camera.
+<a href="http://github.com/martymcguire/G3Firmware/commit/c7ff1ffb5f6004a37a0bcb2b5455403daac447d9#diff-3">ArduinoSlaveExtruder/PacketProcessor.cpp</a> - implemented the serial command to toggle camera.
+<h3>Building and uploading</h3>
+If you followed the 4 links above, you&rsquo;ll notice that they go to <a href="http://github.com/martymcguire/G3Firmware/">my own G3Firmware GitHub repository</a>.  You can download it yourself to play along by cloning the repository and checking out the <code>ECv2.3rc0-camera</code> branch.</p>
+
+<p>To build the firmware and upload it to the extruder controller, we need some common development tools (make, in this case), and the <a href="http://arduino.cc/">Arduino</a> development environment.  With those things installed, we can compile everything by setting the <code>ARDUINO_HOME</code> environment variable to the path to our Arduino install&rsquo;s java directory (e.g. on OS X this would be <code>/Applications/Arduino.app/Contents/Resources/Java/</code>), and simply run <code>make</code>.</p>
+
+<p>Once the firmware has been compiled, we can upload it to the extruder controller by using the USB&lt;-&gt;TTL cable that usually connects the motherboard to our computer.  Plug the cable into the extruder controller, and run the <code>make upload</code> command.  You&rsquo;ll need to make sure that <code>ARDUINO_HOME</code> is set, and you will probably need to alter the Makefile to specify the correct serial port, and maybe to update the call to <code>avrdude</code> to include the path to the Arduino avrdude config file.  You can see an example of that in <a href="http://github.com/martymcguire/G3Firmware/commit/0b9c9b09a084f3ad08ccbac7016e82ad3814a3c1">this commit</a>.</p>
+
+<p>Once the firmware is uploaded to the extruder controller, the MakerBot is all set to take pictures!</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/MB-comms-diag_check3.png"><img src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/MB-comms-diag_check3.png" alt="" title="Extruder Controller - Check!" width="513" height="139" class="alignnone size-full wp-image-210" /></a></p>
+
+<p>&hellip; Of course, we still have no way to <strong>tell</strong> the MakerBot to take a picture, so stay tuned for that information in the next update:
+<ul>
+    <li><a href="/2010/02/01/000000/">Part 1: Remote control camera with CHDK</a></li>
+    <li><a href="/2010/02/16/000000/">Part 2: Wiring it up!</a></li>
+    <li>Part 3: Updating the MakerBot Firmware [YOU ARE HERE]</li>
+    <li><a href="/2010/07/25/000000/">Part 4: Updating ReplicatorG</a></li>
+    <li>Part 5: Printing with the Camera!</li>
+</ul></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/3d-printing/" class="label label-default">#<span class="p-category">3d printing</span></a>
+
+      
+        <a href="/tag/firmware/" class="label label-default">#<span class="p-category">firmware</span></a>
+
+      
+        <a href="/tag/makerbot/" class="label label-default">#<span class="p-category">MakerBot</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/46m400"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/07/16/automatic-makerbot-camera-pt.-3--updating-the-makerbot-firmware/"><time class="dt-published" datetime="2010-07-16T00:00:00-0400">July 16, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<div class="date-separator">Wed Jul 14</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/07/14/automatic-makerbot-time-lapse-photography/">Automatic MakerBot Time-Lapse Photography!</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kQns9DtSesE" frameborder="0" allowfullscreen></iframe>
+
+<p>It works!</p>
+
+<p>Using a Canon SD300 with <a href="http://chdk.wikia.com/wiki/CHDK">CHDK</a>, and some firmware hacks, Makerbot #131 has learned how to make time-lapse videos of all of its prints!</p>
+
+<p>More details (and a how-to!) coming soon!  And thanks to <a href="http://www.thingiverse.com/">Thingiverse</a> user <a href="http://www.thingiverse.com/Starno">Starno</a> for the <a href="http://www.thingiverse.com/thing:1842">bottle opener model</a> in the video.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/3d-printing/" class="label label-default">#<span class="p-category">3d printing</span></a>
+
+      
+        <a href="/tag/makerbot/" class="label label-default">#<span class="p-category">MakerBot</span></a>
+
+      
+        <a href="/tag/time-lapse/" class="label label-default">#<span class="p-category">time lapse</span></a>
+
+      
+        <a href="/tag/video/" class="label label-default">#<span class="p-category">video</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/46j400"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/07/14/automatic-makerbot-time-lapse-photography/"><time class="dt-published" datetime="2010-07-14T00:00:00-0400">July 14, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

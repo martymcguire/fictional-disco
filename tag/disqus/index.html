@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Disqus&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/disqus/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/disqus/" title="Posts tagged 'Disqus'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/disqus/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Tue Apr 25</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/04/25/site-updates-importing-old-posts-disqus-comments/">Site Updates: Importing Old Posts, Disqus Comments</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><em>
+  <a href="https://jonathanprozzi.net/">Jonathan Prozzi</a> and I have challenged one another to make a post about improving our websites once a week. Here&rsquo;s mine!
+  <br />
+</em>
+<p>Back in 2008 I started a new blog on Wordpress. It seemed like a good idea! Maybe I would post some useful things and someone would offer me a job! I wanted to allow discussion without the dangers of letting strangers submit data directly to my server, so I set up the JavaScript-based <a href="https://disqus.com/">Disqus</a> comments service. I made a few posts per year and it eventually tapered off and I largely forgot about it.</p>
+<p>In February 2011 I participated in the Thing-a-Day project on <a href="https://indieweb.org/Posterous">Posterous</a>. It was the first time in a long time that I had published consistently, so when it was announced that Posterous was going away, I worked hard to grab my content and stored it <i>somewhere</i>.</p>
+<p>Eventually it was November 2013, Wordpress was &ldquo;out&rdquo;, static site generators were &ldquo;in&rdquo;, and I wanted to give <a href="https://octopress.org/">Octopress</a> a try. I used Octopress&rsquo; tools to import all my Wordpress content into Octopress, forgot about adding back the Disqus comments, and posted it all back online. In February 2014, I decided to resurrect my Posterous content, so I created posts for it and got everything looking nice enough.</p>
+<p>
+  In 2015 I learned about the <a href="https://indieweb.org/">IndieWeb</a>, and decided it was time for a new approach to my identity and content online. I set up a new site at <a href="https://martymcgui.re/">https://martymcgui.re/</a> based on <a href="https://jekyllrb.com/">Jekyll</a> (hey! static sites are still &ldquo;in&rdquo;!) and got to work adding IndieWeb features.
+  <br />
+</p>
+<p>Well, today I decided to get some of that old content off my other domain and into my official one. Thankfully, with Octopress being based on Jekyll, it was mostly just a matter of copying over the files in the _posts/ folder. A few tweaks to a few posts to make up for newer parsing in Jekyll, my somewhat odd URL structure, etc., and I was good to go!</p>
+<h2>&ldquo;Owning&rdquo; My Disqus Comments</h2>
+<p>Though I had long ago considered them lost, I noticed that some of my old posts had a section that the Octopress importer had added to the metadata of my posts from Wordpress:</p>
+<pre>
+meta:
+  _edit_last: &lsquo;1&rsquo;
+  _wp_old_slug: makerbot-cam-1-wiring
+  dsq_thread_id: &lsquo;604226727&rsquo;
+</pre>
+<p>All of my Wordpress posts had this dsq_thread_id value, and that got me thinking. Could I export the old Disqus comment data and find a way to display it on my site? (Spoiler alert: yes I could).</p>
+<p>Disqus actually has a export feature: <a href="https://disqus.com/admin/discussions/export/">https://disqus.com/admin/discussions/export/</a></p>
+<p>You can request a compressed XML file containing all of your comment data, organized hierarchically into &ldquo;category&rdquo; (which I think can be configured per-site), &ldquo;thread&rdquo; (individual pages), and &ldquo;post&rdquo; (the actual comments), and includes info such as author name and email, the date it was created, the comment message with some whitelisted HTML for formatting and links, whether the comment was identified as spam or has been deleted, etc.</p>
+<p>The XML format was making me queasy, and <a href="https://jekyllrb.com/docs/datafiles/">Jekyll data files</a> often come in YAML format for editability, so I did the laziest XML to YAML transform possible, thanks to some Ruby and <a href="https://stackoverflow.com/questions/11995299/how-to-convert-xml-file-to-yaml">this StackOverflow post</a>.</p>
+<pre>
+require &lsquo;active_support/core_ext/hash/conversions&rsquo;
+require &lsquo;yaml&rsquo;
+file = File.open(&ldquo;disqus_export.xml&rdquo;, &ldquo;r&rdquo;)
+hash = Hash.from_xml(file.read)
+yaml = hash.to_yaml
+File.open(&ldquo;disqus.yml&rdquo;, &ldquo;w&rdquo;) { |file| file.write(yaml) }
+</pre>
+<p>This resulted in a YAML formatted file that looked like:</p></p>
+
+<pre><code>---
+disqus:
+  xmlns: http://disqus.com
+  xmlns:dsq: http://disqus.com/disqus-internals
+  xmlns:xsi: http://www.w3.org/2001/XMLSchema-instance
+  xsi:schemaLocation: http://disqus.com/api/schemas/1.0/disqus.xsd http://disqus.com/api/schemas/1.0/disqus-internals.xsd
+  category:
+    dsq:id: ...
+    forum: ...
+    ...
+  ...
+</code></pre>
+
+<p><p>I dropped this into my Jekyll site as _data/disqus.yml, and &hellip; that&rsquo;s it! I could now access the content from my templates in site.data.disqus.</p>
+<p>I wrote a short template snippet that, if the post has a &ldquo;meta&rdquo; property with a &ldquo;dsq_thread_id&rdquo;, to look in site.data.disqus.disqus.post and collect all Disqus comments where &ldquo;thread.dsq:id&rdquo; was the same as the &ldquo;dsq_thread_id&rdquo; for the post. If there are comments there, they&rsquo;re displayed in a &ldquo;Comments&rdquo; section on the page.</p>
+<p>So now some of my oldest posts have some of their discussion back after more than 7 years!</p>
+<p>Here&rsquo;s an example post: <a href="https://martymcgui.re/2010/02/16/000000/">https://martymcgui.re/2010/02/16/000000/</a></p>
+<figure>
+  <img src="https://media.martymcgui.re/a0/45/d7/3f/bfa2eb9293c98eeef6cb23d3d4669214724d101e66f7f69290559fab.png" alt="" />
+  <figcaption>Example of old Disqus comments on display.</figcaption>
+</figure>
+<p>I was (pleasantly) surprised to be able to recover and consolidate this older content. Thanks to past me for keeping good backups, and to Disqus for still being around and offering a comprehensive export.</p>
+<p>As a bonus, since all of the comments include the commenter&rsquo;s email address, I could give them avatars with <a href="https://gravatar.com/">Gravatar</a>, and (though they have no URL to link to) they would almost look right at home alongside the more modern <a href="https://martymcgui.re/2017/03/22/003710/">mentions I display on my site</a>.</p>
+<p><b>Update: Yep, added Gravatars.</b></p>
+<figure>
+  <img src="https://media.martymcgui.re/a8/a2/03/59/1e98187383bcb8e0581fa8f668a601ff082301da2cd4ea4169ce21c9.png" alt="" />
+  <figcaption>Old Disqus comments now with avatars by Gravatar</figcaption>
+</figure></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/site-update/" class="label label-default">#<span class="p-category">site-update</span></a>
+
+      
+        <a href="/tag/posterous/" class="label label-default">#<span class="p-category">Posterous</span></a>
+
+      
+        <a href="/tag/disqus/" class="label label-default">#<span class="p-category">Disqus</span></a>
+
+      
+        <a href="/tag/silos/" class="label label-default">#<span class="p-category">silos</span></a>
+
+      
+        <a href="/tag/ownyourdata/" class="label label-default">#<span class="p-category">OwnYourData</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4o21kk"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/04/25/site-updates-importing-old-posts-disqus-comments/"><time class="dt-published" datetime="2017-04-25T21:45:45-0400">April 25, 2017 at 9:45PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/857050670955765760" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/04/25/214545/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

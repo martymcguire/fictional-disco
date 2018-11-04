@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;4043d&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/4043d/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/4043d/" title="Posts tagged '4043d'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/4043d/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Sun Oct 24</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/10/24/experiments-with-pla-4043d/">Experiments with PLA 4043D</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8421.jpg"><img class="alignnone size-full wp-image-326" title="Bottle Opener made from PLA 4043D" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8421.jpg" alt="Bottle Opener made from PLA 4043D" width="512" height="384" /></a></p>
+
+<p>As I said in my <a href="/makerbot/mk5-plastruder/">last update</a>, I finally upgrade MakerBot #131 with a <a href="http://store.makerbot.com/plastruder-mk5.html">MK5 extruder</a> because it reportedly works great with the new <a href="http://store.makerbot.com/pla-4043d-5lb-coil.html">PLA 4043D</a>.</p>
+
+<p>I&rsquo;ve been having fun printing with the various <a href="http://store.makerbot.com/plastic.html">colors of ABS</a> that MakerBot offers, but have always been somewhat envious of folks that have been printing successfully with <a href="http://wiki.makerbot.com/pla">PLA</a>. I bought 5lb roll of the original 4032D that MakerBot sold, but ended up putting it on the shelf after reports from other operators that it was destroying their MK4 extruders.</p>
+
+<p>Getting the new PLA printing was surprisingly easy, given the challenge of using a new extruder (which needed temperature, PID, and flow rate calibration) and it&rsquo;s the first non-ABS plastic I&rsquo;ve printed, so it will have different optimal printing temperatures and more.</p>
+
+<p>I haven&rsquo;t carefully calibrated the thermistor on my MK5, and I wasn&rsquo;t sure of the right temperature to extrude PLA, so I started by setting the temperature to 180ºC and attempting to push some filament through by hand.  I raised the temperature slowly until it became easy to push through by hand, around 195ºC.  I had not yet locked down my PID settings, so I was getting some wild temperature swings.  To be safe, I set the temp to 200ºC and started printing my favorite <a href="http://www.thingiverse.com/thing:1842">bottle opener from Thingiverse</a>.</p>
+
+<p>It turns out the flow rate for the MK5 is a lot higher than it was for the MK4.  After putting down the raft, I was having trouble with the filament stripping inside the MK5 due to backpressure.  Still, by paying attention to the print and tightening the thumbwheel whenever the filament slipped, I was able to get a completed bottle opener.</p>
+
+<p>It was then that I noticed two things:
+<ul>
+    <li>The top two layers of the object sagged deep into the honeycomb fill layers below, giving a terrible finish on top.</li>
+    <li>PLA has no give, so there was no way that a penny would fit into the slot.  I have some nice bruises from trying to make it fit. :)</li>
+</ul>
+To fix the stripping and sagging problems, I figured that I should increase my Feedrate - the speed at which the platform moves to catch the extruded plastic.  I figured that a too-low Feedrate would cause some back pressure when printing the raft (leading to stripping), and would contribute to sagging overhangs.  I also guessed that the sagging is due in part to the high thermal mass of liquid PLA allowing it to sag before it cooled, so a lower extrusion temperature would let it solidify sooner, leading to less sagging.  I still use skeinforge-0006, so these settings are in &ldquo;raft.csv&rdquo; (various temperatures) and &ldquo;speed.csv&rdquo; (Feedrate), respectively.</p>
+
+<p>So, some calibration prints:</p>
+
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8429.jpg"><img class="alignnone size-full wp-image-329" title="Bottle opener calibration prints with PLA" src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/10/IMG_8429.jpg" alt="Bottle opener calibration prints with PLA" width="512" height="384" /></a></p>
+
+<p>Starting with my first successful print in the upper-lefthand corner, with the temp of 200ºC and a feedrate of 26.5mm/s (which was working for my MK4), I slowly lowered my temp and increased feedrate.  At 180ºC I had a failed print due to the PLA freezing up, so I am going to stick with 185ºC going forward.  Increasing the feedrate by 25% immediately solved my filament stripping problem, but still left a pretty nasty top layer.  Increasing beyond that smoothed out the top pretty well, and left clean enough slots that I could actually insert some coins, albeit dimes rather than pennies.</p>
+
+<p>I may try increasing my feedrate further, but I found an odd result when going from 36.4375mm/s (slower, should have thicker walls) to 38.26mm/s (faster, should have thinner walls). Namely, they both seem like very solid objects, but the dime slid nicely into the slower-printed version using the edge of a desk, while I had to take a hammer to the faster-printed version, and actually ended up bending the dime rather than driving it into the plastic (PLA is tough stuff!).  I would have expected the opposite.</p>
+
+<p>Anyway, I hope these results are useful for some folks.  I hope to improve my calibration a bit more, and trying out the MK5 with my old roll of PLA 4032D.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/4043d/" class="label label-default">#<span class="p-category">4043D</span></a>
+
+      
+        <a href="/tag/calibration/" class="label label-default">#<span class="p-category">calibration</span></a>
+
+      
+        <a href="/tag/makerbot/" class="label label-default">#<span class="p-category">MakerBot</span></a>
+
+      
+        <a href="/tag/makerbot-131/" class="label label-default">#<span class="p-category">makerbot 131</span></a>
+
+      
+        <a href="/tag/pla/" class="label label-default">#<span class="p-category">PLA</span></a>
+
+      
+        <a href="/tag/skeinforge/" class="label label-default">#<span class="p-category">skeinforge</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/48S401"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/10/24/experiments-with-pla-4043d/"><time class="dt-published" datetime="2010-10-24T00:00:01-0400">October 24, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

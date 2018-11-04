@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:https://heady-land.glitch.me/2018/01/13/introduction-to-podcasting/
+DTSTART:20180113T120000-0500
+DTEND:20180113T150000-0500
+SUMMARY:Introduction to Podcasting
+DESCRIPTION:It seems like everybody has a podcast these days. And why not? You&rsquo;ve probably already got a great podcast idea in mind and want to get started!\nIn this densely packed 2-hour workshop, we&rsquo;ll cover the basics, with opportunities for hands-on practice: * Using the BIG studio equipment (Zoom H6, Shure SM-58 microphones) to record raw audio * Using Audacity editing software (available for Mac, Windows, and Linux) to clean up audio and create a finished episode * Publishing an episode online using Soundcloud * Adding a podcast to the Apple Podcasts (a.k.a. iTunes) directory\nTickets are only $10. Reserve your spot now!\nParticipants should bring an SD card with at least 2GB of free space and a way to take notes. Folks interested in hands-on time with editing are encouraged to bring a laptop with the Audacity audio editing software (http://www.audacityteam.org/) installed. Finally, to save, time, everyone is encouraged to create a SoundCloud account (https://soundcloud.com/) as well as an Apple ID (https://www.apple.com/shop/account/home) if you don&rsquo;t have them already.\nInstructors: Marty McGuire and Jonathan Monroe.\n
+LOCATION:https://martymcgui.re/venues/the-big-theater/
+END:VEVENT
+END:VCALENDAR

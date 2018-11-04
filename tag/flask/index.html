@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Flask&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/flask/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/flask/" title="Posts tagged 'Flask'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/flask/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Thu Jan 26</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/01/26/spano---a-minimum-viable-micropub-media-endpoint/">Spano - a minimum-viable Micropub Media Endpoint</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="https://www.w3.org/TR/micropub/">Micropub</a>&nbsp;is&nbsp;an open API standard to create posts on one's own domain using third-party clients &nbsp;and currently a W3C Candidate Recommendation. One of the (semi-) recent additions is the idea of a <a href="https://www.w3.org/TR/micropub/#media-endpoint">Micropub Media Endpoint</a>. The Media Endpoint provides&nbsp;a way for Micropub clients to upload media files to a Micropub service, receiving a URL that is sent along in place of the file contents when the post is published.</p><p class="">Some of the things I like about Micropub media endpoints include:</p><ul><li>The spec allows the media endpoint to be on a completely separate domain from the "full" micropub endpoint.</li><li>The spec doesn't specify anything about how the files are stored or their final URLs or filenames.<br></li><li>They make it easy to separate the handling of (large) media files from the (presumably much smaller) content and metadata of a post.</li><li>They enable Micropub clients to upload multiple files without creating multiple posts. This makes it simpler to create posts that contain multiple images, like a gallery.</li></ul><p class="">Personally, I wanted a Micropub media endpoint server with a few extra properties:</p><ul><li>It should be able to run completely separately from, and therefore work in conjunction with, any other micropub server implementation.<br></li><li>It should not store duplicate files. If the same file is uploaded twice, the same URL should be returned both times.</li><li>It should not allow overwriting files. If two images of the same name are uploaded, both are kept and receive different URLs.</li></ul><h2>Enter HashFS</h2><p class="">My extra features above essentially describe a&nbsp;<a href="https://en.wikipedia.org/wiki/Content-addressable_storage">content-addressable storage</a>&nbsp;storage system. CAS is a way of storing and accessing data based on some property of the actual content, rather than (potentially arbitrary) files and folders.</p><p class=""><a href="https://hashfs.readthedocs.io/en/latest/">HashFS</a>&nbsp;is a Python implementation of a content-addressable file management system. You give it files, it will put them in a directory structure based on a <a href="https://simple.wikipedia.org/wiki/Cryptographic_hash_function">cryptographic hash function</a>&nbsp;of the contents of that file. In other words - HashFS can take any file and give back a unique path to that file which will never change (if you later upload a new version of the file, it gets a different path).<br></p><p class="">To add the the fun of HashFS, there is a Flask extension called <a href="https://flask-hashfs.readthedocs.io/en/latest/">Flask-HashFS</a>&nbsp;which makes it easy to expose a HashFS file store on the web via the Python&nbsp;<a href="http://flask.pocoo.org/">Flask</a>&nbsp;framework.</p><h2>Introducing Spano</h2><p class=""><a href="https://github.com/martymcguire/spano">Spano</a> is a Micropub Media Endpoint server written in Python via the Flask framework which combines Flask-HashFS for file storage with&nbsp;<a href="https://github.com/martymcguire/Flask-IndieAuth">Flask-IndieAuth</a>&nbsp;(<a href="https://martymcgui.re/2017/01/26/104730/">introduced earlier</a>) to handle authentication and authorization.</p><p class="">Spano is a server-side web app that basically does one thing: it accepts HTTP POST requests with a valid <a href="http://indieweb.org/IndieAuth">IndieAuth</a>&nbsp;token and a file named "file", stores that file, and returns a URL to that file. The task of serving uploaded files is left to a dedicated web server like nginx or Apache.</p><h3>Using Spano</h3><p class="">Once Spano has been <a href="https://github.com/martymcguire/spano#spano">set up and configured</a>&nbsp;for your domain, uploading is a matter of getting a valid IndieAuth token. IndieAuth-enabled Micropub clients will do this automatically. For testing by hand I like to log in to Quill and copy the access token from the <a href="https://quill.p3k.io/settings">Quill settings page</a>. With token in hand, uploads are as easy as:</p><pre><code>curl -D - -F "file=@myfile.jpg" \
+  -H"Authorization: Bearer xxxx..." \
+  https://media.example.com/micropub/</code></pre><p class="">Which should output a response like:</p><pre><code>HTTP/1.1 100 Continue
+
+HTTP/1.0 201 CREATED
+Content-Type: text/html; charset=utf-8
+Content-Length: 108
+Location: https://media.example.com/cc/a5/97/7c/2004..2cb.jpg
+Server: Werkzeug/0.11.4 Python/2.7.11
+Date: Thu, 26 Jan 2017 02:40:05 GMT
+
+File created: https://media.example.com/cc/a5/97/7c/2004..2cb.jpg</code></pre><h3>Integrating Spano with your Micropub Endpoint</h3><p class="">If you want Micropub clients to use Spano as your Media Endpoint, you need to advertise it. This is handled by your "main" Micropub server using <a href="https://www.w3.org/TR/micropub/#discovery">discovery</a>. Essentially, a client will make a configuration request to your server like so:</p><pre>https://example.com/micropub?q=config</pre><p class="">And your server's response should be a JSON-formatted object specifying the "media-endpoint". A bare minimum example:</p><pre>{<br>&nbsp; "media-endpoint": "https://media.example.com/micropub/"<br>}</pre><p class="">In addition to advertising the media-endpoint, your Micropub server must be able to handle lists of URLs in places where it would normally expect a file.</p><p class="">For example, when posting a photo from Quill without a media endpoint, your Micropub server will receive a multipart/form-data encoded file named "photo". When posting from Quill with a media endpoint, your Micropub server will instead receive a list of URLs represented as "photo[]=https://media.example.com/cc/...2cb.jpg". Presumably this pattern would hold for other media types such as video and audio, if you are using Micropub clients that support them.</p><p class="">This particular step has been an interesting challenge for my site, which is a static site generated by Jekyll. My previous Micropub file-handling implementation expected all uploaded assets to live on disk next to the post files, and updating my Jekyll theme and plugins to handle the change is a work in progress. I eventually plan to move all my uploads out of the source for my project in favor of storing them with Spano.</p><h2>Feedback Welcome!</h2><p class="">Spano is probably my second public Python project, so I'd love feedback! If you try it out and run into issues, please drop me a line <a href="https://github.com/martymcguire/spano/issues">on GitHub</a>. Or you can find me in the <a href="https://chat.indieweb.org/">#indieweb chat</a> on freenode IRC.</p><p class="">I'd also like to thank Kyle Mahan for his <a href="https://github.com/kylewm/woodwind">Woodwind</a>&nbsp;Flask server application, which inspired the structure of Spano.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/flask/" class="label label-default">#<span class="p-category">flask</span></a>
+
+      
+        <a href="/tag/python/" class="label label-default">#<span class="p-category">python</span></a>
+
+      
+        <a href="/tag/micropub/" class="label label-default">#<span class="p-category">micropub</span></a>
+
+      
+        <a href="/tag/media-endpoint/" class="label label-default">#<span class="p-category">media-endpoint</span></a>
+
+      
+        <a href="/tag/spano/" class="label label-default">#<span class="p-category">spano</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4mYHT0"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/01/26/spano---a-minimum-viable-micropub-media-endpoint/"><time class="dt-published" datetime="2017-01-26T12:27:00-0500">January 26, 2017 at 12:27PM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/01/26/122700/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/824671060129959937" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/01/26/flask-indieauth---a-python-library-for-micropub-servers/">Flask-IndieAuth - A Python Library for Micropub Servers</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p class="">One of the things I like about the <a href="https://indieweb.org/">IndieWeb</a>&nbsp;community is that while they are <a href="https://indieweb.org/selfdogfood">building tools for themselves</a>, they also tend to <a href="https://github.com/tantek/cassis">release</a>&nbsp;<a href="https://github.com/aaronpk/XRay">useful</a>&nbsp;<a href="https://github.com/kylewm/flask-micropub">parts</a>&nbsp;under Free Software licenses. This helps other developers join the community more quickly, but it also tends to help improve the quality and feature sets of these projects as others use and add to the source.<br></p><p class="">One of my favorite things to come from the IndieWeb folks is the <a href="https://www.w3.org/TR/micropub/">Micropub API standard</a>, which defines some simple protocols for clients to send post data (the kinds of things you'd share on a blog or social media: images, short plain text, long articles, tags, and more) to servers for posting. One upshot is that if your server accepts Micropub, you can use one of many clients to put content on your site. I'm using a dedicated editor from&nbsp;<a href="https://quill.p3k.io/">Aaron Parecki's Quill</a> to write this post, but there are <a href="https://indieweb.org/Micropub/Clients">lots of alternatives</a>&nbsp;that are aimed at special use cases. For example, <a href="https://woodwind.xyz">Kyle Mahan's Woodwind</a>&nbsp;is an IndieWeb reader app that happens to include functionality for posting replies, favorites, reposts, and even RSVPs directly to my site via Micropub.</p><p class="">Another favorite is the idea of&nbsp;<a href="http://indieweb.org/IndieAuth">IndieAuth</a>&nbsp;for web sign-in. At a high level, the idea is that you create two-way links between your website and your user profile on some other silo. For example, on your homepage you add a link to your Twitter profile and on your Twitter profile you link back to your homepage. For a client that supports IndieAuth, I can log in using my homepage URL by verifying that I can log in to my Twitter account.</p><p class="">My own personal Micropub implementation is a little pile of spaghetti Python code making use of the <a href="http://flask.pocoo.org/">Flask</a>&nbsp;framework. I use IndieAuth to handle authentication (i.e. - proving that a post comes from an app that I've logged into) and authorization (i.e. - proving that I gave that app permission to post to my site). As I've started improving my Micropub implementation, I found it useful to extract that portion of my code into a library that can be used with other Flask applications.</p><h2>Introducing Flask-IndieAuth</h2><p class=""><a href="https://github.com/martymcguire/Flask-IndieAuth">Flask-IndieAuth</a>&nbsp;is a Flask extension that adds the ability to require a client to send a valid IndieAuth token when making requests to any route. For example:</p><pre>from flask_indieauth import requires_indieauth
+
+@app.route('/micropub', methods=['GET','POST'])
+@requires_indieauth
+def handle_micropub():
+    # ... handle the request</pre><p class="">The @requires_indieauth decorator runs before the code for the route. It currently looks for an IndieAuth token in one of three places, in order:</p><ul><li>HTTP Header (e.g. "Authorization: Bearer xxxx...xx")<br></li><li>HTTP form data or query string (e.g. "?access_token=xxxx...xx")</li><li>The body of a JSON-encoded POST (e.g. {"access_token": "xxxx...xx"})</li></ul><p class="">If a token is found, it will be verified against the configured <a href="https://indieweb.org/token-endpoint">Token Endpoint</a>&nbsp;to confirm that it is a valid token issued for your server's configured homepage with a sufficient scope.</p><p class="">For more information on how to install, configure, and use Flask-IndieAuth, please check out the <a href="https://github.com/martymcguire/Flask-IndieAuth#README">README on GitHub</a>.</p><h2>Next Steps</h2><p class="">I'll be using this extension to build my <a href="https://www.w3.org/TR/micropub/#media-endpoint">Micropub media endpoint</a>&nbsp;(coming up in a future post) and so far it is working just fine. That said, I know there is a lot of room for improvement. Some things on my list:</p><ul><li>"scope" can have many values, but only "post" is supported for now. It should probably be passed as an argument to @requires_indieauth so different routes can have different requirements.<br></li><li>The configured homepage ("ME") is currently expected in the Flask app's config. I'm not sure if that's "standard".</li><li>"TOKEN_ENDPOINT" is currently expected in the Flask app's configuration, but since it is required to be specified in the HTTP headers for or as a &lt;link&gt; in the content for the homepage, this could be fetched by the server.</li><li>Error handling isn't great - all failure conditions currently return HTTP 400 (Bad Request) but should probably be diversified a bit.</li></ul><h2>Feedback Welcome!</h2><p class="">This is my first published Flask extension (heck, it's my first public Python package on <a href="https://pypi.python.org/pypi">PyPI</a>), and I'd really appreciate comments, questions, pull requests, etc. Feel free to reach out <a href="https://github.com/martymcguire/Flask-IndieAuth/issues">on GitHub</a>, or you can find me in the <a href="https://chat.indieweb.org/">#indieweb chat</a> on freenode IRC.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/flask/" class="label label-default">#<span class="p-category">flask</span></a>
+
+      
+        <a href="/tag/indieauth/" class="label label-default">#<span class="p-category">IndieAuth</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4mYFnW"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/01/26/flask-indieauth---a-python-library-for-micropub-servers/"><time class="dt-published" datetime="2017-01-26T10:47:30-0500">January 26, 2017 at 10:47AM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/01/26/104730/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/824646292571877379" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Space Filling&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/space-filling/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/space-filling/" title="Posts tagged 'Space Filling'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/space-filling/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Thu Jul 22</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2010/07/22/space-filling-with-3d-objects-using-processing/">Space filling with 3D objects using Processing</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/makerbotiverse3.png"><img src="http://s3.amazonaws.com/static.creatingwithcode.com/wp-content/uploads/2010/07/makerbotiverse3.png" alt="" title="MakerBot &quot;M&quot; logo filled with Thingiverse objects." width="462" height="549" class="alignnone size-full wp-image-184" /></a></p>
+
+<p>While I know I should be finishing my <a href="/howto/makerbot-cam-1-chdk/">MakerBot</a> <a href="/howto/makerbot-cam-2-wiring/">time-lapse</a> <a href="/howto/makerbot-cam-3-firmware/">camera</a> <a href="/makerbot/automatic-makerbot-time-lapse-photography/">series</a>, I took some time for another project to play with some <a href="http://processing.org/">Processing</a>.  The above image was rendered in Processing, in real time in just couple of minutes!</p>
+
+<p>Basically, I wanted to take a simple shape, defined by an SVG path, and fill it with images of <a href="http://www.thingiverse.com/thing:1090">3D</a> <a href="http://www.thingiverse.com/thing:3465">objects</a> <a href="http://www.thingiverse.com/thing:3378">loaded</a> <a href="http://www.thingiverse.com/thing:1842">from</a> <a href="http://www.thingiverse.com/thing:1046">STL</a> <a href="http://www.thingiverse.com/thing:1224">files</a>.  Specifically, many wonderful MakerBot-printable objects from <a href="http://www.thingiverse.com/">Thingiverse</a>!</p>
+
+<p>After some Googling around, I found out that this problem is basically a space-filling problem, similar to an excellent Processing sketch named <a href="http://www.openprocessing.org/visuals/?visualID=1811">Scattered Letters</a> by <a href="http://www.openprocessing.org/portal/?userID=1133">Algirdas Rascius</a>, but with a twist.</p>
+
+<p>The basic algorithm is:
+<ul>
+<li>Load an SVG and render it to an off-screen buffer</li>
+<li>Set <code>curr_size</code>, the size that STLs should be rendered, to <code>max_size</code></li>
+<li>Choose a random STL model, give it a random orientation, and render it at the current size to an off-screen buffer</li>
+<li>Try several times to place this model by giving it a random <code>x</code>,<code>y</code> position and checking it for a good fit:<ul>
+<li>Each non-background pixel of the model&rsquo;s off-screen image should fit within the non-background pixels of the SVG&rsquo;s off-screen image.</li>
+<li>Each non-background pixel of the model&rsquo;s off-screen image should NOT overlap with any non-background pixel of the main display.</li>
+</ul></li>
+<li>If a fitting position is found, render the model to the display.</li>
+<li>Otherwise, shrink <code>curr_size</code> by a step and choose a new model.</li>
+<li>If we drop below <code>min_size</code>, we should stop.</li>
+</ul></p>
+
+<p>You can find the <a href="http://github.com/martymcguire/ThingiverseCollage">code for my sketch, which I call ThingiverseCollage, on GitHub</a>.  To make it work, you&rsquo;ll need to follow the installation instructions in the <a href="http://github.com/martymcguire/ThingiverseCollage/blob/master/README">README</a> to install my (very slightly) modified version of the <a href="http://workshop.evolutionzone.com/unlekkerlib/">unlekkerLib for STL loading and rendering</a>.  I modified it to allow rendering to a <code>PGraphics</code> object, since it originally only allowed rendering to the main <code>PApplet</code>.</p>
+
+<p>A note on STL files: unlekkerLib only loads STL files in the binary format.  It chokes dramatically on ASCII STL files, such as those exported from <a href="http://openscad.org/">OpenSCAD</a>.  I was able to use <a href="http://www.pleasantsoftware.com/developer/pleasant3d/index.shtml">Zaggo&rsquo;s excellent Pleasant3D</a> to load ASCII STLs and re-save them, which converts them to binary STLs.  As a bonus, Pleasant3D also allows you to orient objects in a way that will make them look most interesting when they are rendered down to 2D in the final image.</p>
+
+<p>An example <code>M.svg</code>, as well as several objects from <a href="http://thingiverse.com/">Thingiverse</a> are included with the code to get started.  To use your own SVGs, I have had good luck using <a href="http://inkscape.org/">Inkscape</a> to draw or import shapes, and save them as the native &ldquo;Inkscape SVG&rdquo; or &ldquo;Plain SVG&rdquo; formats.  Some files might require hand-tweaking; for example, if the <code>width</code> and <code>height</code> header values are something like <code>&ldquo;100%&rdquo;</code> instead of a pixel value.</p>
+
+<p>There is also some simple configuration in the sketch to allow the export of PDF files.  This is nice because the resulting PDF has full vector data, making it easily rescaled to any size you wish.  Unfortunately, the current PDF renderer for Processing renders <i>each triangle of each STL model</i> as a separate path, generating very complicated vector output, which tends to bring Inkscape to its knees.  I have had some luck with importing those files, rastering them out to PNG at a high resolution (e.g. 600 dpi), and using Inkscape&rsquo;s &ldquo;Trace Bitmap&rdquo; functionality to re-vectorize them, though this requires some cleanup by hand.</p>
+
+<p>Anyway, this has been a fun little diversion for me for the last couple of days.  I hope that you folks find it useful!  Post your awesome pictures in the comments, here!</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/processing/" class="label label-default">#<span class="p-category">Processing</span></a>
+
+      
+        <a href="/tag/space-filling/" class="label label-default">#<span class="p-category">space filling</span></a>
+
+      
+        <a href="/tag/stl/" class="label label-default">#<span class="p-category">STL</span></a>
+
+      
+        <a href="/tag/svg/" class="label label-default">#<span class="p-category">SVG</span></a>
+
+      
+        <a href="/tag/thingiverse/" class="label label-default">#<span class="p-category">thingiverse</span></a>
+
+      
+        <a href="/tag/unlekkerlib/" class="label label-default">#<span class="p-category">unlekkerLib</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/46s400"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2010/07/22/space-filling-with-3d-objects-using-processing/"><time class="dt-published" datetime="2010-07-22T00:00:00-0400">July 22, 2010 at 12:00AM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

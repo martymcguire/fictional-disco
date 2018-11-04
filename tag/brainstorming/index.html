@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Brainstorming&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/brainstorming/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/brainstorming/" title="Posts tagged 'Brainstorming'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/brainstorming/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Wed Apr 19</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/04/19/easier-posse-with-micropub-edits/">Easier POSSE with Micropub Edits?</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><i>Update: thanks to Ryan Barrett for pointing me to his <a href="https://snarfed.org/2015-11-29_keep-bridgy-publish-dumb">Keep Bridgy Publish dumb</a> post, which explains why Bridgy doesn't include the features mentioned below!</i></p>
+
+<p><i>Nerd alert: This post is me geeking out and will involve talk of protocols.</i></p>
+
+<p>In keeping with the IndieWeb concept of <a href="https://indieweb.org/POSSE">POSSE</a> (Publishing on my Own Site, Syndicating Elsewhere), I try to make social media posts on my own site first and then make similar (not always identical!) posts to my accounts on silos like Twitter and Facebook. I then add links to the posts on my site indicating that you can find the "syndicated copies" of that post on those silos.</p>
+<p>My process for doing this is something like:</p>
+<ul>
+  <li>
+    Make a new post, likely with a micropub client like <a href="https://quill.p3k.io/">Quill</a>.
+    <br />
+  </li>
+  <li>
+    Log in to Twitter and make a similar post, making note of the URL to the new tweet.
+    <br />
+  </li>
+  <li>Log in to Facebook and make a similar post, making note of the URL to the new FB post.</li>
+  <li>Edit the metadata to my post to indicate the new syndication links.</li>
+  <li>Re-publish the post on my site.</li>
+</ul>
+<p>Because of the way my site is set up, this manual process requires the use of my laptop, so I can't do it on the go.</p>
+<p>When thinking of ways to automate this process, I found myself drawn to another nice IndieWeb tool called <a href="https://telegraph.p3k.io/">Telegraph</a>. Telegraph takes the URL for a post, finds links inside that post, and (if they support <a href="https://www.w3.org/TR/webmention/">webmentions</a>) allows me to notify those sites about that my post links to theirs with a single click.</p>
+<figure>
+  <img src="https://media.martymcgui.re/6d/66/67/1d/8e692206218c78c4606910c526df4c4ca3136cae2bd79059208291ef.png" alt="" />
+  <figcaption>Excerpt from Telegraph's UI with buttons to Send Webmention to supported URLs</figcaption>
+</figure>
+<p>I like the way Telegraph works for several reasons:</p>
+<ul>
+  <li>
+    It's not purpose-built for a single website - it can be used for sending webmentions from any site that publishes their content with the right markup to any site that can receive them.
+    <br />
+  </li>
+  <li>It puts the final decision to send a mention in my hands - I can choose to send mentions to any particular link mentioned in my post, or not.</li>
+  <li>With a <a href="https://indieweb.org/Bookmarklet">bookmarklet</a>, the process of sending webmentions becomes very simple. I visit the page for my post, click my Telegraph bookmark in my browser, and Telegraph shows me the links and send buttons for my post.</li>
+</ul>
+<p>There already exists a great tool for copying content from my site to certain silos: <a href="https://brid.gy/">brid.gy</a>. While brid.gy's primary use case is to use webmentions to syndicate comments and other activity from silos onto your own site, brid.gy also has a <a href="https://brid.gy/about#publishing">Publish</a> feature which accepts a URL from your site and attempts to create a similar post on the silo of your choice. Brid.gy Publish is a great feature, and I make good use of it. However, there are still a few pain points that I feel when using it:</p>
+<ul>
+  <li>
+    While Brid.gy Publish gives a nice preview of what it will do, I can't tweak the content before publishing without editing my own post.
+    <br />
+  </li>
+  <li>Brid.gy does not, as far as I can tell, support bookmarklet functionality. So, publishing takes multiple steps: <ol>
+  <li>Visit my brid.gy profile page for a particular silo account.</li>
+  <li>Enter the URL for the post on my site.</li>
+  <li>Approve the post.</li>
+  <li>Copy the URL for the new silo post from brid.gy.<ul>
+  <li><strong>Note:</strong> These steps <i>can</i> be <a href="https://brid.gy/about#webmentions">automated via hidden links and webmentions</a>, and it even <a href="https://brid.gy/about#response">returns the URL for the new post</a>. However, this comes at the cost of the ability to preview what is to be posted.</li></ul></li></ol></li>
+  <li>Finally, while Brid.gy lets me know in its UI that my post succeeded, Brid.gy has no mechanism for informing my site that the new syndicated post is available. I still need to enter the syndication URLs into my post manually and re-publish my post.</li>
+</ul>
+<p>With that groundwork of existing tools, here is what (I think) my ideal workflow would look like:</p>
+<ol>
+  <li>
+    Make a new post to my site, likely with a micropub client like Quill.
+  </li>
+  <li>While looking at my post, click a bookmarklet that takes me to a syndication tool.</li>
+  <li>The syndication tool shows me previews of what my post would look like on each silo where I'd like to publish. I can tweak the content, if needed.</li>
+  <li>A single "Publish" click for each silo would create the post on that silo, but would <i>also</i> update my website with the new syndication link.</li>
+</ol>
+<p>This tool seems non-trivial to implement, but I think there are several building blocks which could be quite useful:</p>
+<ul>
+  <li>
+    <a href="https://github.com/kylewm/silo.pub">silo.pub</a> is a micropub-to-multiple-silos service that can simplify the process of getting content into silos. Brid.gy Publish also does much of this.
+    <br />
+  </li>
+  <li><a href="https://www.w3.org/TR/micropub/">Micropub</a> supports <a href="https://www.w3.org/TR/micropub/#source-content">querying source properties of a given post</a>. (it also supports <a href="https://www.w3.org/TR/micropub/#syndication-targets">querying for a list of syndication targets</a>, but this seems primarily intended for setups where the micropub server itself will handle the syndication).</li>
+  <li>Micropub supports <a href="https://www.w3.org/TR/micropub/#update">updates</a>. this could be used to add the syndication targets back to the original post. In fact, this <a href="https://www.w3.org/TR/micropub/#add">use case is in the spec</a>.</li>
+</ul>
+<p>I am not currently aware of anyone who does POSSE with this particular flow. I would be interested to know other folks' thoughts on this! Feel free to let me know with a post on your own site that mentions this one, or hit me up in the <a href="https://chat.indieweb.org/dev/">#indieweb-dev IRC chat</a>!</p>
+<p>Further Reading:<ul>
+  <li><a href="https://indieweb.org/syndication-brainstorming">https://indieweb.org/syndication-brainstorming</a></li>
+  <li><a href="https://indieweb.org/micropub_chaining">https://indieweb.org/micropub_chaining</a></li>
+</ul></p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/brainstorming/" class="label label-default">#<span class="p-category">brainstorming</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4nvKGC"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/04/19/easier-posse-with-micropub-edits/"><time class="dt-published" datetime="2017-04-19T15:16:12-0400">April 19, 2017 at 3:16PM -0400</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/854776335562141698" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/04/19/151612/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+

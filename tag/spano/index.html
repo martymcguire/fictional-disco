@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Marty McGuire is a freelance web developer in Baltimore, MD. He can also be found tinkering with electronics, 3D printing, and performing improv comedy.
+">
+  
+  <title>Posts tagged &#39;Spano&#39;</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="webmention" href="https://webmention.io/martymcgui.re/webmention" />
+  <link rel="self" href="https://heady-land.glitch.me/tag/spano/" />
+    <link rel="hub" href="http://martymcguire.superfeedr.com/" />
+    <link rel="alternate" type="application/atom.xml" href=https://granary.io/url?input=html&output=atom&url="https://heady-land.glitch.me/tag/spano/" title="Posts tagged 'Spano'" />
+  <link rel="shortcut icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="https://heady-land.glitch.me/images/logo.jpg" />
+
+  <link rel="stylesheet" href="https://heady-land.glitch.me/css/main.css">
+
+  <link rel="canonical" href="https://heady-land.glitch.me/tag/spano/">
+  
+</head>
+
+
+  <body>
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">
+        <img alt="Marty McGuire" src="https://heady-land.glitch.me/img/logo.jpg">
+      </a>
+      <a class="navbar-brand" href="https://heady-land.glitch.me/">martymcgui.re</a>
+    </div>
+  </div>
+</nav>
+
+        
+  
+  <div class="posts-collection">
+    
+			<div class="date-separator">Thu Jan 26</div>
+			<article class="post-content h-entry">
+  <h1 class="post-title p-name"><a href="/2017/01/26/spano---a-minimum-viable-micropub-media-endpoint/">Spano - a minimum-viable Micropub Media Endpoint</a></h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+  
+    
+    <div class="post e-content">
+<p><a href="https://www.w3.org/TR/micropub/">Micropub</a>&nbsp;is&nbsp;an open API standard to create posts on one's own domain using third-party clients &nbsp;and currently a W3C Candidate Recommendation. One of the (semi-) recent additions is the idea of a <a href="https://www.w3.org/TR/micropub/#media-endpoint">Micropub Media Endpoint</a>. The Media Endpoint provides&nbsp;a way for Micropub clients to upload media files to a Micropub service, receiving a URL that is sent along in place of the file contents when the post is published.</p><p class="">Some of the things I like about Micropub media endpoints include:</p><ul><li>The spec allows the media endpoint to be on a completely separate domain from the "full" micropub endpoint.</li><li>The spec doesn't specify anything about how the files are stored or their final URLs or filenames.<br></li><li>They make it easy to separate the handling of (large) media files from the (presumably much smaller) content and metadata of a post.</li><li>They enable Micropub clients to upload multiple files without creating multiple posts. This makes it simpler to create posts that contain multiple images, like a gallery.</li></ul><p class="">Personally, I wanted a Micropub media endpoint server with a few extra properties:</p><ul><li>It should be able to run completely separately from, and therefore work in conjunction with, any other micropub server implementation.<br></li><li>It should not store duplicate files. If the same file is uploaded twice, the same URL should be returned both times.</li><li>It should not allow overwriting files. If two images of the same name are uploaded, both are kept and receive different URLs.</li></ul><h2>Enter HashFS</h2><p class="">My extra features above essentially describe a&nbsp;<a href="https://en.wikipedia.org/wiki/Content-addressable_storage">content-addressable storage</a>&nbsp;storage system. CAS is a way of storing and accessing data based on some property of the actual content, rather than (potentially arbitrary) files and folders.</p><p class=""><a href="https://hashfs.readthedocs.io/en/latest/">HashFS</a>&nbsp;is a Python implementation of a content-addressable file management system. You give it files, it will put them in a directory structure based on a <a href="https://simple.wikipedia.org/wiki/Cryptographic_hash_function">cryptographic hash function</a>&nbsp;of the contents of that file. In other words - HashFS can take any file and give back a unique path to that file which will never change (if you later upload a new version of the file, it gets a different path).<br></p><p class="">To add the the fun of HashFS, there is a Flask extension called <a href="https://flask-hashfs.readthedocs.io/en/latest/">Flask-HashFS</a>&nbsp;which makes it easy to expose a HashFS file store on the web via the Python&nbsp;<a href="http://flask.pocoo.org/">Flask</a>&nbsp;framework.</p><h2>Introducing Spano</h2><p class=""><a href="https://github.com/martymcguire/spano">Spano</a> is a Micropub Media Endpoint server written in Python via the Flask framework which combines Flask-HashFS for file storage with&nbsp;<a href="https://github.com/martymcguire/Flask-IndieAuth">Flask-IndieAuth</a>&nbsp;(<a href="https://martymcgui.re/2017/01/26/104730/">introduced earlier</a>) to handle authentication and authorization.</p><p class="">Spano is a server-side web app that basically does one thing: it accepts HTTP POST requests with a valid <a href="http://indieweb.org/IndieAuth">IndieAuth</a>&nbsp;token and a file named "file", stores that file, and returns a URL to that file. The task of serving uploaded files is left to a dedicated web server like nginx or Apache.</p><h3>Using Spano</h3><p class="">Once Spano has been <a href="https://github.com/martymcguire/spano#spano">set up and configured</a>&nbsp;for your domain, uploading is a matter of getting a valid IndieAuth token. IndieAuth-enabled Micropub clients will do this automatically. For testing by hand I like to log in to Quill and copy the access token from the <a href="https://quill.p3k.io/settings">Quill settings page</a>. With token in hand, uploads are as easy as:</p><pre><code>curl -D - -F "file=@myfile.jpg" \
+  -H"Authorization: Bearer xxxx..." \
+  https://media.example.com/micropub/</code></pre><p class="">Which should output a response like:</p><pre><code>HTTP/1.1 100 Continue
+
+HTTP/1.0 201 CREATED
+Content-Type: text/html; charset=utf-8
+Content-Length: 108
+Location: https://media.example.com/cc/a5/97/7c/2004..2cb.jpg
+Server: Werkzeug/0.11.4 Python/2.7.11
+Date: Thu, 26 Jan 2017 02:40:05 GMT
+
+File created: https://media.example.com/cc/a5/97/7c/2004..2cb.jpg</code></pre><h3>Integrating Spano with your Micropub Endpoint</h3><p class="">If you want Micropub clients to use Spano as your Media Endpoint, you need to advertise it. This is handled by your "main" Micropub server using <a href="https://www.w3.org/TR/micropub/#discovery">discovery</a>. Essentially, a client will make a configuration request to your server like so:</p><pre>https://example.com/micropub?q=config</pre><p class="">And your server's response should be a JSON-formatted object specifying the "media-endpoint". A bare minimum example:</p><pre>{<br>&nbsp; "media-endpoint": "https://media.example.com/micropub/"<br>}</pre><p class="">In addition to advertising the media-endpoint, your Micropub server must be able to handle lists of URLs in places where it would normally expect a file.</p><p class="">For example, when posting a photo from Quill without a media endpoint, your Micropub server will receive a multipart/form-data encoded file named "photo". When posting from Quill with a media endpoint, your Micropub server will instead receive a list of URLs represented as "photo[]=https://media.example.com/cc/...2cb.jpg". Presumably this pattern would hold for other media types such as video and audio, if you are using Micropub clients that support them.</p><p class="">This particular step has been an interesting challenge for my site, which is a static site generated by Jekyll. My previous Micropub file-handling implementation expected all uploaded assets to live on disk next to the post files, and updating my Jekyll theme and plugins to handle the change is a work in progress. I eventually plan to move all my uploads out of the source for my project in favor of storing them with Spano.</p><h2>Feedback Welcome!</h2><p class="">Spano is probably my second public Python project, so I'd love feedback! If you try it out and run into issues, please drop me a line <a href="https://github.com/martymcguire/spano/issues">on GitHub</a>. Or you can find me in the <a href="https://chat.indieweb.org/">#indieweb chat</a> on freenode IRC.</p><p class="">I'd also like to thank Kyle Mahan for his <a href="https://github.com/kylewm/woodwind">Woodwind</a>&nbsp;Flask server application, which inspired the structure of Spano.</p>
+</div>
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="post-meta">
+  
+    <div class="post-tags">
+      
+      
+        <a href="/tag/indieweb/" class="label label-default">#<span class="p-category">IndieWeb</span></a>
+
+      
+        <a href="/tag/flask/" class="label label-default">#<span class="p-category">flask</span></a>
+
+      
+        <a href="/tag/python/" class="label label-default">#<span class="p-category">python</span></a>
+
+      
+        <a href="/tag/micropub/" class="label label-default">#<span class="p-category">micropub</span></a>
+
+      
+        <a href="/tag/media-endpoint/" class="label label-default">#<span class="p-category">media-endpoint</span></a>
+
+      
+        <a href="/tag/spano/" class="label label-default">#<span class="p-category">spano</span></a>
+
+      
+    </div>
+  
+  <div>
+    <a rel="shortlink" type="text/html" href="http://mmg.re/4mYHT0"><i class="fa fa-link" aria-label="Short link to this post" title="Shortlink to this post"></i></a>
+    <a class="u-url" href="https://heady-land.glitch.me/2017/01/26/spano---a-minimum-viable-micropub-media-endpoint/"><time class="dt-published" datetime="2017-01-26T12:27:00-0500">January 26, 2017 at 12:27PM -0500</time></a> • by <a rel="author" class="p-author h-card" href="https://martymcgui.re/"><img class="byline-photo u-photo" src="https://martymcgui.re/images/logo.jpg" alt="Marty McGuire"/>Marty McGuire</a>
+  </div>
+  <div>
+    
+  See also:
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://news.indieweb.org/en/martymcgui.re/2017/01/26/122700/" title="IndieNews
+"><i class="fa fa-globe"></i>
+</a>
+
+  
+    
+
+<a class="u-syndication synd-link" rel="syndication" href="https://twitter.com/schmarty/status/824671060129959937" title="Twitter
+"><i class="fa fa-twitter"></i>
+</a>
+
+  
+
+
+  
+
+  
+
+
+  </div>
+</div>
+
+  </article>
+
+    
+  </div>
+
+    
+
+  </body>
+
+</html>
+
